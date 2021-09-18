@@ -358,13 +358,19 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
     reader.addEventListener("load", function() {
       $scope.$apply(function() {
         let found = $scope.customFiles.find(e => e.name == file.name);
+        let result = reader.result
+        if (file.name.endsWith(".txt")) {
+          console.log("normalizing", file);
+          result = reader.result.normalize('NFKD')
+          result = new TextEncoder().encode(result);
+        }
         if(found) {
           console.log("replaced", file);
-          found.binary = reader.result;
+          found.binary = result;
         } else {
           console.log("loaded", file);
           $scope.customFiles.push(
-            {name: file.name, binary: reader.result}
+            {name: file.name, binary: result}
           );
         }
         $(file).val("");
@@ -374,7 +380,11 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
     $scope.$apply(function() {
       if (file) {
         console.log("loading", file);
-        reader.readAsArrayBuffer(file);
+        if (file.name.endsWith(".txt")) {
+          reader.readAsText(file)
+        } else {
+          reader.readAsArrayBuffer(file);
+        }
       }
     });
   };
