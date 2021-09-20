@@ -361,7 +361,14 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
         let result = reader.result
         if (file.name.endsWith(".txt")) {
           console.log("normalizing", file);
-          result = reader.result.normalize('NFKD')
+          result = result.replaceAll("’", "'")
+          result = result.replaceAll(" «", '"')
+          result = result.replaceAll(" »", '"')
+          result = result.replaceAll("«", '"')
+          result = result.replaceAll("»", '"')
+          result = result.replaceAll("–", "-")
+          result = result.replaceAll("œ", "oe")
+          result = result.normalize('NFKD')
           result = new TextEncoder().encode(result);
         }
         if(found) {
