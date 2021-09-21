@@ -366,6 +366,8 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
           result = result.replaceAll(" »", '"')
           result = result.replaceAll("«", '"')
           result = result.replaceAll("»", '"')
+          result = result.replaceAll("“", '"')
+          result = result.replaceAll("”", '"')
           result = result.replaceAll("–", "-")
           result = result.replaceAll("œ", "oe")
           result = result.normalize('NFKD')
