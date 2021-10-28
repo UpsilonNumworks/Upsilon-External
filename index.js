@@ -432,8 +432,6 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
   };
 
   $scope.getFile = function getFile(el) {
-    // let file = el[0].files[0];
-    // for (file in el[0].files){
     for (let i = 0; i < el[0].files.length; i++) { 
       let file = el[0].files[i];
       let reader = new FileReader();
