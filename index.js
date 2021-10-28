@@ -432,31 +432,35 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
   };
 
   $scope.getFile = function getFile(el) {
-    let file = el[0].files[0];
-    let reader = new FileReader();
+    // let file = el[0].files[0];
+    // for (file in el[0].files){
+    for (let i = 0; i < el[0].files.length; i++) { 
+      let file = el[0].files[i];
+      let reader = new FileReader();
 
-    reader.addEventListener("load", function() {
+      reader.addEventListener("load", function() {
+        $scope.$apply(function() {
+          let found = $scope.customFiles.find(e => e.name == file.name);
+          if(found) {
+            console.log("replaced", file);
+            found.binary = reader.result;
+          } else {
+            console.log("loaded", file);
+            $scope.customFiles.push(
+              {name: file.name, binary: reader.result}
+            );
+          }
+          $(file).val("");
+        })
+      }, false);
+
       $scope.$apply(function() {
-        let found = $scope.customFiles.find(e => e.name == file.name);
-        if(found) {
-          console.log("replaced", file);
-          found.binary = reader.result;
-        } else {
-          console.log("loaded", file);
-          $scope.customFiles.push(
-            {name: file.name, binary: reader.result}
-          );
+        if (file) {
+          console.log("loading", file);
+          reader.readAsArrayBuffer(file);
         }
-        $(file).val("");
-      })
-    }, false);
-
-    $scope.$apply(function() {
-      if (file) {
-        console.log("loading", file);
-        reader.readAsArrayBuffer(file);
-      }
-    });
+      });
+    }
   };
 
   let loadFirmwareFile = function loadFirmwareFile(file) {
