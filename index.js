@@ -523,7 +523,7 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
 }).config(function ($translateProvider) {
   $translateProvider
     .translations('en', {
-      TITLE: 'Unofficial N110 application repository',
+      TITLE: 'Unofficial N0110 application repository',
       LEAD: 'Here you will find some installable applications for a N110 calculator.',
       FIRMWARE: 'To install a compatible firmware on your calculator, please go ',
       DISCLAIM: 'For more information (or filling an issue) please go ',
@@ -554,7 +554,7 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
       CROP_IMAGE_CANCEL: "Cancel",
     })
     .translations('fr', {
-      TITLE: 'Dépôt d\'application N110 non officiel',
+      TITLE: 'Dépôt d\'application N0110 non officiel',
       LEAD: 'Vous trouverez ici quelques application installables sur une calculatrice N110.',
       FIRMWARE: 'Pour installer un micrologiciel compatible, veuillez vous rendre ',
       DISCLAIM: 'Pour plus d\'informations (ou soumettre un problème) veuillez vous rendre ',
