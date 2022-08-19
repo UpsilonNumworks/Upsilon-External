@@ -6,9 +6,9 @@
 #include "inc/peripherals.h"
 #include "inc/selector.h"
 
-extern "C" void extapp_main();
+extern "C" void extapp_main(int argc, char *argv[]);
 
-void extapp_main(void) {
+void extapp_main(int argc, char * argv[]) {
 
     // Wait for the key to be released before starting the application
     Peripherals::waitForKeyReleased();

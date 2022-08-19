@@ -160,7 +160,7 @@ static bool wasMSpFPressed = false;
 static uint8_t saveCooldown = 0;
 static bool MSpFfCounter = false;
 
-void extapp_main() {
+void extapp_main(int argc, char * argv[]) {
   struct gb_s gb;
   enum gb_init_error_e gb_ret;
   struct priv_t priv = {

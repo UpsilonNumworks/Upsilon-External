@@ -4,6 +4,32 @@
 
 extern void (* const *_api_base)(void);
 
+// We need to redefine DataTime struct to match the one in extapp_api.h file, because we can't include it directly
+struct DateTime {
+  int tm_sec;
+  int tm_min;
+  int tm_hour; // 0-23
+  int tm_mday; // 1-31
+  int tm_mon;  // 1-12
+  int tm_year;
+  int tm_wday; // 0-6, 0 is Monday
+};
+
+// Settings
+struct Settings {
+  // 0 for degrees, 1 for radians, 2 for gradians
+  uint8_t angleUnit;
+  // 0 for decimal, 1 for Scientific, 2 for Engineering
+  uint8_t displayMode;
+  // Raw number of digits, max is 14
+  uint8_t numberOfSignificantDigits;
+  // 0 for real, 1 for cartesian, 2 for polar
+  uint8_t complexFormat;
+  // If true, the big font should be used.
+  bool largeFont;
+};
+
+
 uint64_t extapp_millis() {
   return ((uint64_t (*)(void))_api_base[0])();
 }
@@ -96,6 +122,95 @@ bool extapp_writememory(unsigned char * dest,const unsigned char * data,size_t l
   return ((bool (*)(unsigned char *, const unsigned char *, size_t))_api_base[22])(dest,data,length);
 }
 
-bool extapp_inexammode(){
+bool extapp_inExamMode(){
   return ((bool (*)(void ))_api_base[23])();
+}
+
+uint8_t extapp_getBrightness(){
+  return ((uint8_t (*)(void ))_api_base[24])();
+}
+
+void extapp_setBrightness(uint8_t brightness){
+  ((void (*)(uint8_t))_api_base[25])(brightness);
+}
+
+int extapp_batteryLevel(){
+  return ((int (*)(void ))_api_base[26])();
+}
+
+float extapp_batteryVoltage(){
+  return ((float (*)(void ))_api_base[27])();
+}
+
+bool extapp_batteryCharging(){
+  return ((bool (*)(void ))_api_base[28])();
+}
+
+int extapp_batteryPercentage(){
+  return ((int (*)(void ))_api_base[29])();
+}
+
+struct DateTime extapp_getDateTime(){
+  return ((struct DateTime (*)(void ))_api_base[30])();
+}
+
+void extapp_setDateTime(struct DateTime dt){
+  ((void (*)(struct DateTime))_api_base[31])(dt);
+}
+
+void extapp_setRTCMode(int mode){
+  ((void (*)(int))_api_base[32])(mode);
+}
+
+int extapp_getRTCMode(){
+  return ((int (*)(void ))_api_base[33])();
+}
+
+void extapp_getTime(struct DateTime *dt){
+  ((void (*)(struct DateTime *))_api_base[34])(dt);
+}
+
+uint32_t extapp_random(){
+  return ((uint32_t (*)(void ))_api_base[35])();
+}
+
+void extapp_reloadTitleBar(){
+  ((void (*)(void ))_api_base[36])();
+}
+
+const char * extapp_username(){
+  return ((const char * (*)(void ))_api_base[37])();
+}
+
+const char * extapp_getOS(){
+  return ((const char * (*)(void ))_api_base[38])();
+}
+
+const char * extapp_getOSVersion(){
+  return ((const char * (*)(void ))_api_base[39])();
+}
+
+void extapp_getOSCommit(char *commit){
+  ((void (*)(char *))_api_base[40])(commit);
+}
+
+size_t extapp_storageSize(){
+  return ((size_t (*)(void ))_api_base[41])();
+}
+
+size_t extapp_storageAvailable(){
+  return ((size_t (*)(void ))_api_base[42])();
+}
+
+size_t extapp_storageUsed(){
+  return ((size_t (*)(void ))_api_base[43])();
+}
+
+
+struct Settings extapp_getSettings(){
+  return ((struct Settings (*)(void ))_api_base[44])();
+}
+
+void extapp_setSettings(struct Settings settings){
+  ((void (*)(struct Settings))_api_base[45])(settings);
 }

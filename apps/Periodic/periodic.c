@@ -237,7 +237,7 @@ void copy(const char * text) {
   extapp_msleep(500);
 }
 
-void extapp_main(void) {
+void extapp_main(int argc, char * argv[]) {
   char buf[128];
   bool partial_draw = false, redraw = true;
   int cursor_pos = 0;

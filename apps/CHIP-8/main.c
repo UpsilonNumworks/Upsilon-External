@@ -8,7 +8,7 @@
 #include "inc/peripherals.h"
 #include "inc/selector.h"
 
-void extapp_main(void) {
+void extapp_main(int argc, char * argv[]) {
     char * rom_filename = select_rom();
 
     init_display();

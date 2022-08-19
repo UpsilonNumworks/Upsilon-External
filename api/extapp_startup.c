@@ -15,14 +15,14 @@ extern char _bss_section_end_ram;
 extern cxx_constructor _init_array_start;
 extern cxx_constructor _init_array_end;
 
-extern void extapp_main(void);
+extern void extapp_main(int argc, char *argv[]);
 
 void *_heap_base, *_heap_ptr;
 const void *_api_base;
 uint32_t _heap_size;
 jmp_buf oom_jmp_buf;
 
-uint32_t _extapp_start(const uint32_t api_version, const void * api_base, void * heap, const uint32_t heap_size) {
+uint32_t _extapp_start(const uint32_t api_version, const void * api_base, void * heap, const uint32_t heap_size, int argc, char * argv[]) {
 
   if(api_version != API_VERSION) {
     return 1;
@@ -43,7 +43,7 @@ uint32_t _extapp_start(const uint32_t api_version, const void * api_base, void *
     for (cxx_constructor * c = &_init_array_start; c<&_init_array_end; c++) {
       (*c)();
     }
-    extapp_main();
+    extapp_main(argc, argv);
   }
 
   return result;

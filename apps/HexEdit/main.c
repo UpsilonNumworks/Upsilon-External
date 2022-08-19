@@ -132,7 +132,7 @@ void handle_scroll(int delta) {
     draw_ui();
 }
 
-void extapp_main()
+void extapp_main(int argc, char * argv[])
 {
     extapp_pushRectUniform(0, 0, LCD_WIDTH, LCD_HEIGHT, 0xFFFF);
     draw_ui();

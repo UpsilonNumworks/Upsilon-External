@@ -5,7 +5,7 @@
 
 #include "vdo.h"
 
-void extapp_main() {
+void extapp_main(int argc, char * argv[]) {
     for(unsigned int len = 0; len < vdo_len;) {
         uint64_t start = extapp_millis();
         extapp_waitForVBlank();

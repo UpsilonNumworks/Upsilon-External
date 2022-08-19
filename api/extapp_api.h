@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#define API_VERSION 2
+#define API_VERSION 3
 
 #ifdef __cplusplus
 #define EXTERNC extern "C"
@@ -244,6 +244,33 @@
 #define KEY_PRGM_SHIFT 78
 #define KEY_PRGM_MENU 48
 
+// Types definitions
+// Date and time
+struct DateTime {
+  int tm_sec;
+  int tm_min;
+  int tm_hour; // 0-23
+  int tm_mday; // 1-31
+  int tm_mon;  // 1-12
+  int tm_year;
+  int tm_wday; // 0-6, 0 is Monday
+};
+
+// Settings
+// TODO: Improve this structure when using C++
+struct Settings {
+  // 0 for degrees, 1 for radians, 2 for gradians
+  uint8_t angleUnit;
+  // 0 for decimal, 1 for Scientific, 2 for Engineering
+  uint8_t displayMode;
+  // Raw number of digits, max is 14
+  uint8_t numberOfSignificantDigits;
+  // 0 for real, 1 for cartesian, 2 for polar
+  uint8_t complexFormat;
+  // If true, the big font should be used.
+  bool largeFont;
+};
+
 // External API functions
 /**
  * Get the current date, in milliseconds, from the boot, excluding suspended time
@@ -408,7 +435,118 @@ EXTERNC  bool extapp_writesector(unsigned char * dest,const unsigned char * data
  * Get if the exam mode is active
  * @return bool, true if the exam mode is active
  */
-EXTERNC  bool extapp_inexammode();
+EXTERNC  bool extapp_inExamMode();
+/**
+ * Get the actual brightness
+ * @return uint8_t, the actual brightness
+ */
+EXTERNC  uint8_t extapp_getBrightness();
+/**
+ * Set the brightness
+ * @param brightness uint8_t, the brightness to set
+ */
+EXTERNC  void extapp_setBrightness(uint8_t brightness);
+/**
+ * Get the battery level (0-3, 0 is empty, 1 is low, 2 is somewhere in between, 3 is full)
+ * @return int, the battery level
+ */
+EXTERNC  int extapp_batteryLevel();
+/**
+ * Get the battery voltage (in V)
+ * @return float, the battery voltage
+ */
+EXTERNC  float extapp_batteryVoltage();
+/**
+ * Get if the battery is charging
+ * @return bool, true if the battery is charging
+ */
+EXTERNC  bool extapp_batteryCharging();
+/**
+ * Get battery percentage (0-100), computed from battery voltage
+ * @return int, the battery percentage
+ */
+EXTERNC  int extapp_batteryPercentage();
+/**
+ * Get the current RTC time
+ * @return DateTime, the current RTC time
+ */
+EXTERNC struct DateTime extapp_getDateTime();
+
+/**
+ * Set the RTC time
+ * @param dt DateTime, the time to set
+ */
+EXTERNC  void extapp_setDateTime(struct DateTime dt);
+/**
+ * Set the RTC mode (0 for disabled, 1 for LSI (low consumption), 2 for HSE (high precision))
+ * @param mode int, the mode to set
+ */
+EXTERNC  void extapp_setRTCMode(int mode);
+/**
+ * Get the RTC mode (0 for disabled, 1 for LSI (low consumption), 2 for HSE (high precision))
+ * @return int, the RTC mode
+ */
+EXTERNC  int extapp_getRTCMode();
+/**
+ * Get the current time from 2000-01-01 00:00:00
+ * @return uint64_t, the current time from 2000-01-01 00:00:00
+ */
+EXTERNC  uint64_t extapp_getTime();
+/**
+ * Get a 32 bit true random number that can be casted to any (32 bit or less) type
+ * @return uint32_t, the random number
+ */
+EXTERNC  uint32_t extapp_random();
+/**
+ * Reload the title bar
+ */
+EXTERNC  void extapp_reloadTitleBar();
+/**
+ * Get the username
+ * @return const char *, the username
+ */
+EXTERNC  const char * extapp_username();
+/**
+ * Get the OS name
+ * @return const char *, the OS name
+ */
+EXTERNC  const char * extapp_getOS();
+/**
+ * Get the OS version
+ * @return const char *, the OS version
+ */
+EXTERNC  const char * extapp_getOSVersion();
+/**
+ * Get the OS commit hash
+ * @return const char *, the OS commit hash
+ */
+EXTERNC  const char * extapp_getOSCommit();
+/**
+ * Get the RAM storage size
+ * @return size_t, the RAM storage size
+ */
+EXTERNC  size_t extapp_storageSize();
+/**
+ * Get the available RAM storage size
+ * @return size_t, the available RAM storage size
+ */
+EXTERNC  size_t extapp_storageAvailable();
+/**
+ * Get the used RAM storage size
+ * @return size_t, the used RAM storage size
+ */
+EXTERNC  size_t extapp_storageUsed();
+/**
+ * Get the settings
+ * @return struct Settings, the settings
+ */
+EXTERNC  struct Settings extapp_getSettings();
+/**
+ * Set the settings
+ * @param settings struct Settings, the settings to set
+ */
+EXTERNC  void extapp_setSettings(struct Settings settings);
+
 EXTERNC uint32_t _heap_size;
 EXTERNC void *_heap_base;
 EXTERNC void *_heap_ptr;

@@ -122,7 +122,7 @@ static const char * select_rom() {
 	}
 }
 
-void extapp_main() {
+void extapp_main(int argc, char * argv[]) {
   //Create commandline args
   const char *args[3];
   args[0]="nofrendo";
