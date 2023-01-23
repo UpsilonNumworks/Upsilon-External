@@ -34,7 +34,7 @@ clean:
 	make -C apps/Nofrendo clean
 	make -C apps/Peanut-GB clean
 	make -C apps/HexEdit clean
-	# make -C apps/UnitCircle clean
+	make -C apps/UnitCircle clean
 	make -C apps/BadApple clean
 	make -C apps/CHIP-8 clean
 	make -C apps/Example clean
