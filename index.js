@@ -476,7 +476,7 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
 }).config(function ($translateProvider) {
   $translateProvider
     .translations('en', {
-      TITLE: 'Unofficial N0110 application repository',
+      TITLE: 'Unofficial N0110 application repository (4 RichardDorian fork)',
       LEAD: 'Here you will find some installable applications for a N110 calculator.',
       FIRMWARE: 'To install a compatible firmware on your calculator, please go ',
       DISCLAIM: 'For more information (or filling an issue) please go ',
@@ -510,7 +510,7 @@ angular.module('nwas', ['ngSanitize', 'pascalprecht.translate']).controller('mai
       TOO_MUCH_DATA: "You are writing too much data to your calculator. Please make sure that you are not writing more than 6MB of data. Try to remove some files or apps.",
     })
     .translations('fr', {
-      TITLE: 'Dépôt d\'application N0110 non officiel',
+      TITLE: 'Dépôt d\'application N0110 non officiel (pour le fork de RichardDorian)',
       LEAD: 'Vous trouverez ici quelques application installables sur une calculatrice N110.',
       FIRMWARE: 'Pour installer un micrologiciel compatible, veuillez vous rendre ',
       DISCLAIM: 'Pour plus d\'informations (ou soumettre un problème) veuillez vous rendre ',
