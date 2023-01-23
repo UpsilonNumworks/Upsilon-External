@@ -10,6 +10,10 @@ angular.module('nwas').service('apps', function () {
       },
     },
     {
+      name: 'UnitCircle',
+      description: { en: 'Unit circle', fr: 'Cercle trigonométrique' },
+    },
+    {
       name: 'KhiCAS',
       description: {
         en: 'Computer algebra system',
