@@ -126,7 +126,7 @@ Copyright (C) 2019 Damien Nicolet
         <div class="col-md-12">
           <p>{{lastAction || 'Progress'}}</p>
           <div class="progress">
-            <div class="progress-bar" role="progressbar" style="transition: none;" ng-style="{width: progress + '%'}"></div>
+            <div class="progress-bar" role="progressbar" ng-style="{width: progress + '%'}"></div>
           </div>
           <p ng-show="allDone" class="text-center mt-5"><button class="btn btn-primary" ng-click="reload()" translate="ALL_DONE"></button></p>
           <div class="card text-white bg-danger mt-3" ng-show="error">
