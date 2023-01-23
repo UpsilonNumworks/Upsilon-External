@@ -6,6 +6,21 @@ on:
   workflow_dispatch:
 
 jobs:
+  Morse:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install wget gdb gcc g++ libgmp-dev libmpfr-dev libmpfi-dev libpari-dev libgsl0-dev libxext-dev libpng-dev libjpeg-dev libreadline-dev libncurses5-dev mesa-common-dev libx11-dev libxt-dev libxft-dev libntl-dev libgl1-mesa-dev libgl-dev libao-dev hevea debhelper libfltk1.3-dev build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi dfu-util texinfo autoconf-archive -y
+
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - run: make -C apps/Morse cleanall
+      - run: make Morse_rebuild
+      - run: ./tool/archive Morse.tar Morse
+      - uses: actions/upload-artifact@master
+        with:
+          name: Morse
+          path: Morse.tar
   KhiCAS:
     runs-on: ubuntu-latest
     steps:
@@ -149,4 +164,4 @@ jobs:
           path: UnitCircle.tar
 
 env:
-  ACCEPT_OFFICIAL_TOS: 1
+  ACCEPT_OFFICIAL_TOS: 0
