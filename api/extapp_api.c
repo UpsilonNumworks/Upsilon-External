@@ -107,3 +107,11 @@ void extapp_setLedColor(uint16_t color) {
 void extapp_resetLed() {
   ((void (*)())_api_base[25])();
 }
+
+uint8_t extapp_getBatteryLevel() {
+  return ((uint8_t (*)())_api_base[26])();
+}
+
+bool extapp_isBatteryCharging(){
+  return ((bool (*)(void ))_api_base[27])();
+}

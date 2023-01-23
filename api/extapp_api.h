@@ -411,6 +411,8 @@ EXTERNC bool extapp_writesector(unsigned char *dest, const unsigned char *data, 
 EXTERNC bool extapp_inexammode();
 EXTERNC void extapp_setLedColor(uint16_t color);
 EXTERNC void extapp_resetLed();
+EXTERNC uint8_t extapp_getBatteryLevel();
+EXTERNC bool extapp_isBatteryCharging();
 
 EXTERNC uint32_t _heap_size;
 EXTERNC void *_heap_base;
