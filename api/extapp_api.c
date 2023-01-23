@@ -99,3 +99,11 @@ bool extapp_writememory(unsigned char * dest,const unsigned char * data,size_t l
 bool extapp_inexammode(){
   return ((bool (*)(void ))_api_base[23])();
 }
+
+void extapp_setLedColor(uint16_t color) {
+ ((void (*)(uint16_t))_api_base[24])(color);
+}
+
+void extapp_resetLed() {
+  ((void (*)())_api_base[25])();
+}
