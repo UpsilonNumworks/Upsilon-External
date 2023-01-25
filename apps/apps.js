@@ -7,6 +7,10 @@ angular.module('nwas').service('apps', function () {
       description: { en: 'doiwjdw' },
     },
     {
+      name: '3D-Playground',
+      description: { en: 'doiwjdw 3D!!! OMG' },
+    },
+    {
       name: 'Morse',
       description: {
         en: "Morse sender, receiver and translator (requires RichardDorian's fork)",
