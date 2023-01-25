@@ -112,6 +112,14 @@ uint8_t extapp_getBatteryLevel() {
   return ((uint8_t (*)())_api_base[26])();
 }
 
-bool extapp_isBatteryCharging(){
-  return ((bool (*)(void ))_api_base[27])();
+bool extapp_isBatteryCharging() {
+  return ((bool (*)(void))_api_base[27])();
+}
+
+uint16_t extapp_fromPalette(uint8_t color_index) {
+  return ((uint16_t (*)(uint8_t))_api_base[28])(color_index);
+}
+
+uint16_t extapp_blendColor(uint16_t first, uint16_t second, uint8_t alpha) {
+  return ((uint16_t (*)(uint16_t, uint16_t, uint8_t))_api_base[29])(first, second, alpha);
 }

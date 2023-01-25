@@ -3,6 +3,10 @@
 angular.module('nwas').service('apps', function () {
   return [
     {
+      name: 'Playground',
+      description: { en: 'doiwjdw' },
+    },
+    {
       name: 'Morse',
       description: {
         en: "Morse sender, receiver and translator (requires RichardDorian's fork)",

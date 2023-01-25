@@ -244,6 +244,11 @@
 #define KEY_PRGM_SHIFT 78
 #define KEY_PRGM_MENU 48
 
+#define BATTERY_FULL 3
+#define BATTERY_SOMEWHERE_INBETWEEN 2
+#define BATTERY_LOW 1
+#define BATTERY_EMPTY 0
+
 // External API functions
 /**
  * Get the current date, in milliseconds, from the boot, excluding suspended time
@@ -413,6 +418,8 @@ EXTERNC void extapp_setLedColor(uint16_t color);
 EXTERNC void extapp_resetLed();
 EXTERNC uint8_t extapp_getBatteryLevel();
 EXTERNC bool extapp_isBatteryCharging();
+EXTERNC uint16_t extapp_fromPalette(uint8_t color_index);
+EXTERNC uint16_t extapp_blendColor(uint16_t first, uint16_t second, uint8_t alpha);
 
 EXTERNC uint32_t _heap_size;
 EXTERNC void *_heap_base;
