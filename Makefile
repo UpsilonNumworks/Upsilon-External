@@ -1,22 +1,28 @@
 .PHONY: %_flash
-%_flash: %_rebuild
-	./tool/archive apps.tar $@
+%_flash: %_archive
+	@echo "Flashing..."
 	@echo "Waiting for the calculator to be connected, use the bootloader to flash on Upsilon if your app is bigger than 2MB"
 	@until dfu-util -l | grep -E "0483:a291|0483:df11" > /dev/null 2>&1; do sleep 2;done
 	dfu-util -i 0 -a 0 -s 0x90200000 -D apps.tar
 
+%_archive: %_build
+	@echo "Archiving..."
+	./tool/archive.sh apps.tar $@
+
+.PHONY: %_build
+%_build: api/libapi.a
+	@echo "Building..."
+	./tool/build.sh $@
+
 .PHONY: %_rebuild
-%_rebuild: api/libapi.a
+%_rebuild: %_clean api/libapi.a
 	@echo "Rebuilding..."
-# 	Because the Makefile can't interpret the `%` operator, we have
-#   to use the following command to rebuild the application.
-	./tool/rebuild.sh $@
+	./tool/build.sh $@
 
 .PHONE: %_clean
 %_clean:
 	@echo "Cleaning..."
 	rm -rf apps.tar
-	rm -rf api/libapi.a
 	./tool/clean.sh $@
 
 api/libapi.a:

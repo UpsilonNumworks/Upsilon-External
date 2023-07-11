@@ -7,7 +7,6 @@
 #include "inc/selector.h"
 
 void extapp_main(void) {
-
     // Wait for the key to be released before starting the application
     waitForKeyReleased();
     // Draw a white background

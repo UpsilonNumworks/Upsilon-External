@@ -16,11 +16,11 @@ jobs:
           submodules: true
       - run: make -C apps/KhiCAS cleanall
       - run: make KhiCAS_rebuild
-      - run: ./tool/archive KhiCAS.tar KhiCAS
+      - run: make KhiCAS_archive
       - uses: actions/upload-artifact@master
         with:
           name: KhiCAS
-          path: KhiCAS.tar
+          path: apps.tar
   BadApple:
     runs-on: ubuntu-latest
     steps:
@@ -30,11 +30,11 @@ jobs:
         with:
           submodules: true
       - run: make BadApple_rebuild
-      - run: ./tool/archive BadApple.tar BadApple
+      - run: make BadApple_archive
       - uses: actions/upload-artifact@master
         with:
           name: BadApple
-          path: BadApple.tar
+          path: apps.tar
   CHIP-8:
     runs-on: ubuntu-latest
     steps:
@@ -44,11 +44,11 @@ jobs:
         with:
           submodules: true
       - run: make CHIP-8_rebuild
-      - run: ./tool/archive CHIP-8.tar CHIP-8
+      - run: make CHIP-8_archive
       - uses: actions/upload-artifact@master
         with:
           name: CHIP-8
-          path: CHIP-8.tar
+          path: apps.tar
   Example:
     runs-on: ubuntu-latest
     steps:
@@ -58,11 +58,11 @@ jobs:
         with:
           submodules: true
       - run: make Example_rebuild
-      - run: ./tool/archive Example.tar Example
+      - run: make Example_archive
       - uses: actions/upload-artifact@master
         with:
           name: Example
-          path: Example.tar
+          path: apps.tar
   Example-Cpp:
     runs-on: ubuntu-latest
     steps:
@@ -72,11 +72,11 @@ jobs:
         with:
           submodules: true
       - run: make Example-Cpp_rebuild
-      - run: ./tool/archive Example-Cpp.tar Example-Cpp
+      - run: make Example-Cpp_archive
       - uses: actions/upload-artifact@master
         with:
           name: Example-Cpp
-          path: Example-Cpp.tar
+          path: apps.tar
   HexEdit:
     runs-on: ubuntu-latest
     steps:
@@ -86,11 +86,10 @@ jobs:
         with:
           submodules: true
       - run: make HexEdit_rebuild
-      - run: ./tool/archive HexEdit.tar HexEdit
       - uses: actions/upload-artifact@master
         with:
           name: HexEdit
-          path: HexEdit.tar
+          path: apps.tar
   Nofrendo:
     runs-on: ubuntu-latest
     steps:
@@ -100,11 +99,10 @@ jobs:
         with:
           submodules: true
       - run: make Nofrendo_rebuild
-      - run: ./tool/archive Nofrendo.tar Nofrendo
       - uses: actions/upload-artifact@master
         with:
           name: Nofrendo
-          path: Nofrendo.tar
+          path: apps.tar
   Peanut-GB:
     runs-on: ubuntu-latest
     steps:
@@ -114,11 +112,11 @@ jobs:
         with:
           submodules: true
       - run: make Peanut-GB_rebuild
-      - run: ./tool/archive Peanut-GB.tar Peanut-GB
+      - run: make Peanut-GB_archive
       - uses: actions/upload-artifact@master
         with:
           name: Peanut-GB
-          path: Peanut-GB.tar
+          path: apps.tar
   Periodic:
     runs-on: ubuntu-latest
     steps:
@@ -128,11 +126,11 @@ jobs:
         with:
           submodules: true
       - run: make Periodic_rebuild
-      - run: ./tool/archive Periodic.tar Periodic
+      - run: make Periodic_archive
       - uses: actions/upload-artifact@master
         with:
           name: Periodic
-          path: Periodic.tar
+          path: apps.tar
   UnitCircle:
     runs-on: ubuntu-latest
     steps:
@@ -142,11 +140,11 @@ jobs:
         with:
           submodules: true
       - run: make UnitCircle_rebuild
-      - run: ./tool/archive UnitCircle.tar UnitCircle
+      - run: make UnitCircle_archive
       - uses: actions/upload-artifact@master
         with:
           name: UnitCircle
-          path: UnitCircle.tar
+          path: apps.tar
 
 env:
   ACCEPT_OFFICIAL_TOS: 1
