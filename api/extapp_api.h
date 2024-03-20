@@ -173,6 +173,7 @@
 #define KEY_CTRL_XTT        30001
 #define KEY_CTRL_EXIT       5
 #define KEY_CTRL_OK         4
+#define KEY_CTRL_HOME       6
 #define KEY_CTRL_SHIFT      30006
 #define KEY_CTRL_ALPHA      30007
 #define KEY_CTRL_OPTN       30008
@@ -208,7 +209,7 @@
 #define KEY_CTRL_SETUP      30037
 #define KEY_CTRL_PAGEUP     30052
 #define KEY_CTRL_PAGEDOWN   30053
-#define KEY_CTRL_MENU       6
+#define KEY_CTRL_MENU       30003
 #define KEY_SHIFT_OPTN      30059
 #define KEY_CTRL_RESERVE1   30060
 #define KEY_CTRL_RESERVE2   30061
