@@ -208,7 +208,7 @@
 #define KEY_CTRL_SETUP      30037
 #define KEY_CTRL_PAGEUP     30052
 #define KEY_CTRL_PAGEDOWN   30053
-#define KEY_CTRL_MENU       30003
+#define KEY_CTRL_MENU       6
 #define KEY_SHIFT_OPTN      30059
 #define KEY_CTRL_RESERVE1   30060
 #define KEY_CTRL_RESERVE2   30061
