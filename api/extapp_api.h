@@ -173,6 +173,7 @@
 #define KEY_CTRL_XTT        30001
 #define KEY_CTRL_EXIT       5
 #define KEY_CTRL_OK         4
+#define KEY_CTRL_HOME       6
 #define KEY_CTRL_SHIFT      30006
 #define KEY_CTRL_ALPHA      30007
 #define KEY_CTRL_OPTN       30008
