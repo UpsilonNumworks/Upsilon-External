@@ -4,5 +4,4 @@ app_external_src += $(addprefix $(EXTAPP_PATH)/,\
         src/libspng/spng.h\
         src/miniz/miniz.c\
         src/miniz/miniz.h\
-        test.c\
 )

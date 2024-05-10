@@ -18,7 +18,7 @@ CFLAGS += -DSPNG_USE_MINIZ
 	$(CC) $(CFLAGS) -c $<
 	@echo "Compiled $<"
 
-app.elf: main.o ./src/libspng/spng.c ./src/libspng/spng.h src/miniz/miniz.c src/miniz/miniz.h test.o
+app.elf: main.o ./src/libspng/spng.c ./src/libspng/spng.h src/miniz/miniz.c src/miniz/miniz.h
 	@echo "Building app.elf"
 	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS) -lm
 	@echo "Built app.elf"
