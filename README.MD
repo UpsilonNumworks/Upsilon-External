@@ -35,6 +35,10 @@ A simple app showing an unit circle for trigonometry
 
 This is a port of CHIP-8 from https://github.com/f0lg0/CHIP-8
 
+### PngBrowser
+
+An application that allows you to view PNG files https://github.com/Oiha-dev/PngBrowser
+
 ## Technical concepts
 
 - The firmware part is just a regular application called "External", looking for a tar archive at address 0x90200000. If found, each file is displayed in a menu.
