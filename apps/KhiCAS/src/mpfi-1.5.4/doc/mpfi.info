@@ -1,4 +1,4 @@
-This is mpfi.info, produced by makeinfo version 6.7 from mpfi.texi.
+This is mpfi.info, produced by makeinfo version 6.8 from mpfi.texi.
 
 INFO-DIR-SECTION Software libraries
 START-INFO-DIR-ENTRY
@@ -322,7 +322,7 @@ behavior with non-valid intervals as input is undefined.
    * A "valid interval" can have finite or infinite endpoints, but its
      left endpoint is not larger than its right endpoint and cannot be
      +infinity or -0 (respectively, the right endpoint cannot be
-     -infinity or +0).  (1) As a consequence, the unique representation
+     -infinity or +0).  (1)  As a consequence, the unique representation
      of the zero singleton is [+0, -0].
 
    MPFI functions may return intervals that are not valid as input
@@ -1674,28 +1674,28 @@ Node: Introduction to MPFI4128
 Node: Installing MPFI5453
 Node: Reporting Bugs9317
 Node: MPFI Basics10693
-Ref: MPFI Basics-Footnote-115002
-Node: Interval Functions15329
-Node: Return Values16569
-Node: Precision Handling17532
-Node: Initializing and Assigning Intervals20397
-Node: Initializing Intervals20737
-Node: Assigning Intervals24770
-Node: Simultaneous Interval Init & Assign26988
-Node: Floating-point Quantities28254
-Node: Converting Intervals32316
-Node: Interval Arithmetic32791
-Node: Special Functions40109
-Node: Interval Comparison44933
-Node: I/O of Intervals47764
-Node: Operating on the Endpoints51126
-Node: Set Operations53600
-Node: Miscellaneous Interval Functions55511
-Node: Error Handling56746
-Node: Contributors57354
-Node: References57709
-Node: Concept Index59157
-Node: Function Index61857
+Ref: MPFI Basics-Footnote-115003
+Node: Interval Functions15330
+Node: Return Values16570
+Node: Precision Handling17533
+Node: Initializing and Assigning Intervals20398
+Node: Initializing Intervals20738
+Node: Assigning Intervals24771
+Node: Simultaneous Interval Init & Assign26989
+Node: Floating-point Quantities28255
+Node: Converting Intervals32317
+Node: Interval Arithmetic32792
+Node: Special Functions40110
+Node: Interval Comparison44934
+Node: I/O of Intervals47765
+Node: Operating on the Endpoints51127
+Node: Set Operations53601
+Node: Miscellaneous Interval Functions55512
+Node: Error Handling56747
+Node: Contributors57355
+Node: References57710
+Node: Concept Index59158
+Node: Function Index61858
 
 End Tag Table
 

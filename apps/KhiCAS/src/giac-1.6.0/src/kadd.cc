@@ -396,12 +396,14 @@ int finance(int mode,GIAC_CONTEXT){ // mode==-1 pret, 1 placement
   return 0;
 }
 
+int geoapp(GIAC_CONTEXT);
+
 int khicas_addins_menu(GIAC_CONTEXT){
   Menu smallmenu;
 #ifdef NUMWORKS
-  smallmenu.numitems=11; // INCREMENT IF YOU ADD AN APPLICATION
+  smallmenu.numitems=12; // INCREMENT IF YOU ADD AN APPLICATION
 #else
-  smallmenu.numitems=10; // INCREMENT IF YOU ADD AN APPLICATION
+  smallmenu.numitems=11; // INCREMENT IF YOU ADD AN APPLICATION
 #endif  
   // and uncomment first smallmenuitems[app_number].text="Reserved"
   // replace by your application name
@@ -411,14 +413,15 @@ int khicas_addins_menu(GIAC_CONTEXT){
   smallmenu.height=12;
   smallmenu.scrollbar=1;
   smallmenu.scrollout=1;
-  smallmenuitems[0].text = (char*)((lang==1)?"Tableur":"Spreadsheet");
-  smallmenuitems[1].text = (char*)((lang==1)?"Table periodique":"Periodic table");
-  smallmenuitems[2].text = (char*)((lang==1)?"Pret":"Mortgage");
-  smallmenuitems[3].text = (char*)((lang==1)?"Epargne":"TVM");
-  smallmenuitems[4].text = (char*)((lang==1)?"Table caracteres":"Char table");
-  smallmenuitems[5].text = (char*)((lang==1)?"Exemple simple: Syracuse":"Simple example; Syracuse");
-  smallmenuitems[6].text = (char*)((lang==1)?"Exemple de jeu: Mastermind":"Game example: Mastermind");
-  smallmenuitems[7].text = (char*)((lang==1)?"Fractale de Mandelbrot":"Mandelbrot fractal");
+  smallmenuitems[0].text = (char*)((lang==1)?"Geometrie":"Geometry");
+  smallmenuitems[1].text = (char*)((lang==1)?"Tableur":"Spreadsheet");
+  smallmenuitems[2].text = (char*)((lang==1)?"Table periodique":"Periodic table");
+  smallmenuitems[3].text = (char*)((lang==1)?"Pret":"Mortgage");
+  smallmenuitems[4].text = (char*)((lang==1)?"Epargne":"TVM");
+  smallmenuitems[5].text = (char*)((lang==1)?"Table caracteres":"Char table");
+  smallmenuitems[6].text = (char*)((lang==1)?"Exemple simple: Syracuse":"Simple example; Syracuse");
+  smallmenuitems[7].text = (char*)((lang==1)?"Exemple de jeu: Mastermind":"Game example: Mastermind");
+  smallmenuitems[8].text = (char*)((lang==1)?"Fractale de Mandelbrot":"Mandelbrot fractal");
   // smallmenuitems[8].text = (char*)"Mon application"; // adjust numitem !
   // smallmenuitems[9].text = (char*)"Autre application";
   // smallmenuitems[10].text = (char*)"Encore une autre";
@@ -440,9 +443,11 @@ int khicas_addins_menu(GIAC_CONTEXT){
 	handle_flash(contextptr);
 #endif
       // Attention les entrees sont decalees de 1
-      if (smallmenu.selection==1) // tableur
+      if (smallmenu.selection==1) // geometry
+	geoapp(contextptr);
+      if (smallmenu.selection==2) // tableur
 	sheet(contextptr);
-      if (smallmenu.selection==2){ // table periodique
+      if (smallmenu.selection==3){ // table periodique
 	const char * name,*symbol;
 	char protons[32],nucleons[32],mass[32],electroneg[32];
 	int res=periodic_table(name,symbol,protons,nucleons,mass,electroneg);
@@ -481,15 +486,15 @@ int khicas_addins_menu(GIAC_CONTEXT){
 	copy_clipboard(console_buf,true);
 	// return Console_Input(console_buf);
       }
-      if (smallmenu.selection==3){
+      if (smallmenu.selection==4){
 	finance(-1,contextptr);
 	continue;
       }
-      if (smallmenu.selection==4){
+      if (smallmenu.selection==5){
 	finance(1,contextptr);
 	continue;
       }
-      if (smallmenu.selection==5){
+      if (smallmenu.selection==6){
 	int c=chartab();
 	if (c>=0){
 	  char buf[2]={c,0};
@@ -497,7 +502,7 @@ int khicas_addins_menu(GIAC_CONTEXT){
 	}
 	break;
       }
-      if (smallmenu.selection==6){
+      if (smallmenu.selection==7){
 	// Exemple simple d'application tierce: la suite de Syracuse
 	// on entre la valeur de u0
 	double d; int i;
@@ -518,16 +523,16 @@ int khicas_addins_menu(GIAC_CONTEXT){
 	  v.push_back(i);
 	}
 	// representation graphique de la liste en appelant la commande Xcas listplot
-	displaygraph(_listplot(v,contextptr),contextptr);
+	displaygraph(_listplot(v,contextptr),symbolic(at_listplot,v),contextptr);
 	// copie vers presse-papier en l'affichant
 	copy_clipboard(gen(v).print(contextptr),true);
 	continue;
 	// on entre la liste en ligne de commande et on quitte
 	return Console_Input(gen(v).print(contextptr).c_str());
       }
-      if (smallmenu.selection==7) // mastermind, on ne quitte pas
+      if (smallmenu.selection==8) // mastermind, on ne quitte pas
 	mastermind(contextptr);
-      if (smallmenu.selection==8)
+      if (smallmenu.selection==9)
 	fractale(contextptr);
     } // end sres==menu_selection
     Console_Disp(1,contextptr);
@@ -1158,7 +1163,7 @@ void sheet_graph(tableur &t,GIAC_CONTEXT){
   vecteur v;
   sheet_pnt(t.m,v);
   gen g(v);
-  check_do_graph(g,2,contextptr);
+  check_do_graph(g,0,2,contextptr);
 }
 
 int sheet_menu_menu(tableur & t,GIAC_CONTEXT){
@@ -1443,6 +1448,8 @@ giac::gen sheet(GIAC_CONTEXT){
   if (!sheetptr)
     sheetptr=new_tableur(contextptr);
   tableur & t=*sheetptr;
+  sheet_eval(t,contextptr,true);
+  t.changed=false;
   bool status_freeze=false;
   t.keytooltip=false;
   for (;;){
@@ -1786,5 +1793,55 @@ giac::gen sheet(GIAC_CONTEXT){
   }
 }
 
-
+int geoapp(GIAC_CONTEXT){
+  int res=newgeo(contextptr);
+  if (res<0) return res;
+  // load a figure?
+  textArea * text=geoptr->hp;
+  vector<string> fign,figs;
+  vecteur V(gen2vecteur(giac::_VARS(0,contextptr)));
+  for (int i=0;i<V.size();++i){
+    gen tmp(V[i]);
+    gen val=eval(tmp,1,contextptr);
+    if (val.type==_VECT && val._VECTptr->size()==2 && val._VECTptr->front()==at_pnt){
+      vecteur & v=*val._VECTptr;
+      if (v[1].type==_STRNG){
+	fign.push_back(tmp.print(contextptr));
+	figs.push_back(*v[1]._STRNGptr);
+      }
+    }
+  }
+  if (1 || !figs.empty()){
+    if (0 && figs.size()==1){
+      text->elements.clear();
+      add(text,figs[0]);
+      text->filename=fign[0];
+    }
+    else {
+      const char * tab[figs.size()+3]={0};
+      for (int i=0;i<figs.size();++i)
+	tab[i]=fign[i].c_str();
+      tab[figs.size()]=lang==1?"Nouvelle figure 2d":"New 2d figure";
+      tab[figs.size()+1]=lang==1?"Nouvelle figure 3d":"New 3d figure";
+      int s=select_item(tab,lang==1?"Choisir figure":"Choose figure",true);
+      if (s>=0 && s<sizeof(tab)/sizeof(char *) && tab[s]){
+	text->elements.clear();
+	if (s<figs.size()){
+	  add(text,figs[s]);
+	  text->filename=fign[s]+".py";
+	  geoparse(text,contextptr);
+	}
+	else {
+	  geoptr->plot_instructions.clear();
+	  geoptr->symbolic_instructions.clear();
+	  geoptr->is3d=(s==figs.size()+1);
+	  geoptr->orthonormalize();
+	  text->filename="figure"+print_INT_(figs.size()+1)+".py";
+	}
+      }
+      else return -3;
+    }
+  }
+  return geoloop(geoptr);
+}
 #endif

@@ -6452,8 +6452,8 @@ namespace giac {
 
   static symbolic symb_quorem(const gen & a,const gen & b){    return symbolic(at_quorem,makevecteur(a,b));  }
   gen quorem(const gen & a,const gen & b){
-    if ((a.type!=_VECT) || (b.type!=_VECT))
-      return symb_quorem(a,b);
+    if (a.type!=_VECT || b.type!=_VECT)
+      return quorem(gen2vecteur(a),gen2vecteur(b));
     if (b._VECTptr->empty())
       return gensizeerr(gettext("Division by 0"));
     vecteur q,r;
@@ -6472,7 +6472,8 @@ namespace giac {
       return _revlist(_greduce(gen(v,_SEQ__VECT),contextptr),contextptr);
     }
     vecteur & a =*args._VECTptr;
-    if ( (a.front().type==_VECT) && (a[1].type==_VECT))
+    if ( // a.front().type==_VECT && 
+	a[1].type==_VECT )
       return quorem(a.front(),a[1]);
     if ( (a.front().type==_POLY) && (a[1].type==_POLY)){
       int dim=a.front()._POLYptr->dim;
@@ -9163,10 +9164,12 @@ namespace giac {
 	// by series expansion at x=0
 	// x*sum( (-1)^n*(x^2)^n/n!/(2*n+1),n=0..inf)
 	complex_long_double z2=z*z,res=0,pi=1;
+	//*logptr(contextptr) << "erf z " << z << '\n';
 	for (long_double n=0;;){
 	  res += pi/(2*n+1);
 	  ++n;
 	  pi = -pi*z2/n;
+	  // if (n<10) *logptr(contextptr) << "res " << res << "\n pi " << pi << '\n';
 	  if (complex_long_abs(pi)<1e-17)
 	    break;
 	}
@@ -9211,6 +9214,7 @@ namespace giac {
 	erfc=2-erfc;
 	return -e;
       }
+#ifndef HAVE_LIBMPFR
       else { 
 	// continued fraction
 	// 2*exp(z^2)*int(exp(-t^2),t=z..inf)=1/(z+1/2/(z+1/(z+3/2/(z+...))))
@@ -9225,12 +9229,17 @@ namespace giac {
 #endif
 	res=std::exp(-z*z)*res/complex_long_double(std::sqrt(M_PI));
 	erfc=gen(double(res.real()),double(res.imag()));
+	if (std::abs(z.real())<=1e-2*std::abs(z.imag())){
+	  *logptr(contextptr) << "Low accuracy\n";
+	  return -erfc;
+	}
 	gen e=1-erfc;
 	if (!neg)
 	  return e;
 	erfc=2-erfc;
 	return -e;
       }
+#endif // HAVE_LIBMPFR
     } // end low precision
     // take account of loss of accuracy
     int prec=decimal_digits(contextptr);
