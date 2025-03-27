@@ -13,5 +13,6 @@ angular.module('nwas').service('apps', function() {
     { name: "CHIP-8", description: {en: "CHIP-8 interpreter", fr: "Interpréteur CHIP-8"} },
     { name: "Flash2Ram", description: {en: "Copy files from flash to RAM", fr: "Copiez des fichiers de la flash vers la RAM"} },
     { name: "PngBrowser", description: {en: "View PNG images", fr: "Affichez des images PNG"} },
+    { name: "RayCaster", description: {en: "A simple raycasting project", fr: "Un simple projet de raycasting"} },
   ];
 });
