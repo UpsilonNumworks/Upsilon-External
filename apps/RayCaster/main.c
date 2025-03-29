@@ -110,6 +110,7 @@ double fabs(double x) {
     }
     return x;
 }
+
 double acos(double x) {
     if (x < -1 || x > 1) {
         return 0; // Error case
@@ -130,6 +131,7 @@ double acos(double x) {
 int castRay(double rayAngle, int *hitX, int *hitY, int *hitDistance, int *extSide, double playerX, double playerY) {
     double rayDirX = cos(rayAngle);
     double rayDirY = sin(rayAngle);
+
 
     int mapX = (int)playerX;
     int mapY = (int)playerY;
@@ -315,10 +317,10 @@ bool isKeydown(uint64_t key) {
 }
 void control(uint64_t up, uint64_t down, uint64_t left, uint64_t right, player_t* player) {
     if (isKeydown(left)) {
-        player->angle -= 0.1;
+        player->angle = fmod(player->angle - 0.1, 2 * M_PI);
     }
     if (isKeydown(right)) {
-        player->angle += 0.1;
+        player->angle = fmod(player->angle + 0.1, 2 * M_PI);
     }
     if (isKeydown(up)) {
         double newX = player->x + cos(player->angle) * 0.1;
