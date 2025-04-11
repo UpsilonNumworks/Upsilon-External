@@ -1,5 +1,5 @@
-#ifndef CHIPEE_PERIPHERALS_H_
-#define CHIPEE_PERIPHERALS_H_
+#ifndef UNITCIRCLE_PERIPHERALS_H_
+#define UNITCIRCLE_PERIPHERALS_H_
 
 #include <stdint.h>
 

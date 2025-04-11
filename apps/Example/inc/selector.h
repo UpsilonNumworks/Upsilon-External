@@ -1,5 +1,5 @@
-#ifndef CHIPEE_SELECTOR_H_
-#define CHIPEE_SELECTOR_H_
+#ifndef EXAMPLE_SELECTOR_H_
+#define EXAMPLE_SELECTOR_H_
 
 #define SELECTOR_COLOR_BG 0xFFFF
 #define SELECTOR_COLOR_FG 0x3333
@@ -9,4 +9,4 @@
 
 const char * select_file(const char * extension_to_match, int max_files);
 
-#endif // CHIPEE_SELECTOR_H_
+#endif // EXAMPLE_SELECTOR_H_
