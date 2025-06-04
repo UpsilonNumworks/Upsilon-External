@@ -46,7 +46,7 @@ void extapp_main(void) {
     // // The code is a bit more complicated, but you can see how to use the file system API to read a file
 
     // // So that it does not display list of files :
-    // // const char * filename = select_file("", 10);
+    // // const char * filename = select_file("", 50);
     // const char * filename = NULL;
     // // Wait for the key to be released
     // waitForKeyReleased();
