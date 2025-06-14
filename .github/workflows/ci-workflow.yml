@@ -15,6 +15,7 @@ jobs:
         with:
           submodules: true
       - run: make -C apps/KhiCAS cleanall
+      - run: make -C apps/KhiCAS src/lib/libmpfi.a
       - run: make KhiCAS_rebuild
       - run: ./tool/archive KhiCAS.tar KhiCAS
       - uses: actions/upload-artifact@master

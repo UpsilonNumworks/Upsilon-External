@@ -45,3 +45,6 @@ apps/KhiCAS/src/gmp*/trialdivtab.h
 *.pc
 **/libtool
 **/aclocal.m4
+khiext/
+khiext.tgz
+*~

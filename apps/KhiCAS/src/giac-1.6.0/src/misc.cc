@@ -2281,7 +2281,10 @@ namespace giac {
 
   gen _charpoly(const gen & args,GIAC_CONTEXT){
     string s;
-    if (is_graphe(args.subtype==_SEQ__VECT?args._VECTptr->front():args,s,contextptr))
+    gen arg0=args.type==_VECT && !args._VECTptr->empty() && args.subtype==_SEQ__VECT?args._VECTptr->front():args;
+    if (ckmatrix(arg0))
+      return _pcar(args,contextptr);
+    if (is_graphe(arg0,s,contextptr))
       return _graph_charpoly(args,contextptr);
     return _pcar(args,contextptr);
   }
@@ -6140,8 +6143,12 @@ static define_unary_function_eval (__hamdist,&_hamdist,_hamdist_s);
 		decimal_digits(nd,contextptr);
 		return pnt_attrib(gen(res,_GROUP__VECT),attributs,contextptr);
 	      } // end s==2
-	      if (s>=3)
-		v[2]=_floor(v[2],contextptr);
+	      if (s>=3){
+		if (v[2].type==_DOUBLE_ || v[2].type==_FRAC)
+		  v[2]=_floor((b-a)/v[2],contextptr);
+		else
+		  v[2]=_floor(v[2],contextptr);
+	      }
 	      if (s>=3 && v[2].type==_INT_){
 		int n=v[2].val;
 		if (n<1)
@@ -6557,7 +6564,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     if (args._STRNGptr->size()>8 && args._STRNGptr->substr(0,8)=="timeout "){
       string t=args._STRNGptr->substr(8,args._STRNGptr->size()-8);
       double f=atof(t.c_str());
-      if (f>=0 && f<24*60){
+      if (f>=0 && f<24*60*60){
 	caseval_maxtime=f;
 	caseval_n=0;
 	caseval_mod=10;
@@ -9277,6 +9284,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     giac::freeze=true;
   }
 
+  int rgb888to565(int c){
+    int r=(c>>16)&0xff,g=(c>>8)&0xff,b=c&0xff;
+    return (((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
+  }
+
   int rgb565to888(int c){
     c &= 0xffff;
     int r=(c>>11)&0x1f,g=(c>>5)&0x3f,b=c&0x1f;
@@ -9623,6 +9635,7 @@ void sync_screen(){}
   }
 
   void draw_polygon(vector< vector<int> > & v1,int color,GIAC_CONTEXT){
+    if (v1.empty()) return;
     if (!(v1.back()==v1.front()))
       v1.push_back(v1.front());
     int n=v1.size()-1;

@@ -2364,6 +2364,11 @@ namespace giac {
 	f=min_pol(*(pp._EXTptr+1)); // f is a _VECT
       if (is_undef(f))
 	return f;
+      if (keep_algext(contextptr)){
+	gen value=r2sym(*pp._EXTptr,lt,ltend,contextptr);
+	f=r2sym(f,lt,ltend,contextptr);
+	return algebraic_EXTension(value,f);
+      }
       if (f._VECTptr->size()==3){
 	gen value;
 	if (!has_rootof_value(f,value,contextptr))
@@ -2735,6 +2740,22 @@ namespace giac {
     return symbolic(at_prod,gen(res,_SEQ__VECT));
   }
 
+  gen rewrite_exp_integer(const gen & e,GIAC_CONTEXT){
+    vecteur v(lop(e,at_exp));
+    if (v.size()<2)
+      return e;
+    gen g;
+    for (unsigned i=0;i<v.size();++i)
+      g=gcd(g,v[i]._SYMBptr->feuille); // gcd of arg of exp
+    vecteur w(v);
+    for (unsigned i=0;i<v.size();++i){
+      gen r=ratnormal(v[i]._SYMBptr->feuille/g,contextptr);
+      if (r.type==_INT_ && r.val!=1)
+	w[i]=symbolic(at_pow,makesequence(symb_exp(g),r));
+    }
+    return v==w?e:subst(e,v,w,false,contextptr);
+  }
+
   static gen in_normalize_sqrt(const gen & e,vecteur & L,bool keep_abs,GIAC_CONTEXT){
     if (complex_mode(contextptr) || has_i(e)) 
       return e;
@@ -2857,7 +2878,7 @@ namespace giac {
 
   gen normalize_sqrt(const gen & e,GIAC_CONTEXT,bool keep_abs){
     vecteur L;
-    return in_normalize_sqrt(e,L,keep_abs,contextptr);
+    return in_normalize_sqrt(rewrite_exp_integer(e,contextptr),L,keep_abs,contextptr);
   }
 
   static bool has_embedded_fractions(const gen & g){
@@ -2935,7 +2956,7 @@ namespace giac {
     }
   }
 
-  gen normal(const gen & e,bool distribute_div,GIAC_CONTEXT){
+  gen normal(const gen & e,bool distribute_div,bool allow_embeded_recursion,GIAC_CONTEXT){
     if (has_num_coeff(e))
       return ratnormal(e,contextptr);
     // COUT << e << "\n";
@@ -3060,7 +3081,7 @@ namespace giac {
     if (has_embedded_fractions(f.num) || has_embedded_fractions(f.den)){
       gen res=r2sym(f,l,contextptr);
       purgeassumelist(L,contextptr);
-      return normal(res,distribute_div,contextptr);
+      return allow_embeded_recursion?normal(res,distribute_div,false,contextptr):res;
     }
     if (distribute_div && f.num.type==_POLY && f.num._POLYptr->dim && f.den.type<_POLY){
       gen res=r2sym(gen(*f.num._POLYptr/f.den),l,contextptr);
@@ -3088,6 +3109,10 @@ namespace giac {
     return ee; // ratnormal(ee,contextptr); // for sqrt(1-a^2)/sqrt(1-a)
   }
 
+  gen normal(const gen & e,bool distribute_div,GIAC_CONTEXT){
+    return normal(e,distribute_div,true,contextptr);
+  }
+
   gen normal(const gen & e,GIAC_CONTEXT){
     return normal(e,true,contextptr);
   }
@@ -3106,6 +3131,8 @@ namespace giac {
     if (g.type==_FUNC)
       return 1;
     if (g.type==_VECT){
+      if (g.subtype==_PNT__VECT)
+	return 0;
       const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
       for (;it!=itend;++it){
 	if (it->type==_STRNG)

@@ -13,7 +13,7 @@ To update KhiCAS, you have some things to do:
 3. Copy the contents of the folder `khiext/apps/KhiCAS` to the folder `apps/KhiCAS`
 4. Now, you have the new version of KhiCAS, but you have to apply some changes to the code.
 5. Replace `inline bool iskeydown(int key){ return getkey(key | 0x80000000); }` by `inline bool iskeydown(int key);`
-6. Add this code in the file `apps/KhiCAS/main.cpp`:
+6. Add this code in the file `apps/KhiCAS/src/main.cpp`:
 
 ```cpp
 bool iskeydown(int key) {

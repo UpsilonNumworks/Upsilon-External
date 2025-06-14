@@ -1379,6 +1379,8 @@ namespace giac {
 	      res= col0.front();
 	      return 2;
 	    }
+	    if (col0.size()<k-1)
+	      return 2;
 	    reverse(col0.begin(),col0.end()); // C at the beginning, Q at the end
 	    C=2*horner(vecteur(col0.begin(),col0.begin()+k-1),gen_x);
 	    Q=2*horner(vecteur(col0.begin()+k-1,col0.end()),gen_x);
@@ -2774,13 +2776,29 @@ namespace giac {
       }
       if (!is_constant_wrt(vf1,gen_x,contextptr)){
 	curgcd=1;
-	continue;
+	break;
       }
       if (vf1.type==_VECT) 
 	vf1=_gcd(vf1,contextptr);
-      if (curgcd!=0 && vf1!=curgcd)
+      if (curgcd!=0 && vf1!=curgcd){
 	allsame=false;
+      }
       curgcd=gcd(vf1,curgcd);
+    }
+    if (!allsame && curgcd==1){ // translate if exists b!=0 with f(x+b)
+      for (int i=1;i<v.size();++i){
+	if (v[i].type!=_SYMB)
+	  continue;
+	gen vf=v[i]._SYMBptr->feuille,a,b;
+	if (is_linear_wrt(vf,gen_x,a,b,contextptr) && (a==1||a==-1)){ 
+	  if (b==0) break; // 
+	  gen e1=complex_subst(e,gen_x,a*(gen_x-b),contextptr);
+	  gen E1=integrate_id_rem(e1,gen_x,remains_to_integrate,contextptr,intmode);
+	  remains_to_integrate=complex_subst(remains_to_integrate,gen_x,a*gen_x+b,contextptr);
+	  E1=complex_subst(E1,gen_x,a*gen_x+b,contextptr);
+	  return a*E1/curgcd;
+	}
+      }
     }
     if (!allsame && curgcd!=0 && curgcd!=1){
       gen e1=complex_subst(e,gen_x,inv(curgcd,contextptr)*gen_x,contextptr);
@@ -2790,7 +2808,7 @@ namespace giac {
       for (int i=1;i<v.size();++i){
 	if (v[i].type!=_SYMB)
 	  continue;
-	gen vf=ratnormal(v[i]._SYMBptr->feuille,contextptr);
+	gen vf=expand(ratnormal(v[i]._SYMBptr->feuille,contextptr),contextptr);
 	vrep[i]=symbolic(v[i]._SYMBptr->sommet,vf);
       }
       if (v!=vrep) e1=complex_subst(e1,v,vrep,contextptr);
@@ -5855,7 +5873,7 @@ namespace giac {
       gen af=evalf_double(v[2],1,contextptr),bf=evalf_double(v[3],1,contextptr);
       if (v[1].type==_IDNT && (is_inf(af) || af.type==_DOUBLE_) && (is_inf(bf) || bf.type==_DOUBLE_)){
 	vecteur w;
-#ifndef NSPIRE
+#if !defined FXCG && !defined NSPIRE
 	my_ostream * ptr=logptr(contextptr);
 	logptr(0,contextptr);
 #endif
@@ -5878,7 +5896,7 @@ namespace giac {
 	  v0=v[0];
 	}
 #endif
-#ifndef NSPIRE
+#if !defined FXCG && !defined NSPIRE
 	logptr(ptr,contextptr);
 #endif
 	for (unsigned i=0;i<w.size();++i){
@@ -6804,11 +6822,14 @@ namespace giac {
     return has_num_coeff(an)?an:recursive_normal(an,contextptr);
   }
   bool get_fourier(vecteur & v){
+    if (v.size()<2) return false;
     if (v.size()==2) 
       v=makevecteur(v[0],vx_var,cst_two_pi,v[1],-cst_pi);
     if (v.size()==3) 
       v=makevecteur(v[0],v[1],cst_two_pi,v[2],-cst_pi);
     if (v.size()==4) v.push_back(0);
+    if (equalposcomp(lidnt(v[3]),v[1]))
+      return false;
     return v.size()==5;
   }
   gen _fourier_an(const gen & args,GIAC_CONTEXT){
