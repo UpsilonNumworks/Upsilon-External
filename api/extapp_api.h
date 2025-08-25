@@ -36,7 +36,7 @@
 #define SCANCODE_OK ((uint64_t)1 << 4)
 #define SCANCODE_Back ((uint64_t)1 << 5)
 #define SCANCODE_Home ((uint64_t)1 << 6)
-#define SCANCODE_OnOff (((uint64_t)1 << 7) || ((uint64_t)1 << 8))
+#define SCANCODE_OnOff (((uint64_t)1 << 7) | ((uint64_t)1 << 8))
 #define SCANCODE_Shift ((uint64_t)1 << 12)
 #define SCANCODE_Alpha ((uint64_t)1 << 13)
 #define SCANCODE_XNT ((uint64_t)1 << 14)

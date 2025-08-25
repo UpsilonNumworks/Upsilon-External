@@ -14,5 +14,7 @@ angular.module('nwas').service('apps', function() {
     { name: "Flash2Ram", description: {en: "Copy files from flash to RAM", fr: "Copiez des fichiers de la flash vers la RAM"} },
     { name: "PngBrowser", description: {en: "View PNG images", fr: "Affichez des images PNG"} },
     { name: "RayCaster", description: {en: "A simple raycasting project", fr: "Un simple projet de raycasting"} },
+    { name: "Compressor", description: {en: "Compress your files", fr: "Compressez vos fichiers"} },
+    { name: "Backup", description: {en: "Backup scripts wirelessly", fr: "Sauvegardez vos fichiers sans fil"} },
   ];
 });
