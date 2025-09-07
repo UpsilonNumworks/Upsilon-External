@@ -52,7 +52,9 @@ using namespace std;
 #include <string.h>
 #include <stdexcept>
 #include <algorithm>
-#include <vector>
+#if !defined RTOS_THREADX
+//#include <vector>
+#endif
 #if !defined BESTA_OS && !defined FXCG
 #include <cerrno>
 #endif
@@ -1577,7 +1579,7 @@ namespace giac {
     // 00
     // type 
     // record data
-    if (*ptr!=0xee0bddba)  // ba dd 0b ee
+    if (*((unsigned *)ptr)!=0xee0bddba)  // ba dd 0b ee
       return false; 
     int pos=4; ptr+=4;
     for (;pos<nwstoresize1;){
@@ -3640,6 +3642,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
   int GAMMA_LIMIT = 100 ;
   int NEWTON_DEFAULT_ITERATION=40;
+  int NEWTON_MAX_RANDOM_RESTART=5;
   int TEST_PROBAB_PRIME=25;
   int GCDHEU_MAXTRY=5;
   int GCDHEU_DEGREE=100;
@@ -3679,6 +3682,11 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
   int GAMMA_LIMIT = 100 ;
   int NEWTON_DEFAULT_ITERATION=60;
+#ifdef GIAC_GGB
+  int NEWTON_MAX_RANDOM_RESTART=20;
+#else
+  int NEWTON_MAX_RANDOM_RESTART=5;
+#endif
   int TEST_PROBAB_PRIME=25;
   int GCDHEU_MAXTRY=5;
   int GCDHEU_DEGREE=100;

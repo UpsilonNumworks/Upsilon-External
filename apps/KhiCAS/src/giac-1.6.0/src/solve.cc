@@ -652,7 +652,7 @@ namespace giac {
 	      // A*exp(a*x+b)+C*x+D=0, t=a*x+b
 	      // A*exp(t)+C*(t-b)/a+D=0 -> A*exp(t)+C/a*t+D-C*b/a=0
 	      gen a_(A),b_(C/a),c_(D-C*b/a);
-	      gen delta=a_/b_*exp(-c_/b_,contextptr);
+	      gen delta=ratnormal(a_/b_*exp(-c_/b_,contextptr),contextptr);
 	      if (is_strictly_greater(m1,delta,contextptr))
 		return; // no solution
 	      gen sol=-_LambertW(delta,contextptr)-c_/b_;
@@ -1963,7 +1963,10 @@ namespace giac {
       if (real && has_i(tmp))
 	continue;
 #ifdef HAVE_LIBMPFR
-      tmp=_evalf(makesequence(tmp,100),contextptr);
+      if (has_op(sol[i],*at_LambertW)) // workaround for solve([(a)*(k)=1, (a)*(exp((3)*(k)))=(3)*(e)],[a, k]);, eval with 100 digits in moyal.cc takes too much time
+	tmp=_evalf(makesequence(tmp,30),contextptr);
+      else
+	tmp=_evalf(makesequence(tmp,100),contextptr);
 #endif
       tmp=evalf_double(tmp,1,contextptr);
       if (real && tmp.type==_CPLX)
@@ -2014,6 +2017,20 @@ namespace giac {
     }
     if (expr.is_symb_of_sommet(at_neg))
       expr=expr._SYMBptr->feuille;
+    if (expr.is_symb_of_sommet(at_inv)){
+      // if expr has tan inside, subst tan by 1/x then x->0 if it's 0 we have additional solutions if arg of tan=pi/2
+      vecteur lv(lvarx(expr,x));
+      if (lv.size()==1 && lv[0].is_symb_of_sommet(at_tan)){
+	gen chk=subst(expr,lv[0],inv(x,contextptr),false,contextptr);
+	chk=limit(chk,x,0,0,contextptr);
+	if (chk==0){
+	  chk=cos(lv[0]._SYMBptr->feuille,contextptr);
+	  vecteur v1(solve_cleaned(chk,e_check,x,isolate_mode,contextptr));
+	  return v1;
+	}
+      }
+      return vecteur(0);
+    }
     if (expr.is_symb_of_sommet(at_prod)){
       vecteur v=gen2vecteur(expr._SYMBptr->feuille),res;
       for (unsigned i=0;i<v.size();++i){
@@ -3837,7 +3854,12 @@ namespace giac {
     if (s==2 && v[1].type==_IDNT){ 
       // no initial guess, check for poly-like equation
       vecteur lv(lvar(v0));
-      lv=lvar(evalf(lv,1,contextptr));
+      if (contextptr && contextptr->quoted_global_vars){
+	contextptr->quoted_global_vars->push_back(lv[1]);
+	lv=lvar(evalf(lv,1,contextptr)); // this should not evalf v[1], otherwise x:=10; solve(x^(3/2)=3.,x); will fail
+	contextptr->quoted_global_vars->pop_back();
+      } else
+	lv=lvar(evalf(lv,1,contextptr)); 
       int lvs=int(lv.size());
       bool poly=true;
       for (unsigned i=0;i<lv.size();++i){
@@ -4252,6 +4274,8 @@ namespace giac {
       res.pop_back();
       return res;
     }
+    if (ckmatrix(sl,false,false)) // check whether sl has undef inside
+      return vecteur(x.size(),undef);
     A=sxa(sl,x,contextptr);
     vecteur B,R(x);
     gen rep;
@@ -4545,7 +4569,7 @@ namespace giac {
     for (int j=1;j<5;j++,niter2 *=2, niter1 *=2){ 
       gen a;
       int b;
-      //on prend un d�part au hasard (a=x0=un _DOUBLE_)
+      //on prend un d�part au hasard (a=x0=un _DOUBLE_)
       // a=gen(2.0);
       if (guess_first)
 	a=j*4*(rand()/(RAND_MAX+1.0)-0.5);
@@ -4621,8 +4645,8 @@ namespace giac {
       invdf=mtran(*invdf._VECTptr);
     bool guess_first=is_undef(guess);
     // Main loop with random initialization
-    int j=1;
-    for (;j<=5 ;j++,niter += 5){ 
+    int j=1; //NEWTON_MAX_RANDOM_RESTART=20;
+    for (;j<=NEWTON_MAX_RANDOM_RESTART;j++,niter += 5){ 
       if (guess_first){
 	a=newton_rand(j,real,rand_xmin,rand_xmax,f,contextptr);
       }
@@ -6635,48 +6659,84 @@ namespace giac {
 	return vecteur(1,gensizeerr(gen(l).print(contextptr)+gettext(" is not rational w.r.t. ")+it->print(contextptr)));
       }
     }
+    // if one equation factors recurse with each factor
+    for (size_t i=0;i<eq.size();++i){
+      vecteur vi=factors(eq[i],var[0],contextptr);
+      if (vi.size()/2==0) continue;
+      if (is_cinteger(vi[vi.size()-2])){
+	vi.pop_back();
+	vi.pop_back();
+      }
+      if (vi.size()>2){
+	vecteur res;
+	for (size_t j=0;j<vi.size();j+=2){
+	  if (is_strictly_positive(vi[j+1],contextptr)){
+	    eq[i]=vi[j];
+	    vecteur sol=gsolve(eq,var,complexmode,evalf_after,contextptr);
+	    res=mergevecteur(res,sol);
+	  }
+	}
+	return res;
+      }
+    }
+    // end recurse if one equation factors
     int varsize=int(var.size());
 #if 1 // trying with rational univariate rep., assuming radical ideal of dim 0
-    if (varsize<=GROEBNER_VARS && varsize==int(eq.size())){
-      double eps=epsilon(contextptr);
-      if (varsize==2){ // try by resultant
-	//eq=*eqs._VECTptr;
-	gen r=_resultant(makesequence(eq[0],eq[1],var[0]),contextptr);
-	if (!is_zero(r)){
-	  // solve r w.r.t. var[1]
-	  vecteur S,res;
-	  if (convertapprox){
-	    gen p=_symb2poly(makesequence(r,var[1]),contextptr);
-	    p=evalf(p,1,contextptr);
-	    p=_proot(p,contextptr);
-	    if (p.type!=_VECT) return vecteur(1,gensizeerr(contextptr));
-	    S=*p._VECTptr;
-	  }
-	  else
-	    S=solve(r,var[1],complexmode,contextptr);
-	  for (int i=0;i<int(S.size());++i){
-	    gen y=S[i];
-	    if (has_num_coeff(y)){
-	      vecteur T=solve(subst(eq[0],var[1],y,false,contextptr),var[0],complexmode,contextptr);
+    double eps=epsilon(contextptr);
+    if (varsize==2 && eq.size()>=2){ // try by resultant
+      //eq=*eqs._VECTptr;
+      gen r=0;
+      for (size_t i=1;i<eq.size();++i)
+	r=gcd(r,_resultant(makesequence(eq[0],eq[i],var[0]),contextptr),contextptr);
+      if (!is_zero(r)){
+	// solve r w.r.t. var[1]
+	vecteur S,res;
+	if (convertapprox){
+	  gen p=_symb2poly(makesequence(r,var[1]),contextptr);
+	  p=evalf(p,1,contextptr);
+	  p=_proot(p,contextptr);
+	  if (p.type!=_VECT) return vecteur(1,gensizeerr(contextptr));
+	  S=*p._VECTptr;
+	}
+	else
+	  S=solve(r,var[1],complexmode,contextptr);
+	for (int i=0;i<int(S.size());++i){
+	  gen y=S[i];
+	  if (has_num_coeff(y)){
+	    vecteur T=solve(subst(eq[0],var[1],y,false,contextptr),var[0],complexmode,contextptr);
+	    for (size_t k=1;k<eq.size();++k){
+	      vecteur newT;
 	      for (int j=0;j<int(T.size());++j){
 		gen x=T[j];
-		gen tst=subst(subst(eq[1],var[1],y,false,contextptr),var[0],x,false,contextptr);
+		gen tst=subst(subst(eq[k],var[1],y,false,contextptr),var[0],x,false,contextptr);
 		if (is_greater(1e-6,abs(tst,contextptr),contextptr))
-		  res.push_back(makevecteur(x,y));
+		  newT.push_back(x);
 	      }	    
+	      newT.swap(T);
 	    }
-	    else {
-	      gen G=gcd(subst(eq[0],var[1],y,false,contextptr),subst(eq[1],var[1],y,false,contextptr));
-	      vecteur T=solve(G,var[0],complexmode,contextptr);
-	      for (int j=0;j<int(T.size());++j){
-		res.push_back(makevecteur(T[j],y));
-	      }
+	    for (int k=0;k<T.size();++k)
+	      res.push_back(makevecteur(T[k],y));
+	  }
+	  else {
+	    gen G=subst(eq[0],var[1],y,false,contextptr);
+	    for (size_t j=1;j<eq.size();++j)
+	      G=gcd(G,subst(eq[j],var[1],y,false,contextptr),contextptr);
+	    vecteur T=solve(G,var[0],complexmode,contextptr);
+	    for (int j=0;j<int(T.size());++j){
+	      res.push_back(makevecteur(T[j],y));
 	    }
 	  }
-	  return res;
-	} // end resultant not 0
-      } // end #var=2
+	}
+	return res;
+      } // end resultant not 0
+    } // end #var=2
+    if (varsize<=GROEBNER_VARS && varsize<=int(eq.size())){
       gen G=_gbasis(makesequence(eq,var,change_subtype(_RUR_REVLEX,_INT_GROEBNER)),contextptr);
+      if (G.type==_VECT && G._VECTptr->size()==1){
+	if (!is_zero(G._VECTptr->front()))
+	  return vecteur(0); // system was equivalent to 1=0
+	gensizeerr("solve.cc internal error");
+      }
       if (G.type==_VECT && G._VECTptr->size()==var.size()+4 && G._VECTptr->front().type==_INT_ && G._VECTptr->front().val==_RUR_REVLEX){
 	vecteur Gv=*G._VECTptr,S;
 	gen rurvar=var.front();
@@ -7706,6 +7766,10 @@ namespace giac {
 	    eqs.erase(eqs.begin()+i);
 	    for (unsigned k=0;k<eqs.size();++k){
 	      eqs[k]=_numer(subst(eqs[k],elim[j],elimj,false,contextptr),contextptr);
+	      if (is_zero(eqs[k])){
+		eqs.erase(eqs.begin()+k);
+		--k;
+	      }
 	    }
 	    elim.erase(elim.begin()+j);
 	    gen res=_eliminate(makesequence(eqs,elim,symb_equal(at_irem,modular),symb_equal(at_eliminate,gbasis_param.eliminate_flag)),contextptr);
@@ -7818,13 +7882,20 @@ namespace giac {
 	    } 
 	  }
 	  // make resultant of all equations except posi with cureq, curvar
+	  gen G=_gcd(eqs,contextptr);
+	  // if G depends on bestvar, then we can not deduce anything
+	  if (!is_zero(derive(G,bestvar,contextptr))){
+	    *logptr(contextptr) << gettext("No relation found, if following equation holds 0=") << G << '\n';
+	    return vecteur(0);
+	  }
 	  vecteur neweq;
 	  for (int i=0;i<neq;++i){
 	    if (i==bestpos) continue;
 	    gen a=_simp2(makesequence(eqs[i],besteq),contextptr);
 	    if (a.type!=_VECT || a._VECTptr->size()!=2)
 	      return gensizeerr(contextptr);
-	    gen r=_resultant(makesequence(a._VECTptr->front(),a._VECTptr->back(),bestvar),contextptr)*_gcd(makesequence(eqs[i],besteq),contextptr);;
+	    gen G=_gcd(makesequence(eqs[i],besteq),contextptr);
+	    gen r=_resultant(makesequence(a._VECTptr->front(),a._VECTptr->back(),bestvar),contextptr)*G;
 	    vecteur vr(lidnt(r));
 	    if (!vr.empty()){
 	      gen dr=_diff(makesequence(r,vr[0]),contextptr);
@@ -8144,13 +8215,9 @@ namespace giac {
     return gensizeerr(contextptr);
   }
 #else // GIAC_HAS_STO_38
-  struct gen_context {
-    gen g; //  should be a vector [function,conditions,variables]
-    const context * contextptr;
-  };
   // state is a pointer of type gen_context
   int cobyla_giac_function(int n, int m, double *x, double *f, double *con,void *state){
-    gen_context * gptr=(gen_context *)state;
+    cobyla_gc * gptr=(cobyla_gc *)state;
     if (gptr->g.type!=_VECT || gptr->g._VECTptr->size()!=3)
       return 1; //error
     gen F=(*gptr->g._VECTptr)[0];
@@ -8162,7 +8229,7 @@ namespace giac {
     for (int i=0;i<n;++i)
       values[i]=x[i];
     gen Fx=subst(F,variables,values,false,gptr->contextptr);
-    Fx=evalf_double(Fx,1,gptr->contextptr);
+    Fx=_evalf(Fx,gptr->contextptr); // changed evalf_double to _evalf which allows for quoted objectives (L. Marohnić)
     if (Fx.type!=_DOUBLE_)
       return 1;
     *f=Fx._DOUBLE_val;
@@ -8203,7 +8270,7 @@ namespace giac {
 	*it=it->_SYMBptr->feuille._VECTptr->back()-it->_SYMBptr->feuille._VECTptr->front();
     }
     gen fcv=makevecteur(f,con,variables);
-    gen_context gc={fcv,contextptr};
+    cobyla_gc gc={fcv,contextptr};
     int n=variables.size(),m=con.size(),message(debug_infolevel),maxfun(1000);
     gen maxiter(maxiter0);
     gen eps0d=evalf_double(eps0,1,contextptr);
@@ -8213,11 +8280,14 @@ namespace giac {
       maxfun=maxiter.val;
     if (int(guess.size())!=n)
       return gendimerr(contextptr);
+/*
 #ifdef VISUALC
     double x[100];
 #else
     double x[n];
 #endif
+*/
+    double *x=new double[n]; // added by L. Marohnić
     for (int i=0;i<n;++i){
       gen tmp=evalf_double(guess[i],1,contextptr);
       if (tmp.type!=_DOUBLE_)
@@ -8236,6 +8306,7 @@ namespace giac {
     vecteur res(n);
     for (int i=0;i<n;++i)
       res[i]=x[i];
+    delete[] x;
     if (cres==0)
       return res;
     return makevecteur(string2gen(gettext("Unable to minimize at given precision, last value "),false),res); // changed 2021/feb/22 to be able to process the result further
@@ -8243,7 +8314,40 @@ namespace giac {
     return undef;
   }
 
+  int giac_cobyla(cobyla_gc *gc,vecteur &x0,int &maxiter,double eps,int msg) {
+    int n = gc->g._VECTptr->at(2)._VECTptr->size(), m = gc->g._VECTptr->at(1)._VECTptr->size();
+    double *x;
+#ifndef NO_STDEXCEPT
+    try {
+     x = new double[n];
+    } catch (const std::bad_alloc &e) {
+      return COBYLA_ENOMEM;
+    }
+#else
+    x = (double *) malloc (n*sizeof(double));
+    if (!x) return COBYLA_ENOMEM;
+#endif
+    for (int i = 0; i < n; ++i)
+    {
+      gen tmp = evalf_double(x0[i], 1, gc->contextptr);
+      if (tmp.type != _DOUBLE_)
+        return COBYLA_EINVAL;
+      x[i] = tmp._DOUBLE_val;
+    }
+    int cres = cobyla(n, m, x, x[0] / 100, eps, msg, &maxiter, cobyla_giac_function, gc);
+    vecteur res(n);
+    for (int i = 0; i < n; ++i)
+      x0[i] = x[i];
+#ifndef NO_STDEXCEPT
+    delete[] x;
+#else
+    free(x);
+#endif
+    return cres;
+  }
+
 #endif // GIAC_HAS_STO_38
+
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

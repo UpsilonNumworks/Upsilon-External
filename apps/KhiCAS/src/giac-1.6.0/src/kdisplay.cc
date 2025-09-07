@@ -222,7 +222,7 @@ namespace giac {
       s += char(cur);
       s += " ";
       s += print_INT_(cur);
-      s += " 0x";
+      s += " ";
       s += hexa_print_INT_(cur);
       os_draw_string(0,160,_BLACK,_WHITE,s.c_str());
       os_draw_string(0,180,_BLACK,_WHITE,lang==1?"EXE: copier caractere":"EXE: copy char");
@@ -462,17 +462,15 @@ namespace giac {
 		menuitem[0]='0'+cur;
 		menuitem[1]=' ';
 		menuitem[2]=0;
-		strcpy(menuitem+2,menu->items[curitem].text);
 	      }
 	      else {
 		menuitem[0]=cur>=10?('0'+(cur/10)):' ';
 		menuitem[1]='0'+(cur%10);
 		menuitem[2]=' ';
 		menuitem[3]=0;
-		strcpy(menuitem+3,menu->items[curitem].text);
 	      }
 	    }
-	    //strncat(menuitem, menu->items[curitem].text, 68);
+	    strncat(menuitem, menu->items[curitem].text, 250);
 	    if(menu->items[curitem].type != MENUITEM_SEPARATOR) {
 	      //make sure we have a string big enough to have background when item is selected:          
 	      // MB_ElementCount is used instead of strlen because multibyte chars count as two with strlen, while graphically they are just one char, making fillerRequired become wrong
@@ -983,6 +981,7 @@ namespace giac {
     {"csolve(equation,x)", 0, "Resolution exacte dans C d'une equation en x (ou d'un systeme polynomial).","x^2+x+1=0", 0, CAT_CATEGORY_SOLVE | (CAT_CATEGORY_COMPLEXNUM << 8) | XCAS_ONLY},
     {"cube(A,B,C)", 0, "Cube d'arete AB avec une face dans le plan ABC", "[0,0,0],[1,0,0],[0,1,0]","[0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]", CAT_CATEGORY_3D},
     {"curl(u,vars)", 0, "Rotationnel du vecteur u.", "[2*x*y,x*z,y*z],[x,y,z]", 0, CAT_CATEGORY_LINALG | XCAS_ONLY},
+    {"curvature([x(t),y(t)],t,t0)", 0, "Courbure de la courbe parametree [x(t),y(t)] en t0", "[t,t^2],t,1", "[t,t^2],t", CAT_CATEGORY_CALCULUS | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"cyan", "cyan", "Option d'affichage", "#display=cyan", 0, CAT_CATEGORY_PROGCMD},
     {"cylinder(A,v,r,[h])", 0, "Cylindre d'axe A,v de rayon r et de hauteur optionnelle h", "[0,0,0],[0,1,0],2", "[0,0,0],[0,1,0],2,3", CAT_CATEGORY_3D},
     {"debug(f(args))", 0, "Execute la fonction f en mode pas a pas.", 0, 0, CAT_CATEGORY_PROG | XCAS_ONLY},
@@ -1029,6 +1028,7 @@ namespace giac {
     {"float(x)", 0, "Convertit x en nombre approche (flottant).", "pi", 0, CAT_CATEGORY_REAL},
     {"floor(x)", 0, "Partie entiere de x", "pi", 0, CAT_CATEGORY_REAL},
     {"fonction f(x)", "fonction", "Definition de fonction (Xcas). Par exemple\nfonction f(x)\n local y;\ny:=x*x;\nreturn y;\nffonction", 0, 0, CAT_CATEGORY_PROG | XCAS_ONLY},
+    {"frenet([x(t),y(t)],t,t0)", 0, "Courbure, centre de courbure et repere de Frenet de la courbe parametree [x(t),y(t)] en t0", "[t,t^2],t,1", "[t,t^2],t", CAT_CATEGORY_CALCULUS | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"from arit import *", "from arit import *", "Instruction pour utiliser les fonctions d'arithmetique entiere en Python", "#from arit import *", "#import arit", CAT_CATEGORY_ARIT},
     {"from cas import *", "from cas import *", "Permet d'utiliser le calcul formel depuis Python", "#from cas import *", "#import cas", CAT_CATEGORY_ALGEBRA|(CAT_CATEGORY_CALCULUS<<8)},
     {"from cmath import *", "from cmath import *", "Instruction pour utiliser les fonctions de maths sur les complexes (trigo, exponentielle, log, ...) en Python", "#from cmath import *;i=1j", "#import cmath", CAT_CATEGORY_COMPLEXNUM},
@@ -1072,6 +1072,11 @@ namespace giac {
     {"iquo(a,b)", 0, "Quotient euclidien de deux entiers.", "23,13", 0, CAT_CATEGORY_ARIT | XCAS_ONLY},
     {"irem(a,b)", 0,"Reste euclidien de deux entiers", "23,13", 0, CAT_CATEGORY_ARIT | XCAS_ONLY},
     {"isprime(n)", 0, "Renvoie 1 si n est premier, 0 sinon.", "11", "10", CAT_CATEGORY_ARIT},
+  {"is_collinear(A,B,C)", 0, "Renvoie 1 ou 2 si A, B, C sont alignes, 0 sinon.", "1,i,-1", "i,0,-i", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_concyclic(A,B,C,D)", 0, "Renvoie 1 si A, B, C, D sont cocyliques, 0 sinon.", "1,i,-1,-i", "1,i,0,-i", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_element(A,G)", 0, "Renvoie 1 si A appartient a G, 0 sinon.", "point(0),circle(0,1)", "point(i),square(0,1)", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_parallel(D,E)", 0, "Renvoie 1 si D et E sont paralleles, 0 sinon.", "line(y=x),line(y=-x)", "line(y=x),line(y=x+1)", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_perpendicular(D,E)", 0, "Renvoie 1 si D et E sont perpendiculaires, 0 sinon.", "line(y=x),line(y=-x)", "line(y=x),line(y=x+1)", CAT_CATEGORY_2D | XCAS_ONLY },
     {"jordan(A)", 0, "Forme normale de Jordan de la matrice A, renvoie P et D tels que P^-1*A*P=D", "[[1,2],[3,4]]", "[[1,1,-1,2,-1],[2,0,1,-4,-1],[0,1,1,1,1],[0,1,2,0,1],[0,0,-3,3,-1]]", CAT_CATEGORY_MATRIX | XCAS_ONLY},
     {"laguerre(n,a,x)", 0, "n-ieme polynome de Laguerre (a=0 par defaut).", "10", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"laplace(f,x,s)", 0, "Transformee de Laplace de f","sin(x),x,s", 0, CAT_CATEGORY_CALCULUS | XCAS_ONLY},
@@ -1110,6 +1115,7 @@ namespace giac {
     {"numer(x)", 0, "Numerateur de x.", "3/4", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"octahedron(A,B,C)", 0, "Octaedre d'arete AB avec une face dans le plan ABC", "[0,0,0],[3,0,0],[0,1,0]", 0, CAT_CATEGORY_3D},
     {"odesolve(f(t,y),[t,y],[t0,y0],t1)", 0, "Solution approchee d'equation differentielle y'=f(t,y) et y(t0)=y0, valeur en t1 (ajouter curve pour les valeurs intermediaires de y)", "sin(t*y),[t,y],[0,1],2", "0..pi,(t,v)->{[-v[1],v[0]]},[0,1]", CAT_CATEGORY_SOLVE | XCAS_ONLY},
+    {"osculating_circle([x(t),y(t)],t,t0)", 0, "Cercle osculateur de la courbe parametree [x(t),y(t)] en t0", "[t,t^2],t,1", "[t,t^2],t", CAT_CATEGORY_CALCULUS | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"parabole(F,A)", 0, "Parabole donnee par foyer et sommet", "-2-i,2+i", 0, CAT_CATEGORY_2D},
     {"parameq(objet)", 0, "Equations parametriques. Utiliser equation pour une equation cartesienne", "circle(0,1)", "ellipse(-1,1,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"partfrac(p,x)", 0, "Decomposition en elements simples. Raccourci p=>+", "1/(x^4-1)", 0, CAT_CATEGORY_ALGEBRA | XCAS_ONLY},
@@ -1461,6 +1467,11 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"iquo(a,b)", 0, "Integer quotient of a and b.", "23,13", 0, CAT_CATEGORY_ARIT},
   {"irem(a,b)", 0,"Integer remainder of a and b.", "23,13", 0, CAT_CATEGORY_ARIT},
   {"isprime(n)", 0, "Returns 1 if n is prime, 0 otherwise.", "11", "10", CAT_CATEGORY_ARIT},
+  {"is_collinear(A,B,C)", 0, "Returns 1 if A, B, C are collinear, 0 otherwise", "1,i,-1", "i,0,-i", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_concyclic(A,B,C,D)", 0, "Returns 1 if A, B, C, D are concyclic, 0 otherwise", "1,i,-1,-i", "1,i,0,-i", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_element(A,G)", 0, "Returns 1 if A belongs to G, 0 otherwise.", "point(0),circle(0,1)", "point(i),square(0,1)", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_parallel(D,E)", 0, "Returns 1 if D and E are parallel, 0 otherwise", "line(y=x),line(y=-x)", "line(y=x),line(y=x+1)", CAT_CATEGORY_2D | XCAS_ONLY },
+  {"is_perpendicular(D,E)", 0, "Returns 1 if D and E are perpendicular, 0 otherwise", "line(y=x),line(y=-x)", "line(y=x),line(y=x+1)", CAT_CATEGORY_2D | XCAS_ONLY },
   {"jordan(A)", 0, "Jordan normal form of matrix A, returns P and D such that P^-1*A*P=D", "[[1,2],[3,4]]", "[[1,1,-1,2,-1],[2,0,1,-4,-1],[0,1,1,1,1],[0,1,2,0,1],[0,0,-3,3,-1]]", CAT_CATEGORY_MATRIX},
   {"laguerre(n,a,x)", 0, "n-ieme Laguerre polynomial (default a=0).", "10", 0, CAT_CATEGORY_POLYNOMIAL},
   {"laplace(f,x,s)", 0, "Laplace transform of f","sin(x),x,s", 0, CAT_CATEGORY_CALCULUS},
@@ -2267,6 +2278,109 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
     return i;
   }
 
+  // geo_print / geoprint
+  std::string _pnt2string(const giac::gen & g,const giac::context * contextptr){
+    unsigned ta=taille(g,100);
+    if (ta>100)
+      return "Done";
+    if (g.is_symb_of_sommet(giac::at_pnt)){
+      giac::gen & f=g._SYMBptr->feuille;
+      giac::gen fp=remove_at_pnt(g);
+      if (fp.is_symb_of_sommet(giac::at_hyperplan)){
+	return gettext("plan")+string("(")+_equation(g,contextptr).print(contextptr)+string(")");
+      }
+      if (f.type==giac::_VECT && !f._VECTptr->empty()){
+	giac::gen f0=f._VECTptr->front();
+	if (f0.is_symb_of_sommet(giac::at_legende)){
+	  return g.print(contextptr);
+	}
+	if (f0.is_symb_of_sommet(giac::at_curve)){
+	  giac::gen f1=f[0]._SYMBptr->feuille;
+	  if (f1.type==giac::_VECT && !f1._VECTptr->empty() ){
+	    giac::gen f1f=f1._VECTptr->front();
+	    if (f1f.type==giac::_VECT && f1f._VECTptr->size()>=4){
+	      giac::vecteur f1v=*f1f._VECTptr;
+	      return "plotparam("+_pnt2string(f1v[0],contextptr)+","+f1v[1].print(contextptr)+"="+f1v[2].print(contextptr)+".."+f1v[3].print(contextptr)+")";
+	    }
+	  }
+	}
+	if (f0.is_symb_of_sommet(giac::at_cercle) && f0._SYMBptr->feuille.type==giac::_VECT){
+	  if (f0._SYMBptr->feuille._VECTptr->size()==3 && ((*f0._SYMBptr->feuille._VECTptr)[2]!=giac::cst_two_pi || (*f0._SYMBptr->feuille._VECTptr)[1]!=0))
+	    return f0.print(contextptr);
+	  giac::gen centre,rayon;
+	  if (!giac::centre_rayon(f0,centre,rayon,true,0))
+	    return "cercle_error";
+	  if (!complex_mode(contextptr) && (centre.type<giac::_IDNT || centre.type==giac::_FRAC) )
+	    return gettext("circle")+string("(point(")+giac::re(centre,contextptr).print(contextptr)+","+giac::im(centre,contextptr).print(contextptr)+"),"+rayon.print(contextptr)+")";
+	  else
+	    return gettext("circle")+string("(point(")+centre.print(contextptr)+"),"+rayon.print(contextptr)+")";
+	}
+	if (f0.type==giac::_VECT &&f0.subtype!=giac::_POINT__VECT){
+	  std::string s=gettext("polygon")+string("(");
+	  giac::const_iterateur it=f0._VECTptr->begin(),itend=f0._VECTptr->end();
+	  if ( itend-it==2){ 
+	    switch(f0.subtype){
+	    case giac::_LINE__VECT:
+	      s=gettext("line")+string("(");
+	      break;
+	    case giac::_HALFLINE__VECT:
+	      s=gettext("half_line")+string("(");
+	      break;
+	    case giac::_GROUP__VECT:
+	      s=gettext("segment")+string("(");
+	      break;
+	    }
+	    if (f0.subtype==giac::_LINE__VECT && it->type!=giac::_VECT){ // 2-d line
+	      s += _equation(g,contextptr).print(contextptr) + ")";
+	      return s;
+	    }
+	  }
+	  for (;it!=itend;){
+	    s += "point(";
+	    if (!complex_mode(contextptr) && (it->type<giac::_IDNT || it->type==giac::_FRAC) )
+	      s += giac::re(*it,contextptr).print(contextptr)+","+giac::im(*it,contextptr).print(contextptr);
+	    else {
+	      gen f=*it;
+	      if (f.type==_VECT && f.subtype==_POINT__VECT)
+		f.subtype=_SEQ__VECT;
+	      s += f.print(contextptr);
+	    }
+	    s+=")";
+	    ++it;
+	    s += it==itend?")":",";
+	  }
+	  return s;
+	}
+	if ( (f0.type!=giac::_FRAC && f0.type>=giac::_IDNT) || is3d(g) || complex_mode(contextptr)){
+	  if (f0.type==_VECT && f0.subtype==_POINT__VECT)
+	    f0.subtype=_SEQ__VECT;
+	  return "point("+f0.print(contextptr)+")";
+	}
+	else
+	  return "point("+giac::re(f0,contextptr).print(contextptr)+","+giac::im(f0,contextptr).print(contextptr)+")";
+      }
+    } 
+    if (g.type==giac::_VECT && !g._VECTptr->empty() && g._VECTptr->back().is_symb_of_sommet(giac::at_pnt)){
+      std::string s = "[";
+      giac::const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
+      for (;it!=itend;){
+	s += _pnt2string(*it,contextptr);
+	++it;
+	s += it==itend?"]":",";
+      }
+      return s;
+    }
+    return g.print(contextptr);
+  }
+
+  std::string pnt2string(const giac::gen & g,const giac::context * contextptr){
+    int p=python_compat(contextptr);
+    python_compat(0,contextptr);    
+    string s=_pnt2string(g,contextptr);
+    python_compat(p,contextptr);
+    return s;
+  }
+  
   gen select_var(GIAC_CONTEXT){
     kbd_interrupted=giac::ctrl_c=giac::interrupted=false;
 #ifdef QUICKJS
@@ -2340,8 +2454,8 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
 	vector<int> vi(9);
 	tailles(w,vi);
 	total += vi[8];
-	if (vi[8]<400)
-	  vs[i]+=":="+w.print(contextptr);
+	if (vi[8]<w.is_symb_of_sommet(at_pnt)?1500:500)
+	  vs[i]+=":="+pnt2string(w,contextptr);
 	else {
 	  vs[i] += " ~";
 	  vs[i] += giac::print_INT_(vi[8]);
@@ -3853,7 +3967,7 @@ namespace xcas {
     x=os_draw_string_small(x,y,mode==4?bg:c,mode==4?c:bg,s);// PrintMiniMini( &x, &y, (unsigned char *)s, mode,c, 0 );
     return;
   }
-  
+
   int text_width(int fontsize,const char * s){
 #ifdef NSPIRE_NEWLIB
     int x=0;
@@ -3869,6 +3983,10 @@ namespace xcas {
 #endif
   }
 
+  int fl_width(const char * s){
+    return text_width(14,s);
+  }
+  
   void fl_arc(int x,int y,int rx,int ry,int theta1_deg,int theta2_deg,int c=COLOR_BLACK){
     rx/=2;
     ry/=2;
@@ -5818,10 +5936,139 @@ namespace xcas {
     double y=m.y+t*v.y;
     double z=m.z+t*v.z;
     gr.XYZ2ij(double3(x,y,z),i,j);
-  }    
+  }
+
+  const int4 tabcolorcplx[]={
+{63488,47104,30720,14336},
+{63489,47105,30720,14336},
+{63491,47106,30721,14336},
+{63492,47107,30722,14337},
+{63494,47108,30723,14337},
+{63495,47109,30723,14337},
+{63497,47110,30724,14338},
+{63498,47111,30725,14338},
+{63500,47113,30726,14339},
+{63501,47114,30726,14339},
+{63503,47115,30727,14339},
+{63504,47116,30728,14340},
+{63506,47117,30729,14340},
+{63507,47118,30729,14340},
+{63509,47119,30730,14341},
+{63510,47120,30731,14341},
+{63512,47122,30732,14342},
+{63513,47123,30732,14342},
+{63515,47124,30733,14342},
+{63516,47125,30734,14343},
+{63518,47126,30735,14343},
+{63519,47127,30735,14343},
+{59423,45079,28687,14343},
+{57375,43031,28687,14343},
+{53279,40983,26639,12295},
+{51231,38935,24591,12295},
+{47135,34839,22543,10247},
+{45087,32791,22543,10247},
+{40991,30743,20495,10247},
+{38943,28695,18447,8199},
+{34847,26647,16399,8199},
+{32799,24599,16399,8199},
+{28703,22551,14351,6151},
+{26655,20503,12303,6151},
+{22559,16407,10255,4103},
+{20511,14359,10255,4103},
+{16415,12311,8207,4103},
+{14367,10263,6159,2055},
+{10271,8215,4111,2055},
+{8223,6167,4111,2055},
+{4127,4119,2063,7},
+{2079,2071,15,7},
+{2079,2071,2063,2055},
+{2175,2135,2095,2055},
+{2271,2199,2159,2087},
+{2367,2263,2191,2119},
+{2463,2359,2255,2151},
+{2559,2423,2287,2151},
+{2655,2487,2351,2183},
+{2751,2551,2383,2215},
+{2847,2647,2447,2247},
+{2943,2711,2479,2247},
+{3039,2775,2543,2279},
+{3135,2839,2575,2311},
+{3231,2935,2639,2343},
+{3327,2999,2671,2343},
+{3423,3063,2735,2375},
+{3519,3127,2767,2407},
+{3615,3223,2831,2439},
+{3711,3287,2863,2439},
+{3807,3351,2927,2471},
+{3903,3415,2959,2503},
+{3999,3511,3023,2535},
+{4063,3575,3055,2535},
+{4061,3574,3054,2535},
+{4060,3573,3054,2535},
+{4058,3572,3053,2534},
+{4057,3571,3052,2534},
+{4055,3569,3051,2533},
+{4054,3568,3051,2533},
+{4052,3567,3050,2533},
+{4051,3566,3049,2532},
+{4049,3565,3048,2532},
+{4048,3564,3048,2532},
+{4046,3563,3047,2531},
+{4045,3562,3046,2531},
+{4043,3560,3045,2530},
+{4042,3559,3045,2530},
+{4040,3558,3044,2530},
+{4039,3557,3043,2529},
+{4037,3556,3042,2529},
+{4036,3555,3042,2529},
+{4034,3554,3041,2528},
+{4033,3553,3040,2528},
+{4032,3552,3040,2528},
+{4032,3552,992,480},
+{8128,5600,3040,480},
+{10176,7648,5088,2528},
+{14272,9696,7136,2528},
+{16320,11744,7136,2528},
+{20416,13792,9184,4576},
+{22464,15840,11232,4576},
+{26560,19936,13280,6624},
+{28608,21984,13280,6624},
+{32704,24032,15328,6624},
+{34752,26080,17376,8672},
+{38848,28128,19424,8672},
+{40896,30176,19424,8672},
+{44992,32224,21472,10720},
+{47040,34272,23520,10720},
+{51136,38368,25568,12768},
+{53184,40416,25568,12768},
+{57280,42464,27616,12768},
+{59328,44512,29664,14816},
+{63424,46560,31712,14816},
+{65472,48608,31712,14816},
+{65376,48512,31648,14784},
+{65280,48448,31616,14784},
+{65184,48384,31552,14752},
+{65088,48320,31520,14720},
+{64992,48224,31456,14688},
+{64896,48160,31424,14688},
+{64800,48096,31360,14656},
+{64704,48032,31328,14624},
+{64608,47936,31264,14592},
+{64512,47872,31232,14592},
+{64416,47808,31168,14560},
+{64320,47744,31136,14528},
+{64224,47648,31072,14496},
+{64128,47584,31040,14496},
+{64032,47520,30976,14464},
+{63936,47456,30944,14432},
+{63840,47360,30880,14400},
+{63744,47296,30848,14400},
+{63648,47232,30784,14368},
+{63552,47168,30752,14336},
+  };
   
   struct hypertriangle_t {
-    int4 * colorptr; // hypersurface color 
+    const int4 * colorptr; // hypersurface color 
     double xmin,xmax,ymin,ymax; // minmax values intersection with plane y-x=Cte
     double a,b,c; // plane equation of triangle
     double zG; // altitude for gravity center 
@@ -5949,7 +6196,22 @@ namespace xcas {
       }
     } // end loop on k
   }
-  
+
+  struct float2 {
+    float f,a;
+  } ;
+  double absarg(const gen & g,double & argcolor){
+    if (g.type==_DOUBLE_){
+      double d=g._DOUBLE_val;
+      if (d>=0){ argcolor=0;  return d; }
+      argcolor=M_PI; return -d;
+    }
+    double x=g._CPLXptr->_DOUBLE_val,y=(g._CPLXptr+1)->_DOUBLE_val;
+    argcolor=std::atan2(x,y);
+    double n=std::sqrt(x*x+y*y); // will be encoded in a float, no overflow care
+    return n;
+  }
+
   // hpersurface encoded as a matrix
   // with lines containing 3 coordinates per point
   bool Graph2d::glsurface(int w,int h,int lcdz,GIAC_CONTEXT,
@@ -6078,6 +6340,7 @@ namespace xcas {
       double hyperxymax=-1e307,hyperxymin=1e307;
       double3 tri[4]; 
       for (int k=0;k<int(hypv.size());k+=2){
+	bool cplx=hyp_color[k].u==0 && hyp_color[k].d==0 && hyp_color[k].du==0 && hyp_color[k].dd==0;
 	vector< vector<float3d> >::const_iterator sbeg=hypv[k],send=hypv[k+1],sprec,scur;
 	vector<float3d>::const_iterator itprec,itcur,itprecend;
 	for (sprec=sbeg,scur=sprec+1;scur<send;++sprec,++scur){
@@ -6134,6 +6397,17 @@ namespace xcas {
 	    double x1=*(itprec-3),x2=*(itprec),x3=*(itcur-3),x4=*(itcur);
 	    double y1=*(itprec-2),y2=*(itprec+1),y3=*(itcur-2),y4=*(itcur+1);
 	    double z1=*(itprec-1),z2=*(itprec+2),z3=*(itcur-1),z4=*(itcur+2);
+	    double a1,a2,a3,a4;
+	    if (cplx){
+	      a1 = ((float2 *)&z1)->a;
+	      z1 = ((float2 *)&z1)->f;
+	      a2 = ((float2 *)&z2)->a;
+	      z2 = ((float2 *)&z2)->f;
+	      a3 = ((float2 *)&z3)->a;
+	      z3 = ((float2 *)&z3)->f;
+	      a4 = ((float2 *)&z4)->a;
+	      z4 = ((float2 *)&z4)->f;
+	    }
 	    yx1=y1-x1; yx2=y2-x2; yx3=y3-x3; yx4=y4-x4;
 #ifdef HYPERQUAD
 	    tri[0]=double3(x1,y1,z1);
@@ -6146,7 +6420,16 @@ namespace xcas {
 	    if (xy123>hyperxymax) hyperxymax=xy123;
 	    do_transform(invtransform,x123,y123,z123,X,Y,Z);
 	    if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax ){
-	      hypertriangle_t res; res.colorptr=&hyp_color[k];
+	      hypertriangle_t res;
+	      if (cplx){
+		int idx=(a1+M_PI)*sizeof(tabcolorcplx)/(sizeof(int4)*2*M_PI);
+		if (idx<0 || idx >=sizeof(tabcolorcplx)/(sizeof(int4)))
+		  idx = 0;
+		//CERR << idx << " ";
+		res.colorptr=&tabcolorcplx[idx];
+	      }
+	      else
+		res.colorptr=&hyp_color[k];
 	      compute(yx,tri,res);
 	      hypertriangles.push_back(res);
 	    }
@@ -6237,7 +6520,7 @@ namespace xcas {
 	if (plan_filled[k]){ only_hypertri=false; break; }
       }
       if (only_hypertri){
-	if (hypertriangles.empty()) continue;
+	if (hypertriangles.empty()) goto suite3d;
 	int effjmax=(hyperxymax-xc-yc)/yscale/2.0,effjmin=(hyperxymin-xc-yc)/yscale/2.0;
 	if (effjmax+1<jmax)
 	  jmax=effjmax+1;
@@ -6461,6 +6744,7 @@ namespace xcas {
 	  }
 	} // end pixel vertical loop on j
       } // end else only_hypertri
+    suite3d:
       // update jmintab/jmaxtab
       if (i+horiz+w<jmintabsize){
 	for (int I=0;I<w;++I){
@@ -6829,7 +7113,10 @@ namespace xcas {
     return true;
   }
 
-  Graph2d::Graph2d(const giac::gen & g_,const giac::context * cptr):window_xmin(gnuplot_xmin),window_xmax(gnuplot_xmax),window_ymin(gnuplot_ymin),window_ymax(gnuplot_ymax),window_zmin(gnuplot_zmin),window_zmax(gnuplot_zmax),g(g_),display_mode(0x45),show_axes(1),show_edges(1),show_names(1),labelsize(16),precision(1),contextptr(cptr) {
+  Graph2d::Graph2d(const giac::gen & g_,const giac::context * cptr):window_xmin(gnuplot_xmin),window_xmax(gnuplot_xmax),window_ymin(gnuplot_ymin),window_ymax(gnuplot_ymax),window_zmin(gnuplot_zmin),window_zmax(gnuplot_zmax),g(g_),display_mode(0x45),show_axes(1),show_edges(1),show_names(1),labelsize(16),precision(1),contextptr(cptr),hp(0),npixels(5),couleur(0),nparams(0) {
+    current_i=LCD_WIDTH_PX/3;
+    current_j=LCD_HEIGHT_PX/3;
+    push_depth=current_depth=0;
     diffusionz=5; diffusionz_limit=5; hide2nd=false; interval=false;
     default_upcolor=giac3d_default_upcolor;
     default_downcolor=giac3d_default_downcolor;
@@ -6842,8 +7129,8 @@ namespace xcas {
     q=quaternion_double(0,0,0);//rotation_2_quaternion_double(0.707,0.707,0,1); 
     update_scales();
     autoscale(false,!is3d);
+    update_rotation();
     if (is3d){
-      update_rotation();
       if (surfacev.empty()){
 	// no hypersurface inside, 2 for polyhedron
 	precision=1;
@@ -7005,9 +7292,78 @@ namespace xcas {
     }
   }
 
+  vecteur mark_selected(const vecteur & v,const vector<int> & selected,bool is3d){
+    vecteur w(v);
+    vector<int> s(selected); sort(s.begin(),s.end());
+    int pos=0;
+    for (int i=0;i<w.size();++i){
+      if (pos>=s.size())
+	break;
+      if (i==s[pos]){
+	++pos;
+	gen g=w[i];
+	if (g.is_symb_of_sommet(at_pnt)){
+	  g=g._SYMBptr->feuille;
+	  if (g.type==_VECT && g._VECTptr->size()>=2){
+	    vecteur gv(*g._VECTptr);
+	    gv[1]=is3d?_CYAN:_BLUE;
+	    g=gen(gv,g.subtype);
+	    w[i]=symbolic(at_pnt,g);
+	  }
+	}
+      }
+    }
+    return w;
+  }
+
+  vecteur Graph2d::selected_names(bool allobjects,bool withdef) const {
+    vector<int>::const_iterator it=selected.begin(),itend=selected.end();
+    vecteur res;
+    for (;it!=itend;++it){
+      gen g=symbolic_instructions[*it];
+      if (g.is_symb_of_sommet(at_sto)){
+	gen tmp=g._SYMBptr->feuille[0];
+	if (allobjects || tmp.is_symb_of_sommet(at_point) || tmp.is_symb_of_sommet(at_element))
+	  res.push_back(withdef?g:g._SYMBptr->feuille[1]);
+      }
+    }
+    return res;
+  }
+
+  void Graph2d::adjust_cursor_point_type(){
+    if (hp){
+      double newx,newy,newz;
+      find_xyz(current_i,current_j,current_depth,newx,newy,newz);
+      int pos=-1;
+      gen orig;
+      gen res=geometry_round(newx,newy,newz,find_eps(),orig,pos);
+      if (mode==0){
+	if (pos>=0)
+	  selected=vector<int>(1,pos);
+	else
+	  selected.clear();
+      }
+      cursor_point_type=pos>=0?6:3;
+    }
+  }
+
+  void Graph2d::update_g(){
+    if (hp){
+      adjust_cursor_point_type();
+      find_title_plot(title_tmp,plot_tmp);
+      vecteur v(mergevecteur(get_current_animation(),trace_instructions));
+      if (!is_undef(plot_tmp)) v.push_back(plot_tmp);
+      // geometry: update g from plot_instructions
+      g=mergevecteur(selected.empty()?plot_instructions:mark_selected(plot_instructions,selected,is3d),v);
+      if (is3d)
+	update_rotation();
+    }
+  }    
+
   void Graph2d::update(){
+    update_g();
     update_scales();
-    if (is3d) update_rotation();
+    update_rotation();
   }
   
   void mult4(double * c,double k,double * res){
@@ -7054,6 +7410,12 @@ namespace xcas {
     j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
   }
   
+  void Graph2d::xyz2ij(const double3 &d,double &i,double &j,double3 & d3) const {
+    do_transform(transform,d.x,d.y,d.z,d3.x,d3.y,d3.z);
+    i=LCD_WIDTH_PX/2+(d3.y-d3.x)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-d3.z*lcdz+(d3.y+d3.x)/9.6*LCD_WIDTH_PX;    
+  }
+  
   void Graph2d::XYZ2ij(const double3 &d,int &i,int &j) const {
     double X=d.x,Y=d.y,Z=d.z;
     i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
@@ -7061,6 +7423,8 @@ namespace xcas {
   }
 
   void Graph2d::update_rotation(){
+    if (!is3d)
+      return;
     solid3d=false;
     double rx,ry,rz,theta;
     get_axis_angle_deg(q,rx,ry,rz,theta);
@@ -7154,31 +7518,33 @@ namespace xcas {
 	continue;
       }
       bool line=G.subtype==_LINE__VECT,halfline=G.subtype==_HALFLINE__VECT,segment= G.subtype==_GROUP__VECT;
-      if (G.type==_VECT && G._VECTptr->size()==2 && (line || halfline || segment)){
-	gen a=evalf_double(G._VECTptr->front(),1,contextptr),b=evalf_double(G._VECTptr->back(),1,contextptr);
-	if (a.type==_VECT && b.type==_VECT && a._VECTptr->size()==3 && b._VECTptr->size()==3){
-	  vecteur & A=*a._VECTptr;
-	  vecteur & B=*b._VECTptr;
-	  if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ && B[0].type==_DOUBLE_ && B[1].type==_DOUBLE_ && B[2].type==_DOUBLE_ ){
-	    lines.push_back(ptr);
-	    double x=A[0]._DOUBLE_val,y=A[1]._DOUBLE_val,z=A[2]._DOUBLE_val;
+      if (G.type==_VECT && G._VECTptr->size()>=2 && (line || halfline || segment)){
+	for (int n=1;n<G._VECTptr->size();++n){
+	  gen a=evalf_double((*G._VECTptr)[n-1],1,contextptr),b=evalf_double((*G._VECTptr)[n],1,contextptr);
+	  if (a.type==_VECT && b.type==_VECT && a._VECTptr->size()==3 && b._VECTptr->size()==3){
+	    vecteur & A=*a._VECTptr;
+	    vecteur & B=*b._VECTptr;
+	    if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ && B[0].type==_DOUBLE_ && B[1].type==_DOUBLE_ && B[2].type==_DOUBLE_ ){
+	      lines.push_back(ptr);
+	      double x=A[0]._DOUBLE_val,y=A[1]._DOUBLE_val,z=A[2]._DOUBLE_val;
 #if 0 // ndef OLD_LINE_RENDERING
-	    double3 prev(x,y,z);
-	    linev.push_back(prev);
+	      double3 prev(x,y,z);
+	      linev.push_back(prev);
 #endif
-	    double X,Y,Z;
-	    do_transform(transform,x,y,z,X,Y,Z);
-	    double3 M(X,Y,Z);
-	    x=B[0]._DOUBLE_val;y=B[1]._DOUBLE_val;z=B[2]._DOUBLE_val;
+	      double X,Y,Z;
+	      do_transform(transform,x,y,z,X,Y,Z);
+	      double3 M(X,Y,Z);
+	      x=B[0]._DOUBLE_val;y=B[1]._DOUBLE_val;z=B[2]._DOUBLE_val;
 #if 0 // ndef OLD_LINE_RENDERING
-	    linev.push_back(double3(x-prev.x,y-prev.y,z-prev.z));
+	      linev.push_back(double3(x-prev.x,y-prev.y,z-prev.z));
 #endif
-	    do_transform(transform,x,y,z,X,Y,Z);
-	    double3 N(X,Y,Z);
-	    double3 v(N.x-M.x,N.y-M.y,N.z-M.z);
-	    linev.push_back(M); linev.push_back(v);
-	    linetypev.push_back(G.subtype);
-	    line_color.push_back(int4(u,d,du,dd));
+	      do_transform(transform,x,y,z,X,Y,Z);
+	      double3 N(X,Y,Z);
+	      double3 v(N.x-M.x,N.y-M.y,N.z-M.z);
+	      linev.push_back(M); linev.push_back(v);
+	      linetypev.push_back(G.subtype);
+	      line_color.push_back(int4(u,d,du,dd));
+	    }
 	  }
 	}
 	continue;
@@ -7242,24 +7608,37 @@ namespace xcas {
 	if (h.type==_VECT && h.subtype==_POLYEDRE__VECT)
 	  G=h;
 	else if (ckmatrix(h,true)){
+	  bool cplx=has_i(h); // 4d hypersurface, encode color in a float+int
+	  double argcplx;
 	  surfacev.push_back(vector< vector<float3d> >(0));
 	  vector< vector<float3d> > & S=surfacev.back();
 	  const vecteur & V=*h._VECTptr;
 	  S.reserve(V.size());
 	  for (int j=0;j<V.size();++j){
 	    gen Vj=V[j];
-	    vecteur vj=*Vj._VECTptr;
+	    const vecteur & vj=*Vj._VECTptr;
 	    S.push_back(vector<float3d>(0));
 	    vector<float3d> &S_=S.back();
 	    S_.reserve(vj.size());
 	    for (int k=0;k<vj.size();k+=3){
 	      double X,Y,Z;
-	      do_transform(mat,vj[k]._DOUBLE_val,vj[k+1]._DOUBLE_val,vj[k+2]._DOUBLE_val,X,Y,Z);
-	      vj[k]=X; vj[k+1]=Y; vj[k+2]=Z;
-	      S_.push_back(X); S_.push_back(Y); S_.push_back(Z);
+	      if (cplx)
+		do_transform(mat,vj[k]._DOUBLE_val,vj[k+1]._DOUBLE_val,absarg(vj[k+2],argcplx),X,Y,Z);
+	      else
+		do_transform(mat,vj[k]._DOUBLE_val,vj[k+1]._DOUBLE_val,vj[k+2]._DOUBLE_val,X,Y,Z);		
+	      // vj[k]=X; vj[k+1]=Y; vj[k+2]=Z;
+	      S_.push_back(X); S_.push_back(Y);
+	      if (cplx){
+		float2 * fptr=(float2 *) &Z;
+		fptr->f = Z;
+		fptr->a = argcplx;
+		S_.push_back(Z);
+	      }
+	      else
+		S_.push_back(Z);
 	    }
 	  }
-	  hyp_color.push_back(int4(u,d,du,dd));
+	  hyp_color.push_back(cplx?int4(0,0,0,0):int4(u,d,du,dd));
 	  continue;
 	} // end quad hypersurface
       } // end hypersurface
@@ -7555,7 +7934,40 @@ namespace xcas {
     int mxw=LCD_WIDTH_PX,myw=LCD_HEIGHT_PX-STATUS_AREA_PX;
     double i0,j0,i0save,j0save,i1,j1;
     int fs=f.size();
-    if ((fs==4) && (s==at_parameter)){
+    if (fs>=4 && s==at_parameter && f[0].type==_IDNT){
+      // display parameter from the left upper, f[0] name and f[3] value
+      char ch[128];
+      strcpy(ch,f[0]._IDNTptr->id_name);
+      int pos=strlen(ch);
+      ch[pos]='=';
+      ++pos;
+      ch[pos]=0;
+      gen g=evalf_double(f[3],1,contextptr);
+      if (g.type==_DOUBLE_)
+        strcpy(ch+pos,g.print(contextptr).c_str());
+      else {
+        ch[pos]='?';
+        ++pos;
+        ch[pos]=0;
+      }
+      ++Mon_image.nparams;
+      int dw=fl_width(ch);
+      int fheight=14;
+      int ypos=(fheight+1)*Mon_image.nparams+fheight;
+      drawRectangle(1,ypos,dw,fheight-1,Mon_image.is3d?_BLACK:_WHITE);
+      os_draw_string_small_(1,ypos-fheight,ch);
+      if (Mon_image.pushed && Mon_image.moving_param){
+        drawLine(64,ypos-2,192,ypos-2,Mon_image.is3d?_WHITE:_BLACK);
+        drawLine(64,ypos,64,ypos-fheight,Mon_image.is3d?_WHITE:_BLACK);
+        drawLine(192,ypos,192,ypos-fheight,Mon_image.is3d?_WHITE:_BLACK);
+	os_draw_string_small_(65,ypos-fheight-2,f[1].print(contextptr).c_str());
+	os_draw_string_small_(193,ypos-fheight-2,f[2].print(contextptr).c_str());
+	gen gxpos=64+128*(g-f[1])/(f[2]-f[1]);
+	if (gxpos.type==_DOUBLE_){
+	  int xpos=gxpos._DOUBLE_val;
+	  drawLine(xpos,ypos,xpos,ypos-fheight,_RED);
+	}
+      }
       return ;
     }
     string the_legend;
@@ -7656,7 +8068,7 @@ namespace xcas {
 	    return;
 	  }
 	} // end circle
-#if 0
+#if 1
 	if (point._SYMBptr->sommet==at_legende){
 	  gen & f=point._SYMBptr->feuille;
 	  if (f.type==_VECT && f._VECTptr->size()==3){
@@ -7889,6 +8301,20 @@ namespace xcas {
     x/=n; y/=n;
   }
 
+  void Graph2d::adddepth(vector<int2> & polyg,const double3 &A,const double3 &B,int2 & IJmin) const {
+    if ((A.z-current_depth)*(B.z-current_depth)>0)
+      return;
+    double t=(current_depth-A.z)/(B.z-A.z);
+    double x=A.x+t*(B.x-A.x);
+    double y=A.y+t*(B.y-A.y);
+    int I,J;
+    XYZ2ij(double3(x,y,current_depth),I,J);
+    int2 IJ(I,J);
+    polyg.push_back(IJ);
+    if (IJ<IJmin)
+      IJmin=IJ;
+  }
+
   void Graph2d::addpolyg(vector<int2> & polyg,double x,double y,double z,int2 & IJmin) const {
     int I,J;
     xyz2ij(double3(x,y,z),I,J);
@@ -7898,7 +8324,184 @@ namespace xcas {
       IJmin=IJ;
   }
 
+  int roundint (double r) {
+    int tmp = static_cast<int> (r);
+    tmp += (r-tmp>=.5) - (r-tmp<=-.5);
+    return tmp;
+  }
+
+  bool Graph2d::find_dxdy(double & dx, double & dy) const {
+    double xmin=window_xmin,xmax=window_xmax;
+    int hp=LCD_WIDTH_PX-1;
+    dx=(xmax-xmin)/hp;
+    double ymin=window_ymin,ymax=window_ymax;
+    int vp=LCD_HEIGHT_PX-1;
+    dy=(ymax-ymin)/vp;
+    return abs(dx-dy) < 0.000001;
+  }
+
+  void Graph2d::find_xy(double i,double j,double & x,double & y) const {
+    double xmin=window_xmin,xmax=window_xmax;
+    x=xmin+i*(xmax-xmin)/LCD_WIDTH_PX;
+    double ymin=window_ymin,ymax=window_ymax;
+    y=ymax-j*(ymax-ymin)/LCD_HEIGHT_PX;
+  }
+
+  void Graph2d::round_xy(double & x, double & y) const {
+    double dx,dy;
+    find_dxdy(dx,dy);
+    double range = pow(10,log10(1.0/dx));
+    x = roundint(x * range) / range;
+    y = roundint(y * range) / range;
+  }
+  
+  void round3(double & x,double xmin,double xmax){
+    double dx=std::abs(xmax-xmin);
+    double logdx=std::log10(dx);
+    int ndec=int(logdx)-3;
+    double xpow=std::pow(10.0,ndec);
+    int newx=x>=0?int(x/xpow+0.5):int(x/xpow-0.5);
+    x=newx*xpow;
+  }
+
+  vecteur Graph2d::param(double d) const {
+    const_iterateur it=plot_instructions.begin(),itend=plot_instructions.end();
+    vecteur res;
+    double pos=0.5;
+    for (int i=0 ;it!=itend;++i,++it){
+      gen tmp=*it;
+      if (tmp.is_symb_of_sommet(at_parameter)){
+	tmp=tmp._SYMBptr->feuille;
+	if (tmp.type==_VECT && tmp._VECTptr->size()>=4){
+	  if (std::abs(d-pos)<0.50001){
+	    res.push_back(tmp);
+	    res.push_back(i);
+	  }
+	  ++pos;
+	}
+      }
+    }
+    return res;
+  }
+  
+  void Graph2d::draw_decorations(const gen & title_tmp){
+    if (args_tmp.empty()){ // add selected names
+      char s[256]; strcpy(s,modestr.c_str());
+      int pos=0,modestrsize=modestr.size();
+      pos += modestrsize;
+      s[pos++]=' ';
+      if (mode!=0 && drag_name.type==_IDNT){
+	strcpy(s+pos,drag_name._IDNTptr->id_name);
+	pos += strlen(drag_name._IDNTptr->id_name);
+      }
+      else {
+	if (1 || mode==0 || mode==255){ // print selected names 
+	  vecteur v;
+	  if (mode!=255) v=selected_names(true,false);
+	  if (v.empty() && current_i<=192 && current_j<14*nparams+21){
+	    double d=current_j/14.-1;
+	    v=param(d);
+	    if (v.size()!=2)
+	      v.clear();
+	    else
+	      v=vecteur(1,v.front()[0]);
+	  }
+	  int vs=v.size();
+	  if (!vs){ // print current coordinates
+	    double i=current_i,j=current_j,x,y,z;
+	    if (is3d){
+	      find_xyz(i,j,current_depth,x,y,z);
+	      round_xy(x,y); round3(z,window_zmin,window_zmax);
+	      sprintf(s+pos," %.3g,%.3g,%.3g",x,y,z);
+	    }
+	    else {
+	      find_xy(i,j,x,y);
+	      // round to maximum pixel range
+	      round_xy(x,y);
+	      sprintf(s+pos," %.3g,%.3g",x,y);
+	    }
+	    pos=strlen(s);
+	  }
+	  for (int i=0;i<vs && pos<100;++i){
+	    if (v[i].type==_IDNT){
+	      strcpy(s+pos,v[i]._IDNTptr->id_name);
+	      pos += strlen(v[i]._IDNTptr->id_name);
+	      if (i<vs-1){
+		s[pos++]=',';
+	      }
+	    }
+	  }
+	}
+      }
+      s[pos]=0;
+      os_draw_string_small_(LCD_WIDTH_PX-fl_width(s),LCD_HEIGHT_PX-14,s);
+    }
+    if (mode && title.size()<100 && (!title.empty() || !is_zero(title_tmp))){
+      std::string mytitle;
+      if (!is_zero(title_tmp) && function_final.type==_FUNC){
+	if (function_final==at_point && title_tmp.is_symb_of_sommet(at_point))
+	  mytitle=title_tmp.print(contextptr);
+	else
+	  mytitle=function_final._FUNCptr->ptr()->s+('('+title_tmp.print(contextptr)+')'); // gen(symbolic(*function_final._FUNCptr,title_tmp)).print(contextptr);
+      }
+      else
+	mytitle=title;
+      if (!mytitle.empty()){
+	int dt=int(fl_width(mytitle.c_str()));
+	if (dt>LCD_WIDTH_PX)
+	  dt=LCD_WIDTH_PX;
+	os_draw_string_small_((LCD_WIDTH_PX-dt)/2,LCD_HEIGHT_PX-14,mytitle.c_str());
+      }
+    }
+    if (hp){ // draw cursor at current_i,current_j
+      int taille=mode==255?2:5;
+      fl_line(current_i-taille,current_j,current_i+taille,current_j,is3d?_CYAN:_BLUE);
+      fl_line(current_i,current_j-taille,current_i,current_j+taille,is3d?_CYAN:_BLUE);
+      if (cursor_point_type==6){
+	fl_line(current_i-2,current_j+2,current_i+2,current_j+2,_RED);
+	fl_line(current_i-2,current_j+2,current_i+2,current_j+2,_RED);
+	fl_line(current_i-2,current_j-2,current_i-2,current_j+2,_RED);
+	fl_line(current_i+2,current_j-2,current_i+2,current_j+2,_RED);
+      }
+    }
+  }
+
+  void displaypolyg(const vector<int2> & polyg,const int2 & IJmin,int color,int & Px,int & Py,GIAC_CONTEXT){
+    if (polyg.empty())
+      return;
+    // sort list of arguments
+    vector<int2_double2> p;
+    for (int k=0;k<polyg.size();++k){
+      const int2 & cur=polyg[k];
+      if (cur==IJmin){
+	int2_double2 id={cur.i,cur.j,0,0};
+	p.push_back(id);
+      } else {
+	double di=cur.i-IJmin.i,dj=cur.j-IJmin.j;
+	int2_double2 id={cur.i,cur.j,atan2(di,dj),di*di+dj*dj};
+	p.push_back(id);
+      }
+    }
+    sort(p.begin(),p.end());
+    // draw polygon
+    vector< vector<int> > P;
+    for (int k=0;k<p.size();++k){
+      vector<int> vi(2);
+      vi[0]=p[k].i;
+      vi[1]=p[k].j;
+      P.push_back(vi);
+    }
+    draw_polygon(P,color 
+		 // | 0x400000
+		 ,contextptr);
+    Px=P[0][0];
+    Py=P[0][1];
+  }
+
   void Graph2d::draw(){
+    waitforvblank();
+    nparams=0; // reset number of parameters (shown from left upper)
+    if (hp) history_plot(contextptr).clear();
     if (is3d){
       if (lang==1)
 	statuslinemsg("Toolbox: aide");
@@ -7912,16 +8515,21 @@ namespace xcas {
 	F(window_xmin,window_ymax,window_zmax),
 	G(window_xmax,window_ymax,window_zmin),
 	H(window_xmax,window_ymax,window_zmax);
-      xyz2ij(A,Ai,Aj);
-      xyz2ij(B,Bi,Bj);
-      xyz2ij(C,Ci,Cj);
-      xyz2ij(D,Di,Dj);
-      xyz2ij(E,Ei,Ej);
-      xyz2ij(F,Fi,Fj);
-      xyz2ij(G,Gi,Gj);
-      xyz2ij(H,Hi,Hj);
+      double3 A3,B3,C3,D3,E3,F3,G3,H3;
+      xyz2ij(A,Ai,Aj,A3);
+      xyz2ij(B,Bi,Bj,B3);
+      xyz2ij(C,Ci,Cj,C3);
+      xyz2ij(D,Di,Dj,D3);
+      xyz2ij(E,Ei,Ej,E3);
+      xyz2ij(F,Fi,Fj,F3);
+      xyz2ij(G,Gi,Gj,G3);
+      xyz2ij(H,Hi,Hj,H3);
       set_abort();
+      int prec=precision;
+      if (mode==0 && precision<3)
+	precision += 2;
       glsurface(precision,precision,lcdz,contextptr,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor);
+      precision=prec;
       clear_abort();
       if (show_edges){
 	// polyhedrons
@@ -8049,10 +8657,31 @@ namespace xcas {
 	drawLine(Ci,Cj,Gi,Gj,COLOR_GREEN | 0x800000);
 	drawLine(Di,Dj,Hi,Hj,COLOR_GREEN | 0x800000);
 	// Z
-	drawLine(Ai,Aj,Bi,Bj,12345 | 0x800000);
-	drawLine(Ci,Cj,Di,Dj,12345 | 0x800000);
-	drawLine(Ei,Ej,Fi,Fj,12345 | 0x800000);
-	drawLine(Gi,Gj,Hi,Hj,12345 | 0x800000);
+	drawLine(Ai,Aj,Bi,Bj,COLOR_CYAN | 0x800000);
+	drawLine(Ci,Cj,Di,Dj,COLOR_CYAN | 0x800000);
+	drawLine(Ei,Ej,Fi,Fj,COLOR_CYAN | 0x800000);
+	drawLine(Gi,Gj,Hi,Hj,COLOR_CYAN | 0x800000);
+	// current_depth
+	if (hp){
+	  vector<int2> polyg; int2 IJmin={RAND_MAX,RAND_MAX};
+	  // x: A3-C3, B3-D3; E3-G3,F3-H3
+	  adddepth(polyg,A3,C3,IJmin);
+	  adddepth(polyg,B3,D3,IJmin);
+	  adddepth(polyg,E3,G3,IJmin);
+	  adddepth(polyg,F3,H3,IJmin);
+	  // y: A3-E3; B3-F3; C3-G3, D3-H3
+	  adddepth(polyg,A3,E3,IJmin);
+	  adddepth(polyg,B3,F3,IJmin);
+	  adddepth(polyg,C3,G3,IJmin);
+	  adddepth(polyg,D3,H3,IJmin);
+	  // z: A3-B3, C3-D3, E3-F3, G3-H3
+	  adddepth(polyg,A3,B3,IJmin);
+	  adddepth(polyg,C3,D3,IJmin);
+	  adddepth(polyg,E3,F3,IJmin);
+	  adddepth(polyg,G3,H3,IJmin);
+	  int Px,Py;
+	  displaypolyg(polyg,IJmin,COLOR_YELLOW | 0x400000,Px,Py,contextptr);
+	}
 	// planes
 	vecteur attrv(gen2vecteur(g));
 	for (int i=0;i<attrv.size();++i){
@@ -8126,55 +8755,72 @@ namespace xcas {
 	      if (z>=window_zmin && z<=window_zmax)
 		addpolyg(polyg,window_xmax,window_ymax,z,IJmin);
 	    }
-	    // sort list of arguments
-	    vector<int2_double2> p;
-	    for (int k=0;k<polyg.size();++k){
-	      int2 & cur=polyg[k];
-	      if (cur==IJmin){
-		int2_double2 id={cur.i,cur.j,0,0};
-		p.push_back(id);
-	      } else {
-		double di=cur.i-IJmin.i,dj=cur.j-IJmin.j;
-		int2_double2 id={cur.i,cur.j,atan2(di,dj),di*di+dj*dj};
-		p.push_back(id);
-	      }
-	    }
-	    sort(p.begin(),p.end());
-	    // draw polygon
-	    vector< vector<int> > P;
-	    for (int k=0;k<p.size();++k){
-	      vector<int> vi(2);
-	      vi[0]=p[k].i;
-	      vi[1]=p[k].j;
-	      P.push_back(vi);
-	    }
-	    draw_polygon(P,upcolor 
-			 // | 0x400000
-			 ,contextptr);
+	    int Px,Py;
+	    displaypolyg(polyg,IJmin,upcolor,Px,Py,contextptr);
 	    if (nameptr){
 	      int x=os_draw_string_small(0,0,0,upcolor,nameptr,true);
-	      os_draw_string_small(P[0][0]-x,P[0][1],upcolor,0,nameptr);
+	      os_draw_string_small(Px-x,Py,upcolor,0,nameptr);
 	    }
 	  }
 	}
 	// frame
 	double xi=Ci-Ai,xj=Cj-Aj;
 	normalize(xi,xj);
-	drawLine(20,20,20+20*xi,20+20*xj,COLOR_RED);
-	os_draw_string_small(20+20*xi,20+20*xj,COLOR_RED,COLOR_BLACK,"x");
+	int decal=180;
+	drawLine(20,decal,20+20*xi,decal+20*xj,COLOR_RED);
+	os_draw_string_small(20+20*xi,decal+20*xj,COLOR_RED,COLOR_BLACK,"x");
 	double yi=Ei-Ai,yj=Ej-Aj;
 	normalize(yi,yj);
-	drawLine(20,20,20+20*yi,20+20*yj,COLOR_GREEN);
-	os_draw_string_small(20+20*yi,20+20*yj,COLOR_GREEN,COLOR_BLACK,"y");
+	drawLine(20,decal,20+20*yi,decal+20*yj,COLOR_GREEN);
+	os_draw_string_small(20+20*yi,decal+20*yj,COLOR_GREEN,COLOR_BLACK,"y");
 	double zi=Bi-Ai,zj=Bj-Aj;
 	normalize(zi,zj);
-	drawLine(20,20,20+20*zi,20+20*zj,12345);
-	os_draw_string_small(20+20*zi,20+20*zj,12345,COLOR_BLACK,"z");
+	drawLine(20,decal,20+20*zi,decal+20*zj,COLOR_CYAN);
+	os_draw_string_small(20+20*zi,decal+20*zj,COLOR_CYAN,COLOR_BLACK,"z");
       } // end show_axes
       // now handle legend([x,y],string)
       vecteur V(gen2vecteur(g));
       for (int i=0;i<V.size();++i){
 	gen attr=V[i];
+	if (attr.is_symb_of_sommet(at_parameter) && attr._SYMBptr->feuille.type==_VECT){
+	  vecteur f=*attr._SYMBptr->feuille._VECTptr;
+	  int fs=f.size();
+	  if (fs>=4 && f[0].type==_IDNT){
+	    // display parameter from the left upper, f[0] name and f[3] value
+	    char ch[128];
+	    strcpy(ch,f[0]._IDNTptr->id_name);
+	    int pos=strlen(ch);
+	    ch[pos]='=';
+	    ++pos;
+	    ch[pos]=0;
+	    gen g=evalf_double(f[3],1,contextptr);
+	    if (g.type==_DOUBLE_)
+	      strcpy(ch+pos,g.print(contextptr).c_str());
+	    else {
+	      ch[pos]='?';
+	      ++pos;
+	      ch[pos]=0;
+	    }
+	    ++nparams;
+	    int dw=fl_width(ch);
+	    int fheight=14;
+	    int ypos=(fheight+1)*nparams+fheight;
+	    drawRectangle(1,ypos-fheight,dw,fheight-1,_WHITE);
+	    os_draw_string_small_(1,ypos-fheight,ch);
+	    if (pushed && moving_param){
+	      drawLine(64,ypos-2,192,ypos-2,is3d?_WHITE:_BLACK);
+	      drawLine(64,ypos,64,ypos-fheight,is3d?_WHITE:_BLACK);
+	      drawLine(192,ypos,192,ypos-fheight,is3d?_WHITE:_BLACK);
+	      os_draw_string_small_(65,ypos-fheight-2,f[1].print(contextptr).c_str());
+	      os_draw_string_small_(193,ypos-fheight-2,f[2].print(contextptr).c_str());
+	      gen gxpos=64+128*(g-f[1])/(f[2]-f[1]);
+	      if (gxpos.type==_DOUBLE_){
+		int xpos=gxpos._DOUBLE_val;
+		drawLine(xpos,ypos,xpos,ypos-fheight,_RED);
+	      }
+	    }
+	  }
+	} // end parameter
 	if (attr.is_symb_of_sommet(at_pnt)){
 	  attr=attr._SYMBptr->feuille;
 	  if (attr.type==_VECT && attr._VECTptr->size()>1){
@@ -8205,6 +8851,8 @@ namespace xcas {
       DefineStatusMessage((char*)"+-: zoom, pad: move, EXIT: quit", 1, 0, 0);
 #endif
       DisplayStatusArea();
+      if (hp)
+	draw_decorations(title_tmp);
       return;
     }
     int save_clip_ymin=clip_ymin;
@@ -8301,6 +8949,8 @@ namespace xcas {
     // draw
     fltk_draw(*this,g,x_scale,y_scale,clip_x,clip_y,clip_w,clip_h,contextptr);
     clip_ymin=save_clip_ymin;
+    if (hp)
+      draw_decorations(title_tmp);
   }
   
   void Graph2d::left(double d){ 
@@ -8581,11 +9231,11 @@ namespace xcas {
     } // End logo mode
   }  
   
-
-  int displaygraph(const giac::gen & ge,GIAC_CONTEXT){
+  int displaygraph(const giac::gen & ge,const gen & gs,GIAC_CONTEXT){
     // graph display
     //if (aborttimer > 0) { Timer_Stop(aborttimer); Timer_Deinstall(aborttimer);}
     xcas::Graph2d gr(ge,contextptr);
+    if (gs!=0) gr.symbolic_instructions=gen2vecteur(gs);
     gr.show_axes=global_show_axes;
     // initial setting for x and y
     if (ge.type==_VECT){
@@ -8627,41 +9277,1412 @@ namespace xcas {
 	}
       }
     }
-    // UI
-#ifdef NSPIRE_NEWLIB
-    DefineStatusMessage((char*)"+-: zoom, pad: move, esc: quit", 1, 0, 0);
+    return gr.ui();
+  }
+
+  vecteur Graph2d::get_current_animation() const {
+    if (animation_instructions_pos>=0 && animation_instructions_pos<animation_instructions.size())
+      return gen2vecteur(animation_instructions[animation_instructions_pos]);
+    return 0;
+  }
+
+  void Graph2d::find_title_plot(gen & title_tmp,gen & plot_tmp){
+    title_tmp=plot_tmp=0;
+    if (//in_area &&
+	hp && mode && !args_tmp.empty()){
+      if (args_tmp.size()>=2){
+	gen function=(mode==int(args_tmp.size()))?function_final:function_tmp;
+	if (function.type==_FUNC){
+	  bool dim2=!is3d;
+	  vecteur args2=args_tmp;
+	  if ( *function._FUNCptr==(dim2?at_cercle:at_sphere)){
+	    gen argv1;
+#ifdef NO_STDEXCEPT
+	    argv1=evalf(args_tmp.back(),1,contextptr);
+	    argv1=evalf_double(argv1,1,contextptr);
 #else
-    DefineStatusMessage((char*)"+-: zoom, pad: move, EXIT: quit", 1, 0, 0);
+	    try {
+	      argv1=evalf(args_tmp.back(),1,contextptr);
+	      argv1=evalf_double(argv1,1,contextptr);
+	    }
+	    catch (std::runtime_error & e){
+	      argv1=undef;
+	    }
 #endif
-    DisplayStatusArea();
+	    if (argv1.is_symb_of_sommet(at_pnt) ||argv1.type==_IDNT){
+	      argv1=remove_at_pnt(argv1);
+	      if ( (argv1.type==_VECT && argv1.subtype==_POINT__VECT) || argv1.type==_CPLX || argv1.type==_IDNT)
+		args2.back()=args_tmp.back()-args_tmp.front();
+	    }
+	  }
+	  if (function==at_ellipse)
+	    ;
+	  title_tmp=gen(args2,_SEQ__VECT);
+	  bool b=approx_mode(contextptr);
+	  if (!b)
+	    approx_mode(true,contextptr);
+	  plot_tmp=symbolic(*function._FUNCptr,title_tmp);
+	  if (!lidnt(title_tmp).empty())
+	    ; // cerr << plot_tmp << '\n';
+	  bool bb=io_graph(contextptr);
+	  int locked=0;
+	  if (bb){
+#ifdef HAVE_LIBPTHREAD
+	    // cerr << "plot title lock" << '\n';
+	    locked=pthread_mutex_trylock(&interactive_mutex);
+#endif
+	    if (!locked)
+	      io_graph(false,contextptr);
+	  }
+	  plot_tmp=protecteval(plot_tmp,1,contextptr);
+	  if (bb && !locked){
+	    io_graph(bb,contextptr);
+#ifdef HAVE_LIBPTHREAD
+	    pthread_mutex_unlock(&interactive_mutex);
+	    // cerr << "plot title unlock" << '\n';
+#endif
+	  }
+	  if (!b)
+	    approx_mode(false,contextptr);	
+	} // end function.type==_FUNC
+	else
+	  title_tmp=gen(args_tmp,_SEQ__VECT);
+      } // end size()>=2
+      else	
+	title_tmp=args_tmp;
+    }
+  }
+
+  void Graph2d::eval(int start){
+    plot_instructions.resize(symbolic_instructions.size());
+    if (plot_instructions.empty()) return;
+    int level=prog_eval_level_val(contextptr);
+    for (size_t i=start;i<symbolic_instructions.size();++i){
+      gen g=symbolic_instructions[i];
+      set_abort();
+      g=protecteval(g,level,contextptr);
+      clear_abort();
+      giac::ctrl_c=false;
+      kbd_interrupted=giac::interrupted=false;
+      if (i<plot_instructions.size())
+	plot_instructions[i]=g;
+      else
+	plot_instructions.push_back(g);
+      if (g.is_symb_of_sommet(at_trace)){
+	gen f=symbolic(at_evalf,g._SYMBptr->feuille);
+	f=protecteval(f,1,contextptr);
+#ifdef NUMWORKS
+	const int maxtrace=128;
+#else
+	const int maxtrace=512;
+#endif
+	if (trace_instructions.size()>=maxtrace)
+	  trace_instructions.erase(trace_instructions.begin(),trace_instructions.begin()+maxtrace/2);
+	trace_instructions.push_back(f);
+      }
+    }
+    is3d=false;
+    for (size_t i=0;i<plot_instructions.size();++i){
+      gen g=plot_instructions[i];
+      if (giac::is3d(g)){
+	is3d=true;
+	update_rotation();
+	break;
+      }
+    }
+    update_g();
+  }
+
+  double Graph2d::find_eps() const {
+    double dx=window_xmax-window_xmin;
+    double dy=window_ymax-window_ymin;
+    double dz=window_zmax-window_zmin;
+    double eps,epsx,epsy;
+    int L=LCD_WIDTH_PX;
+    epsx=(npixels*dx)/L;
+    epsy=(npixels*dy)/(is3d?L:LCD_HEIGHT_PX);
+    eps=(epsx<epsy)?epsy:epsx;
+    if (is3d && dz>dy && dz >dx){
+      eps=npixels*dz/L;
+      eps *= 2;
+    }
+    return eps;
+  }
+
+  void Graph2d::set_gen_value(int n,const giac::gen & g,bool exec){
+    // set n-th entry value, if n==-1 add a level
+    if (!hp) return;
+    if (n==-1 || n>=symbolic_instructions.size()){
+      symbolic_instructions.push_back(g);
+      n=symbolic_instructions.size()-1;
+    } else symbolic_instructions[n]=g;
+    hp->set_string_value(n,g.print(contextptr));
+    if (exec)
+      eval(n);
+  }
+
+  void  Graph2d::find_xyz(double i,double j,double k,double & x,double & y,double & z) const {
+    if (is3d){ // FIXME
+      int horiz=LCD_WIDTH_PX/2,vert=horiz/2;//LCD_HEIGHT_PX/2;
+      double lcdz= LCD_HEIGHT_PX/4;
+      double xmin=-1,ymin=-1,xmax=1,ymax=1,xscale=0.6*(xmax-xmin)/horiz,yscale=0.6*(ymax-ymin)/vert;
+      double Z=current_depth; // -1..1
+      double I=i-horiz;
+      double J=j-LCD_HEIGHT_PX/2+lcdz*Z;
+      double X=yscale*J-xscale*I;
+      double Y=yscale*J+xscale*I;
+      do_transform(invtransform,X,Y,Z,x,y,z);
+    }
+    else {
+      z=k;
+      x=window_xmin+i*(window_xmax-window_xmin)/LCD_WIDTH_PX;
+      y=window_ymax-j*(window_ymax-window_ymin)/LCD_HEIGHT_PX;
+    }
+  }
+
+  gen geometry_round_numeric(double x,double y,double eps,bool approx){
+    return approx?gen(x,y):exact_double(x,eps)+cst_i*exact_double(y,eps);
+  }
+
+  gen geometry_round_numeric(double x,double y,double z,double eps,bool approx){
+    return gen(approx?makevecteur(x,y,z):makevecteur(exact_double(x,eps),exact_double(y,eps),exact_double(z,eps)),_POINT__VECT);
+  }
+
+  gen int2color(int couleur_){
+    gen col;
+    if (couleur_){
+      gen tmp;
+      int val;
+      vecteur colv;
+      if ( (val=(couleur_ & 0x0000ffff))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x00070000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x00380000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x01c00000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x0e000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x30000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x40000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x80000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if (colv.size()==1)
+	col=colv.front();
+      else
+	col=symbolic(at_plus,gen(colv,_SEQ__VECT));
+    }
+    return col;
+  }
+
+  std::string print_color(int couleur){
+    return int2color(couleur).print(context0);
+  }
+
+  giac::gen add_attributs(const giac::gen & g,int couleur_,GIAC_CONTEXT) {
+    if (g.type!=_SYMB)
+      return g;
+    gen & f=g._SYMBptr->feuille;
+    if (g._SYMBptr->sommet==at_couleur && f.type==_VECT && !f._VECTptr->empty()){
+      gen col=couleur_;
+      col.subtype=_INT_COLOR;
+      vecteur v(*f._VECTptr);
+      v.back()=col;
+      return symbolic(at_couleur,gen(v,_SEQ__VECT));
+    }
+    if (couleur_==default_color(contextptr))
+      return g;
+    if (g._SYMBptr->sommet==at_of){
+      gen col=couleur_;
+      col.subtype=_INT_COLOR;
+      return symbolic(at_couleur,gen(makevecteur(g,col),_SEQ__VECT));
+    }
+    vecteur v =gen2vecteur(f);
+    gen col=int2color(couleur_);
+    v.push_back(symbolic(at_equal,gen(makevecteur(at_display,col),_SEQ__VECT)));
+    return symbolic(g._SYMBptr->sommet,(v.size()==1 && f.type!=_VECT)?f:gen(v,f.type==_VECT?f.subtype:_SEQ__VECT));
+  }
+
+  void Graph2d::do_handle(const gen & g){
+    if (hp){
+      set_gen_value(hp_pos,g,true);
+    }
+  }
+
+  void Graph2d::set_mode(const giac::gen & f_tmp,const giac::gen & f_final,int m,const string & help){
+    approx=true;
+    mode=m;
+    selected.clear();
+    redraw();
+    args_help.clear();
+    if (mode!=0 && mode!=255){
+      int oldmode=calc_mode(contextptr);
+      calc_mode(0,contextptr);
+      gen g(help,contextptr);
+      calc_mode(oldmode,contextptr);
+      if (g.type==_VECT){
+	const_iterateur it = g._VECTptr->begin(),itend=g._VECTptr->end();
+	for (;it!=itend;++it)
+	  args_help.push_back(it->print(contextptr));
+      }
+      else
+	args_help.push_back(g.print(contextptr));
+    }
+    if (mode==255)
+      modestr=gettext("Frame");
+    else
+      modestr=mode?gen2string(f_final):gettext("Pointer");
+    if (mode>=-1){
+      pushed=false;
+      moving_param=moving=moving_frame=false;
+      // history_pos=-1;
+      mode=m;
+      function_final=f_final;
+      function_tmp=f_tmp;
+      args_tmp.clear();
+      geo_handle(FL_MOVE,0);
+      update_g();
+    }
+  }
+
+  vecteur Graph2d::selection2vecteur(const vector<int> & v){
+    int n=v.size();
+    vecteur res(n);
+    for (int i=0;i<n;++i){
+      res[i]=plot_instructions[v[i]];
+    }
+    return res;
+  }
+
+  int findfirstclosedcurve(const vecteur & v){
+    int s=v.size();
+    for (int i=0;i<s;++i){
+      gen g=remove_at_pnt(v[i]);
+      if (g.is_symb_of_sommet(at_cercle))
+	return i;
+      if (g.type==_VECT && g.subtype==_GROUP__VECT){
+	vecteur & w=*g._VECTptr;
+	if (!w.empty() && w.front()==w.back())
+	  return i;
+      }
+    }
+    return -1;
+  }
+
+  void Graph2d::geometry_round(double x,double y,double z,double eps,gen & tmp,GIAC_CONTEXT)  {
+    tmp=is3d?geometry_round_numeric(x,y,z,eps,approx):geometry_round_numeric(x,y,eps,approx);
+    selected=nearest_point(plot_instructions,is3d?geometry_round_numeric(x,y,z,eps,true):geometry_round_numeric(x,y,eps,true),eps,contextptr);
+    // bug bonux: when a figure is saved, plot_instructions is saved
+    // if there are sequences in plot_instructions
+    // they are not put back in an individual level
+    while (!selected.empty() && selected.back()>=hp->elements.size())
+      selected.pop_back();
+  }
+
+  gen Graph2d::geometry_round(double x,double y,double z,double eps,gen & original,int & pos,bool selectfirstlevel,bool setscroller) {
+    if (!hp)
+      return undef;
+    gen tmp;
+    pos=-1;
+    geometry_round(x,y,z,eps,tmp,contextptr);
+    if (selected.empty())
+      return tmp;
+    if (function_final==at_areaatraw || function_final==at_areaat || function_final==at_perimeteratraw || function_final==at_perimeterat){
+      int p=findfirstclosedcurve(selection2vecteur(selected));
+      if (p>0){
+	pos=p;
+      }
+    }
+    if (pos==-1){
+      if (selectfirstlevel){
+	sort(selected.begin(),selected.end());
+	// patch so that we move element and not the curve
+	int p=findfirstpoint(selection2vecteur(selected));
+	if (p>0){
+	  pos=p;
+	}
+      }
+      else
+	pos=findfirstpoint(selection2vecteur(selected));
+    }
+    gen g=symbolic_instructions[ (pos<0)?(pos=selected.front()):(pos=selected[pos]) ];
+    if (pos>=0 && pos<hp->elements.size()){
+      // hp->_sel_begin=hp->_sel_end=pos;
+      // if (setscroller) hp->line=pos;
+    }
+    if (g.is_symb_of_sommet(at_plus) && g._SYMBptr->feuille.type==_VECT && !g._SYMBptr->feuille._VECTptr->empty())
+      g=g._SYMBptr->feuille._VECTptr->front();
+    if (g.is_symb_of_sommet(at_sto) && g._SYMBptr->feuille.type==_VECT ){
+      vecteur & v = *g._SYMBptr->feuille._VECTptr;
+      if (v.size()==2){
+	original = v[0];
+	tmp = v[1];
+	if (tmp.type==_IDNT){
+	  gen valeur=protecteval(original,1,contextptr);
+	  if (valeur.is_symb_of_sommet(at_pnt)){
+	    gen & valf = valeur._SYMBptr->feuille;
+	    if (valf.type==_VECT){
+	      vecteur & valv = *valf._VECTptr;
+	      int s=v.size();
+	      if (s>1){
+		gen valv1=valv[1];
+		if (valv1.type==_VECT && valv1._VECTptr->size()>2){
+		  tmp=symbolic(at_extract_measure,v[1]);
+		}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+    return tmp;
+  }
+
+  void Graph2d::autoname_plus_plus(){
+    if (hp){
+      string s=autoname(contextptr);
+      giac::autoname_plus_plus(s);
+      autoname(s,contextptr);
+    }
+  }
+  
+  int Graph2d::geo_handle(int event,int key){
+    double eps=find_eps();
+    int pos;
+    gen tmp,tmp2,decal;
+    if (event==FL_PUSH)
+      moving_param=false;
+    if ( pushed && !moving && !moving_frame && mode ==0 && in_area && event==FL_DRAG){
+      // FIXME? redraw();
+      return 1;
+    }
+    if (mode>=2 && event==FL_MOVE && args_tmp.size()>mode)
+      event=FL_RELEASE;
+    if ( in_area && ((mode!=1 && event==FL_DRAG) || event==FL_PUSH || event==FL_RELEASE || (mode>=2 && event==FL_MOVE)) ){
+      double newx,newy,newz;
+      find_xyz(current_i,current_j,current_depth,newx,newy,newz);
+      round3(newx,window_xmin,window_xmax);
+      round3(newy,window_ymin,window_ymax);
+      if (is3d)
+	round3(newz,window_zmin,window_zmax);
+      tmp=geometry_round(newx,newy,newz,eps,tmp2,pos,mode==0 || (args_tmp.size()==mode && function_final.type==_FUNC && equalposcomp(transformation_functions,*function_final._FUNCptr)),event==FL_RELEASE);
+      if (tmp.type!=_IDNT && !tmp.is_symb_of_sommet(at_extract_measure)){
+	bool done=false;
+	if (mode==0 && event==FL_PUSH && current_i<192 && current_j<14*nparams+21){
+	  double d=current_j/14.-1;
+	  vecteur vp=param(d);
+	  if (vp.size()==2){
+	    tmp=vp[0][0];
+	    tmp2=vp[0];
+	    pos=vp[1].val;
+	    done=moving_param=true;
+	    param_min=evalf_double(tmp2[1],1,contextptr)._DOUBLE_val;
+	    param_max=evalf_double(tmp2[2],1,contextptr)._DOUBLE_val;
+	    param_step=evalf_double(tmp2[4],1,contextptr)._DOUBLE_val;
+	    param_orig=param_value=evalf_double(tmp2[3],1,contextptr)._DOUBLE_val;
+	  }
+	}
+	if (!done){
+	  if (tmp.type==_VECT && tmp._VECTptr->size()==3){
+	    tmp.subtype=_SEQ__VECT;
+	    tmp=symbolic(at_point,tmp);
+	  }
+	  else
+	    tmp=symbolic(at_point,makevecteur(re(tmp,contextptr),im(tmp,contextptr)));
+	}
+      }
+    }
+    double newx,newy,newz;
+    if (is3d){
+      double x1,y1,z1,x2,y2,z2;
+      find_xyz(current_i,current_j,current_depth,x1,y1,z1);
+      find_xyz(push_i,push_j,push_depth,x2,y2,z2);
+      newx=x1-x2; newy=y1-y2; newz=z1-z2;
+    } else {
+      int dw=LCD_WIDTH_PX,dh=LCD_HEIGHT_PX;
+      double dx=window_xmax-window_xmin;
+      double dy=window_ymax-window_ymin;
+      double x_scale=dx/dw,y_scale=dy/dh;
+      newx=(current_i-push_i)*x_scale;
+      newy=(push_j-current_j)*y_scale;
+      newz=0;
+    }
+    round3(newx,window_xmin,window_xmax);
+    round3(newy,window_ymin,window_ymax);      
+    if (is3d){
+      round3(newz,window_zmin,window_zmax);
+      decal=in_area?geometry_round_numeric(newx,newy,newz,eps,approx):0;
+      if (decal.type==_VECT && decal.subtype==_POINT__VECT)
+	decal.subtype=0;
+    }
+    else
+      decal=in_area?geometry_round_numeric(newx,newy,eps,approx):0;
+    // cerr << in_area << " " << decal << '\n';
+    if (mode==0 || mode==255) {
+      if (event==FL_PUSH){ 
+	// select object && flag to move it 
+	if (mode==0 && pos>=0){
+	  if (tmp.type==_IDNT){
+	    drag_original_value=tmp2;
+	    drag_name=tmp;
+	  }
+	  else {
+	    drag_original_value=symbolic_instructions[pos];
+	    drag_name=0;
+	  }
+	  hp_pos=pos;
+	  moving = true;
+	}
+	else { // nothing selected, move frame
+	  if (!(display_mode & 0x80)) // disabled by default in 3-d 
+	    moving_frame=true;
+	}
+	return 1;
+      }
+      if (moving_frame && (event==FL_DRAG || event==FL_RELEASE) ){
+	window_xmin -= newx;
+	window_xmax -= newx;
+	window_ymin -= newy;
+	window_ymax -= newy;
+	window_zmin -= newz;
+	window_zmax -= newz;
+	push_i = current_i;
+	push_j = current_j;
+	push_depth = current_depth;
+	redraw();
+	if (event==FL_RELEASE)
+	  moving_frame=false;
+	return 1;
+      }
+      if (mode==255)
+	return 0;
+      if (moving_param && (event==FL_DRAG || event==FL_RELEASE) ){
+	// key ->
+	if (key==KEY_CTRL_EXIT)
+	  param_value=param_orig;
+	double ps=param_step;
+	if (ps<=0)
+	  ps=(param_max-param_min)/100;
+	if (key==KEY_CTRL_LEFT)
+	  param_value -= ps;
+	if (key==KEY_SHIFT_LEFT)
+	  param_value -= 10*ps;
+	if (key==KEY_CTRL_RIGHT)
+	  param_value += ps;
+	if (key==KEY_SHIFT_RIGHT)
+	  param_value += 10*ps;
+	if (param_value<param_min)
+	  param_value=param_min;
+	if (param_value>param_max)
+	  param_value=param_max;
+	current_i=64+128*(param_value-param_min)/(param_max-param_min);
+	if (param_step<=0)
+	  do_handle(symbolic(at_assume,symb_equal(drag_name,param_value)));
+	else {
+	  gen newval=symbolic(at_element,makesequence(symb_interval(param_min,param_max),param_value));
+	  do_handle(symbolic(at_sto,makevecteur(newval,drag_name)));
+	}
+	if (event==FL_RELEASE){
+	  moving_param=moving=false;
+	}
+	return 1;
+      }
+      if (moving && (event==FL_DRAG || event==FL_RELEASE) ){
+	// cerr << current_i << " " << current_j << '\n';
+	// avoid point()+complex+complex+complex
+	gen newval=drag_original_value;
+	if (in_area && key!=KEY_CTRL_EXIT){
+	  if (drag_original_value.is_symb_of_sommet(at_plus) && drag_original_value._SYMBptr->feuille.type==_VECT && drag_original_value._SYMBptr->feuille._VECTptr->size()>=2){
+	    vecteur v=*drag_original_value._SYMBptr->feuille._VECTptr;
+	    if (v[1].is_symb_of_sommet(at_nop))
+	      v[1]=v[1]._SYMBptr->feuille;
+	    newval=symbolic(at_plus,makevecteur(v[0],symbolic(at_nop,ratnormal(_plus(vecteur(v.begin()+1,v.end()),contextptr)+decal))));
+	  }
+	  else {
+	    newval=is_zero(decal)?drag_original_value:symbolic(at_plus,makevecteur(drag_original_value,symbolic(at_nop,decal)));
+	  }
+	}
+	int dclick = 0 || drag_original_value.type==_VECT;
+	if (!dclick){
+	  if (drag_name.type==_IDNT)
+	    do_handle(symbolic(at_sto,makevecteur(newval,drag_name)));
+	  else
+	    do_handle(newval);
+	}
+	if (event==FL_RELEASE)
+	  moving=false;
+	selected.clear();
+	redraw();
+	return 1;
+      }
+      return 0;
+    }
+    selected.clear();
+    if (mode==1){
+      if (function_final!=at_point){
+	if (event==FL_RELEASE){
+	  string args=autoname(contextptr)+":=";
+	  if (function_final.type==_FUNC)
+	    args += function_final._FUNCptr->ptr()->s;
+	  args +="(";
+	  if (function_final==at_plotode)
+	    args += fcnfield + "," + fcnvars + "," +tmp.print(contextptr) + ",plan)";
+	  else
+	    args += tmp.print(contextptr) + ")";
+	  autoname_plus_plus();
+	  set_gen_value(-1,gen(args,contextptr),true);
+	}
+	if (event==FL_PUSH || event==FL_DRAG || event==FL_RELEASE)
+	  return 1;
+	return 0;
+      }
+      // point|segment mode
+      if (event==FL_RELEASE){
+	hp_pos=-1;
+	if (hp && !args_tmp.empty() && (std::abs(push_i-current_i)>npixels || std::abs(push_j-current_j)>npixels || (is3d && std::abs(push_depth-current_depth) >0)) ){
+	  // make a segment
+	  gen val1,val2;
+	  if (in_area && args_tmp.front().is_symb_of_sommet(at_point)){
+	    val1=gen(autoname(contextptr),contextptr);
+	    // put in last history pack level
+	    set_gen_value(-1,symbolic(at_sto,makevecteur(add_attributs(args_tmp.front(),couleur,contextptr),val1)),false);
+	    hp_pos=hp->elements.size()-1;
+	    autoname_plus_plus();
+	  }
+	  else 
+	    val1=args_tmp.front();
+	  if (in_area && tmp.is_symb_of_sommet(at_point)){
+	    val2=gen(autoname(contextptr),contextptr);
+	    gen tmp3=symbolic(at_sto,makevecteur(add_attributs(tmp,couleur,contextptr),val2));
+	    set_gen_value(-1,tmp3,false);
+	    if (hp_pos<0) hp_pos=hp->elements.size()-1;
+	    autoname_plus_plus();
+	  }
+	  else 
+	    val2=tmp;
+	  if (in_area){
+	    gen tmp3=add_attributs(symbolic(at_segment,makevecteur(val1,val2)),couleur,contextptr);
+	    string v1v2=val1.print(contextptr)+val2.print(contextptr);
+	    gen g1g2(v1v2,contextptr);
+	    if (g1g2.type!=_IDNT)
+	      g1g2=gen(v1v2+"_",contextptr);
+	    tmp3=symbolic(at_sto,makevecteur(tmp3,g1g2));
+	    set_gen_value(-1,tmp3,false);
+	    if (hp_pos<0) hp_pos=hp->elements.size()-1;
+	    eval(hp_pos);
+	  }
+	  return 1;
+	}
+	if (in_area && tmp.type!=_IDNT)
+	  do_handle(symbolic(at_sto,makevecteur(add_attributs(tmp,couleur,contextptr),gen(autoname(contextptr),contextptr))));
+	// element
+	if (tmp.type==_IDNT && tmp2.type==_SYMB && !equalposcomp(point_sommet_tab_op,tmp2._SYMBptr->sommet)){
+	  // tmp2 is the geo object, find parameter value
+	  double newx,newy,newz;
+	  find_xyz(current_i,current_j,current_depth,newx,newy,newz);
+	  round3(newx,window_xmin,window_xmax);
+	  round3(newy,window_ymin,window_ymax);
+	  gen t=projection(evalf(tmp2,1,contextptr),gen(newx,newy),contextptr);
+	  if (is_undef(t))
+	    return 0;
+	  gen tmp3=symbolic(at_element,( (t.type<_IDNT || t.type==_VECT)?gen(makevecteur(tmp,t),_SEQ__VECT):tmp));
+	  tmp3=symbolic(at_sto,makevecteur(add_attributs(tmp3,couleur,contextptr),gen(autoname(contextptr),contextptr)));
+	  set_gen_value(-1,tmp3,false);
+	  if (hp_pos<0) hp_pos=hp->elements.size()-1;
+	  eval(hp_pos);
+	}
+	return 1;
+      }
+      if (event==FL_PUSH){
+	args_tmp=vecteur(1,tmp);
+	return 1;
+      }
+      if (event==FL_DRAG){
+	redraw();
+	return 1;
+      }
+      return 0;
+    }
+    gen tmpval=remove_at_pnt(tmp.eval(1,contextptr));
+    gen somm=symbolic(at_sommets,tmp);
+    int npoints=1;
+    if (!equalposcomp(nosplit_polygon_function,*function_final._FUNCptr)){
+      if (tmpval.type==_VECT && tmpval.subtype==_GROUP__VECT)
+	npoints=tmpval._VECTptr->size();
+      if (tmpval.is_symb_of_sommet(at_cercle))
+	npoints=is3d?3:2;
+    }
+    unsigned args_size=args_tmp.size();
+    // mode>=2
+    if (event==FL_MOVE || event==FL_DRAG || event==FL_RELEASE || event==FL_PUSH){
+      if (args_size<args_tmp_push_size)
+	args_tmp_push_size=args_size;
+      args_tmp.erase(args_tmp.begin()+args_tmp_push_size,args_tmp.end());
+    }
+    unsigned new_args_size=args_tmp.size();
+    gen tmp_push=tmp;
+    bool swapargs=false;
+    if (npoints==2 && (new_args_size==2 || new_args_size==1) && (function_final==at_angleat || function_final==at_angleatraw) ){
+      // search if args_tmp[0] or args_tmp[1] is a vertex of tmp
+      gen tmp2=remove_at_pnt(evalf(tmp,1,contextptr));
+      gen somm=symbolic(at_sommets,tmp);
+      if (tmp2.type==_VECT && tmp2._VECTptr->size()==2){
+	gen tmpa=remove_at_pnt(evalf(args_tmp[0],1,contextptr));
+	gen tmpb=new_args_size==2?remove_at_pnt(evalf(args_tmp[1],1,contextptr)):undef;
+	if (npoints==2 && tmpa==tmp2._VECTptr->front() && tmpb!=tmp2._VECTptr->back()){
+	  tmp=symbolic(at_at,gen(makevecteur(somm,1),_SEQ__VECT));
+	  npoints=1;
+	}
+	if (npoints==2 && tmpa==tmp2._VECTptr->back() && tmpb!=tmp2._VECTptr->front()){
+	  tmp=symbolic(at_at,gen(makevecteur(somm,0),_SEQ__VECT));
+	  npoints=1;
+	}
+	if (npoints==2 && tmpb==tmp2._VECTptr->front() && tmpa!=tmp2._VECTptr->back() ){
+	  swapargs=true;
+	  tmp=symbolic(at_at,gen(makevecteur(somm,1),_SEQ__VECT));
+	  npoints=1;
+	}
+	if (npoints==2 && tmpb==tmp2._VECTptr->back() && tmpa!=tmp2._VECTptr->front()){
+	  swapargs=true;
+	  tmp=symbolic(at_at,gen(makevecteur(somm,0),_SEQ__VECT));
+	  npoints=1;
+	}
+      }
+    }
+    if (npoints+args_tmp.size()>mode)
+      npoints=1;
+    if (event==FL_MOVE || event==FL_DRAG || event==FL_RELEASE){
+      if (args_size && args_tmp_push_size && args_push!=tmp_push){
+	// replace by current mouse position
+	if (npoints==1)
+	  args_tmp.push_back(tmp);
+	else {
+	  gen somm=symbolic(at_sommets,tmp);
+	  for (int i=0;i<npoints;++i){
+	    args_tmp.push_back(symbolic(at_at,gen(makevecteur(somm,i),_SEQ__VECT)));
+	  }
+	}
+	redraw();
+	if (event!=FL_RELEASE || (abs(push_i-current_i)<=5 && abs(push_j-current_j)<=5))
+	  return 1;
+      }
+    }
+    if (event==FL_PUSH){
+      if (swapargs)
+	swapgen(args_tmp[0],args_tmp[1]);
+      args_push=tmp_push;
+      if (npoints==1)
+	args_tmp.push_back(tmp);
+      else {
+	for (int i=0;i<npoints;++i){
+	  args_tmp.push_back(symbolic(at_at,gen(makevecteur(somm,i),_SEQ__VECT)));
+	}
+      }
+      args_tmp_push_size=args_tmp.size();
+      redraw();
+      return 1;
+    }
+    if (event==FL_RELEASE){
+      int s=args_tmp.size();
+      args_tmp_push_size=s;
+      if (mode>1 && s>=mode){
+	if (s>mode){ 
+	  args_tmp=vecteur(args_tmp.begin(),args_tmp.begin()+mode);
+	  s=mode;
+	}
+	gen tmp_plot;
+	if (in_area && function_final.type==_FUNC) {
+	  gen res,objname=gen(autoname(contextptr),contextptr);
+	  hp_pos=hp->elements.size();
+	  if (hp_pos && hp->elements[hp_pos-1].s.empty())
+	    --hp_pos;
+	  // hp->update_pos=hp_pos;
+	  int pos0=hp_pos;
+	  unary_function_ptr * ptr=function_final._FUNCptr;
+	  int ifinal=mode;
+	  if (equalposcomp(measure_functions,*ptr))
+	    ifinal--;
+	  // first replace points in args_tmp by assignations
+	  for (int i=0;i<ifinal;++i){
+	    tmp_plot=args_tmp[i];
+	    if (tmp_plot.is_symb_of_sommet(at_point)){
+	      tmp_plot=symbolic(at_sto,makevecteur(add_attributs(tmp_plot,couleur,contextptr),objname));
+	      args_tmp[i]=objname;
+	      set_gen_value(hp_pos,tmp_plot,false);
+	      add_entry(hp_pos+1);
+	      ++hp_pos;
+	      autoname_plus_plus();
+	      objname=gen(autoname(contextptr),contextptr);
+	    }
+	  }
+	  vecteur argv=args_tmp;
+	  if (*ptr==(is3d?at_sphere:at_cercle)){
+	    gen argv1;
+#ifdef NO_STDEXCEPT
+	    argv1=evalf(args_tmp.back(),1,contextptr);
+	    argv1=evalf_double(argv1,1,contextptr);
+#else
+	    try {
+	      argv1=evalf(args_tmp.back(),1,contextptr);
+	      argv1=evalf_double(argv1,1,contextptr);
+	    }
+	    catch (std::runtime_error & e){
+	      argv1=undef;
+	    }
+#endif
+	    if (argv1.is_symb_of_sommet(at_pnt) ||argv1.type==_IDNT){
+	      argv1=remove_at_pnt(argv1);
+	      if ( (argv1.type==_VECT && argv1.subtype==_POINT__VECT) || argv1.type==_CPLX || argv1.type==_IDNT)
+	      argv.back()=args_tmp.back()-args_tmp.front();
+	    }
+	  }
+	  tmp_plot=symbolic(*ptr,gen(argv,_SEQ__VECT));
+#ifdef NO_STDEXCEPT
+	  res=evalf(tmp_plot,1,contextptr);
+#else
+	  try {
+	    res=evalf(tmp_plot,1,contextptr);
+	  }
+	  catch (std::runtime_error & err){
+	    res=undef;
+	  }
+#endif
+	  tmp_plot=symbolic(at_sto,makevecteur(add_attributs(tmp_plot,couleur,contextptr),objname));
+	  set_gen_value(hp_pos,tmp_plot,false);
+	  add_entry(hp_pos+1);
+	  ++hp_pos;
+	  if (res.is_symb_of_sommet(at_pnt)){
+	    res=remove_at_pnt(res);
+	    int ns=0;
+	    if (res.type==_VECT && res.subtype==_GROUP__VECT && (ns=res._VECTptr->size())>2){
+	      vecteur l;
+	      if (res._VECTptr->back()==res._VECTptr->front())
+		--ns;
+	      if (function_final.type==_FUNC && equalposcomp(transformation_functions,*function_final._FUNCptr)){
+		vecteur argv;
+		gen objn,som=symbolic(at_sommets,objname);
+		for (int i=1;i<=ns;++i){
+		  tmp_plot=symbolic(at_at,gen(makevecteur(som,i-1),_SEQ__VECT));
+		  objn=gen(autoname(contextptr)+print_INT_(i),contextptr);
+		  argv.push_back(objn);
+		  set_gen_value(hp_pos,symbolic(at_sto,gen(makevecteur(tmp_plot,objn),_SEQ__VECT)),false);
+		  add_entry(hp_pos+1);
+		  ++hp_pos;
+		}
+		for (int i=1;i<=ns;++i){
+		  tmp_plot=symbolic(at_segment,makevecteur(argv[i-1],argv[i%ns]));
+		  set_gen_value(hp_pos,symbolic(at_sto,makevecteur(add_attributs(tmp_plot,couleur,contextptr),gen(autoname(contextptr)+print_INT_(ns+i),contextptr))),false);
+		  add_entry(hp_pos+1);
+		  ++hp_pos;
+		}		
+	      }
+	      else {
+		for (int i=mode;i<ns;++i){
+		  tmp_plot=symb_at(
+				   symbolic(at_sommets,gen(autoname(contextptr),contextptr))
+				   ,i,contextptr);
+		  gen newname=gen(autoname(contextptr)+print_INT_(i),contextptr);
+		  set_gen_value(hp_pos,symbolic(at_sto,makevecteur(tmp_plot,newname)),false);
+		  args_tmp.push_back(newname);
+		  add_entry(hp_pos+1);
+		  ++hp_pos;
+		}
+		for (int i=1;i<=ns;++i){
+		  tmp_plot=symbolic(at_segment,makevecteur(args_tmp[i-1],args_tmp[i%ns]));
+		  set_gen_value(hp_pos,symbolic(at_sto,makevecteur(add_attributs(tmp_plot,couleur,contextptr),gen(autoname(contextptr)+print_INT_(ns+i),contextptr))),false);
+		  add_entry(hp_pos+1);
+		  ++hp_pos;
+		}
+	      }
+	    } // if res.type==_VECT
+	  }
+	  autoname_plus_plus();
+	  // hp->undo_position=save_undo_position;
+	  eval(pos0);
+	}
+	args_tmp.clear();
+	args_tmp_push_size=0;
+      }
+      redraw();
+      return 1;
+    }
+    return 0;
+  }
+
+  void geosave(textArea * text,GIAC_CONTEXT){
+    string s=remove_extension(text->filename);
+    gen tmp(s,contextptr);
+    if (tmp.type==_IDNT){
+      sto(makevecteur(at_pnt,string2gen(merge_area(text->elements),false)),tmp,contextptr);
+      return;
+    }
+    else {
+      for (int i=0;i<10;++i){
+	string s1=s+print_INT_(i);
+	tmp=gen(s1,contextptr);
+	if (tmp.type==_IDNT){
+	  confirm(lang==1?"Nom de sauvegarde reserve":"Unable to use reserved name",((lang==1?"Nom utilise ":"Name used ")+s1).c_str());
+	  sto(makevecteur(at_pnt,string2gen(merge_area(text->elements),false)),tmp,contextptr);
+	  return;
+	}
+      }
+    }
+    confirm(lang==1?"Nom de sauvegarde reserve":"Unable to use reserved name",lang==1?"Sauvegarde impossible":"Unable to save");
+  }
+
+  void geohelp(GIAC_CONTEXT){
+    textArea text;
+    text.editable=false;
+    text.clipline=-1;
+    text.title = (char*)((lang==1)?"Aide":"Help");
+    text.allowF1=false;
+    text.python=false;
+    add(&text,lang==1?
+	"haut/bas/droit/gauche: change point de vue\ny^x ou e^x: trace 3d precis\nEsc/Back: quitte ou interrompt le trace 3d en cours\n( et ): modifie le rendu des surfaces raides 3d\n0: surfaces cachees 3d ON/OFF\n.: remplissage surface 3d raide ON/OFF\n5 reset 3d view\n7,8,9,1,2,3: deplacement 3d\n\nGeometrie\nF4: change le mode\nLe mode repere (shift 7) permet de changer le point de vue\nLe mode pointeur (shift 8) permet de bouger un objet et les objets dependants avec enter/OK et les touches de deplacement\nLes autres modes permettent de creer des objets\nEsc/Back: permet de passer en vue symbolique et de creer/modifier des objets par des commandes, taper enter/OK pour revenir en vue graphique\n4,6: modifie la profondeur du clic":
+	"up/down/right/left: modify viewpoint\nEsc/Back: leave or interrupt 3d rendering\ny^x or e^x: precise 3d\n( and ): modify stiff surfaces 3d rendering\n0: hidden 3d surfaces ON/OFF\n.: fill stiff 3d surfacesON/OFF\n5 reset 3d view\n7,8,9,1,2,3: move 3d view\n\nGeometry\nF4: change geometry mode\nFrame mode (shift F1): modify viewpoint\nPointer mode (shift F2): select an object and move it with enter/OK and cursor keys\nOther modes: create an object\nEsc/Back: go to symbolic view where you can create/modify objects with commands, press enter/OK to go back to graphic view");
+    int exec=doTextArea(&text,contextptr);
+  }
+
+  string inputparam(char curname,int symbolic,GIAC_CONTEXT){
+    Menu paramenu;
+    paramenu.numitems=7;
+    MenuItem paramenuitems[paramenu.numitems];
+    paramenu.items=paramenuitems;
+    paramenu.height=8;
+    paramenu.title = (char *)"Parameter";
+    char menu_xcur[32],menu_xmin[32],menu_xmax[32],menu_xstep[32],menu_name[16]="name a";
+    menu_name[5]=curname;
+    double pcur=0,pmin=-5,pmax=5,pstep=0.1;
+    std::string s;
+    bool doit; 
+    for (;;){
+      s="cur "+giac::print_DOUBLE_(pcur,contextptr);
+      strcpy(menu_xcur,s.c_str());
+      s="min "+giac::print_DOUBLE_(pmin,contextptr);
+      strcpy(menu_xmin,s.c_str());
+      s="max "+giac::print_DOUBLE_(pmax,contextptr);
+      strcpy(menu_xmax,s.c_str());
+      s="step "+giac::print_DOUBLE_(pstep,contextptr);
+      strcpy(menu_xstep,s.c_str());
+      paramenuitems[0].text = (char *) "OK";
+      paramenuitems[1].text = (char *) menu_name;
+      paramenuitems[2].text = (char *) menu_xcur;
+      paramenuitems[3].text = (char *) menu_xmin;
+      paramenuitems[4].text = (char *) menu_xmax;
+      paramenuitems[5].text = (char *) menu_xstep;
+      paramenuitems[6].text = (char *) "Symbolic";      
+      paramenuitems[6].type = MENUITEM_CHECKBOX;
+      paramenuitems[6].value = symbolic;
+      int sres = doMenu(&paramenu);
+      doit = sres==MENU_RETURN_SELECTION  || sres==KEY_CTRL_EXE;
+      if (doit) {
+	std::string s1; double d;
+	if (paramenu.selection==2){
+	  handle_f5();
+	  if (inputline(menu_name,(lang==1)?"Nouvelle valeur?":"New value?",s1,false)==KEY_CTRL_EXE && s1.size()>0 && isalpha(s1[0])){
+	    if (s1.size()>10)
+	      s1=s1.substr(0,10);
+	    strcpy(menu_name,("name "+s1).c_str());
+	  }
+	  continue;
+	}	
+	if (paramenu.selection==3){
+	  inputdouble(menu_xcur,pcur,contextptr);
+	  continue;
+	}
+	if (paramenu.selection==4){
+	  inputdouble(menu_xmin,pmin,contextptr);
+	  continue;
+	}
+	if (paramenu.selection==5){
+	  inputdouble(menu_xmax,pmax,contextptr);
+	  continue;
+	}
+	if (paramenu.selection==6){
+	  inputdouble(menu_xstep,pstep,contextptr);
+	  pstep=fabs(pstep);
+	  continue;
+	}
+	if (paramenu.selection==7){
+	  symbolic=1-symbolic;
+	  continue;
+	}
+	// if (paramenu.selection==6) break;
+      } // end menu
+      break;
+    } // end for (;;)
+    if (doit && pmin<pmax && pstep>0){
+      if (symbolic){
+	s="assume(";
+	s += (menu_name+5);
+	s += "=[";
+	s += (menu_xcur+4);
+	s += ',';
+	s += (menu_xmin+4);
+	s += ',';
+	s += (menu_xmax+4);
+	s += ',';
+	s += (menu_xstep+5);
+	s += "])";
+      }
+      else {
+	s=(menu_name+5);
+	s += ":=element(";
+	s += (menu_xmin+4);
+	s += "..";
+	s += (menu_xmax+4);
+	s += ',';
+	s += (menu_xcur+4);
+	s += ")";
+      }
+    } else s="";
+    return s;
+  }  
+
+  int Graph2d::ui(){
+    Graph2d & gr=*this;
+    // UI
     int saveprecision=gr.precision;
     gr.precision += 2; // fast draw first
     gr.draw();
     gr.precision=saveprecision;    
-    bool redraw=true;
+    gr.must_redraw=true;
+#ifdef NSPIRE_NEWLIB
+    const char * msg="+-: zoom, pad: move, esc: quit";
+#else
+    const char * msg="+-: zoom, pad: move, EXIT: quit";
+#endif
+    DefineStatusMessage((char *)msg,1,0,0);
+    DisplayStatusArea();
     for (;;){
       int saveprec=gr.precision;
       if (gr.doprecise){
 	gr.doprecise=false;
 	gr.precision=1;//gr.precision-=2;
       }
-      if (redraw)
+      if (gr.must_redraw)
 	gr.draw();
-      redraw=true;
+      if (hp){
+	string msg=hp->filename+":"+(mode==255?" Frame. Shift-1: help":modestr);
+	// help
+	int help_pos=args_tmp.empty()?0:args_tmp.size()-1;
+	if (help_pos<args_help.size()){
+	  msg += " "+args_help[help_pos];
+	}
+	DefineStatusMessage((char *)msg.c_str(),1,0,0);
+	DisplayStatusArea();
+      }
+      gr.must_redraw=true;
       gr.precision=saveprec;
-      DisplayStatusArea();
+      if (!hp){
 #ifdef NUMWORKS
-      os_draw_string(0,LCD_HEIGHT_PX-STATUS_AREA_PX-17,COLOR_BLACK,COLOR_WHITE,"toolbox: cfg");
+	os_draw_string(0,LCD_HEIGHT_PX-STATUS_AREA_PX-17,COLOR_BLACK,COLOR_WHITE,"home: cfg");
 #else
-      os_draw_string(0,LCD_HEIGHT_PX-STATUS_AREA_PX-17,COLOR_BLACK,COLOR_WHITE,"menu: cfg");
+	os_draw_string(0,LCD_HEIGHT_PX-STATUS_AREA_PX-17,COLOR_BLACK,COLOR_WHITE,"doc: cfg");
 #endif
+      }
       int key=-1;
       GetKey(&key);
       if (key==KEY_SHUTDOWN)
 	return key;
-#if 1
-      if (key==KEY_CTRL_CATALOG || key==KEY_BOOK ){
-	char menu_xmin[32],menu_xmax[32],menu_ymin[32],menu_ymax[32],menu_zmin[32],menu_zmax[32];
+      if (key==KEY_CTRL_F1){
+	geohelp(contextptr);
+	continue;
+      }
+      if (hp){
+	if (key==KEY_CTRL_F7 )
+	  set_mode(0,0,255,"");
+	if (key==KEY_CTRL_F8 )
+	  set_mode(0,0,0,"");
+	if (key==KEY_CTRL_F9 )
+	  set_mode(at_point,at_point,1,"Point");
+	if (key==KEY_CTRL_F10)
+	  set_mode(at_segment,is3d?at_sphere:at_cercle,2,"Center,Point");
+	if (key==KEY_CTRL_F11)
+	  set_mode(at_segment,at_triangle,3,"Point1,Point2,Point3");
+	if (key>='a' && key<='z'){
+	  bool found=false;
+	  char ch=key;
+	  gen tmp=gen(string("")+ch,contextptr);
+	  if (tmp.type==_IDNT){
+	    int pos=0;
+	    for (int i=0;i<plot_instructions.size();++i){
+	      if (plot_instructions[i].is_symb_of_sommet(at_parameter)){
+		gen name=plot_instructions[i]._SYMBptr->feuille[0];
+		++pos;
+		if (name==tmp){
+		  current_j=7+14*pos;
+		  found=true;
+		  break;
+		}
+	      }
+	    }
+	  }
+	  if (found)
+	    continue;
+	  key -= 'a'-'A';
+	}
+	if (key>='A' && key<='Z'){
+	  char ch=key;
+	  gen tmp=gen(string("")+ch,contextptr);
+	  if (tmp.type==_IDNT){
+	    tmp=evalf(tmp,1,contextptr);
+	    if (tmp.is_symb_of_sommet(at_pnt)){
+	      tmp=remove_at_pnt(tmp);
+	      if (tmp.is_symb_of_sommet(at_cercle))
+		tmp=(tmp._SYMBptr->feuille[0]+tmp._SYMBptr->feuille[1])/2;
+	      if (tmp.type==_SYMB)
+		tmp=tmp._SYMBptr->feuille;
+	      if (tmp.type==_VECT && tmp.subtype!=_POINT__VECT && !tmp._VECTptr->empty())
+		tmp=tmp._VECTptr->front();
+	      if (is3d && tmp.type==_VECT && tmp._VECTptr->size()==3 && tmp.subtype==_POINT__VECT){
+		const vecteur & tv=*tmp._VECTptr;
+		gen x=tv[0],y=tv[1],z=tv[2];
+		x=evalf_double(x,1,contextptr); 
+		y=evalf_double(y,1,contextptr); 
+		z=evalf_double(z,1,contextptr);
+		if (x.type==_DOUBLE_ && y.type==_DOUBLE_ && z.type==_DOUBLE_){
+		  double i,j; double3 d3;
+		  xyz2ij(double3(x._DOUBLE_val,y._DOUBLE_val,z._DOUBLE_val),i,j,d3);
+		  current_i=i; current_j=j; current_depth=d3.z;
+		}
+	      }
+	      if (!is3d && (tmp.type==_DOUBLE_ || tmp.type==_CPLX)){
+		double x_scale=LCD_WIDTH_PX/(window_xmax-window_xmin);
+		double y_scale=LCD_HEIGHT_PX/(window_ymax-window_ymin);
+		double i,j;
+		findij(tmp,x_scale,y_scale,i,j,contextptr);
+		current_i=int(i+.5);
+		current_j=int(j+.5);
+		adjust_cursor_point_type();
+		geo_handle(moving?FL_DRAG:FL_MOVE,key);
+		continue;
+	      }
+	    }
+	  }
+	}
+      }
+      if (hp && (key==KEY_CTRL_CATALOG || key==KEY_BOOK )){
+	const char *
+	  tab[]={
+		 lang==1?"Mode repere":"Frame mode", // 0
+		 lang==1?"Pointeur":"Pointer",
+		 lang==1?"Point":"Point", // 2
+		 is3d?"Sphere":"Circle",
+		 lang==1?"Triangle":"Triangle", // 4
+		 lang==1?"Points":"Points",
+		 lang==1?"Droites, plans":"Lines, planes", // 6
+		 lang==1?"Polygone, polyedre":"Polygon, polyhedron",
+		 lang==1?"Cercle, conique, sphere":"Circle, conic, sphere", // 8
+		 lang==1?"Courbe, surface":"Curve, surface", // 9
+		 lang==1?"Curseur":"Cursor", // 10
+		 lang==1?"Transformations":"Transforms",
+		 lang==1?"Mesures":"Mesures", // 12
+		 lang==1?"Effacer trace":"Clear trace", // -1
+		 0};
+	const int s=sizeof(tab)/sizeof(char *);
+	int choix=select_item(tab,"Mode",true);
+	if (choix<0 || choix>s)
+	  continue;
+	if (choix==s-1){
+	  trace_instructions.clear();
+	  update_g();
+	  continue;
+	}
+	if (choix<=4){
+	  gen ftmp[]={0,0,at_point,at_segment,at_segment};
+	  gen ffinal[]={0,0,at_point,is3d?at_sphere:at_cercle,at_triangle};
+	  int mode[]={255,0,1,2,3};
+	  const char * help[]={"","","Point","Center,Point","Point1,Point2,Point3"};
+	  set_mode(ftmp[choix],ffinal[choix],mode[choix],help[choix]);
+	  continue;
+	}
+	draw(); // for small choosebox, we must clean up previous choosebox
+	if (choix==5){ // Points
+	  const char *
+	    tab[]={
+		   lang==1?"Point":"Point",
+		   lang==1?"Milieu":"Middle point",
+		   lang==1?"Centre":"Center",
+		   lang==1?"Intersection unique":"Single intersection",
+		   lang==1?"Liste d'intersections":"List of intersections",
+		   lang==1?"Element":"Element",
+		   0};
+	  const int s=sizeof(tab)/sizeof(char *);
+	  int choix=select_item(tab,"Points",true);
+	  if (choix<0 || choix>s)
+	    continue;
+	  gen ftmp[]={at_point,at_segment,at_centre,at_inter_unique,at_inter,at_element};
+	  gen ffinal[]={at_point,at_milieu,at_centre,at_inter_unique,at_inter,at_element};
+	  int mode[]={1,2,1,2,2,1};
+	  const char * help[]={
+			       "Point",
+			       "Point1,Point2",
+			       "Circle",
+			       "Line1,Line2",
+			       "Curve1,Curve2",
+			       "Curve",
+	  };
+	  set_mode(ftmp[choix],ffinal[choix],mode[choix],help[choix]);
+	  continue;
+	}
+	if (choix==6){ // Droites
+	  const char *
+	    tab[]={
+		   lang==1?"Segment":"Segment", 
+		   lang==1?"Vecteur":"Vector",
+		   lang==1?"Demi-droite":"Halfline",
+		   lang==1?"Droite":"Line",
+		   lang==1?"Plan":"Plane",
+		   lang==1?"Parallele":"Parallel",
+		   lang==1?"Perpendiculaire":"Perpendicular",
+		   lang==1?"Mediatrice":"Perpen_bisector",
+		   lang==1?"Bissectrice":"Bisector",
+		   lang==1?"Mediane":"Median line",
+		   lang==1?"Tangente":"Tangent",
+		   0};
+	  const int s=sizeof(tab)/sizeof(char *);
+	  int choix=select_item(tab,"Droites, segments...",true);
+	  if (choix<0 || choix>s)
+	    continue;
+	  gen ftmp[]={at_segment,at_vector,at_demi_droite,at_droite,at_segment,at_parallele,at_perpendiculaire,at_mediatrice,at_segment,at_segment,at_segment};
+	  gen ffinal[]={at_segment,at_vector,at_demi_droite,at_droite,at_plan,at_parallele,at_perpendiculaire,at_mediatrice,at_bissectrice,at_mediane,at_tangent};
+	  int mode[]={2,2,2,2,2,3,2,2,3,3,2};
+	  const char * help[]={
+			       "Point1,Point2",
+			       "Point1,Point2",
+			       "Point1,Point2",
+			       "Point1,Point2",
+			       "Point1,Point2,Point3",
+			       "Point,Line",
+			       "Point,Line",
+			       "Point1,Point2",
+			       "Sommet_angle,Point2,Point3",
+			       "Sommet_angle,Point2,Point3",
+			       "Curve,Point"
+	  };
+	  set_mode(ftmp[choix],ffinal[choix],mode[choix],help[choix]);
+	  continue;
+	}
+	if (choix==7){ // Polygons
+	  const char *
+	    tab[]={
+		   lang==1?"Triangle":"Triangle",
+		   lang==1?"Triangle equilateral":"Equilateral triangle",
+		   lang==1?"Carre":"Square",
+		   lang==1?"Quadrilatere":"Quadrilateral",
+		   lang==1?"Polygone":"Polygon",
+		   lang==1?"Tetraedre (pyramide)":"Tetrahedron (Pyramid)",
+		   lang==1?"Tetraedre regulier":"Regular tetrahedron",
+		   lang==1?"Cube":"Cube",
+		   lang==1?"Octaedre":"Octahedron",
+		   lang==1?"Dodecaedre":"Dodecahedron",
+		   lang==1?"Icosaedre":"Icosahedron",
+		   0};
+	  const int s=sizeof(tab)/sizeof(char *);
+	  int choix=select_item(tab,"Droites, segments...",true);
+	  if (choix<0 || choix>s)
+	    continue;
+	  gen ftmp[]={at_polygone_ouvert,at_segment,at_segment,at_polygone_ouvert,at_polygone_ouvert,at_polygone_ouvert,at_polygone_ouvert,at_polygone_ouvert,at_polygone_ouvert,at_polygone_ouvert,at_polygone_ouvert};
+	  gen ffinal[]={at_triangle,at_triangle_equilateral,at_carre,at_quadrilatere,at_polygone,at_tetraedre,at_tetraedre,at_cube,at_octaedre,at_dodecaedre,at_icosaedre};
+	  int mode[]={3,2,2,4,5,4,3,3,3,3,3};
+	  int m=mode[choix];
+	  if (choix==4){
+	    double d=5;
+	    if (inputdouble(lang==1?"Nombre de sommets?":"Number of vertices?",d,contextptr) && d==int(d) && d>=3 && d<20){
+	      m=d;
+	    }
+	    else continue;
+	  }
+	  const char * help[]={
+			       "Point1,Point2,Point3",
+			       "Point1,Point2",
+			       "Point1,Point2",
+			       "Point1,Point2,Point3,Point4",
+			       "Point1,Point2,Point3,Point4,Point5",
+			       "Point1,Point2,Point3,Point4",
+			       "Point1,Point2,Point3",
+			       "Point1,Point2,Point3",
+			       "Point1,Point2,Point3",
+			       "Point1,Point2,Point3",
+			       "Point1,Point2,Point3",
+	  };
+	  set_mode(ftmp[choix],ffinal[choix],m,help[choix]);
+	  continue;
+	}
+	if (choix==8){ // Conics
+	  const char *
+	    tab[]={
+		   lang==1?"cercle":"circle",
+		   lang==1?"circonscrit":"circumcircle",
+		   lang==1?"inscrit":"incircle",
+		   lang==1?"ellipse":"ellipse",
+		   lang==1?"hyperbole":"hyperbola",
+		   lang==1?"parabole":"parabola",
+		   lang==1?"sphere":"sphere",
+		   0};
+	  const int s=sizeof(tab)/sizeof(char *);
+	  int choix=select_item(tab,"Conic",true);
+	  if (choix<0 || choix>s)
+	    continue;
+	  gen ftmp[]={at_segment,at_segment,at_segment,at_segment,at_segment,at_segment,at_segment};
+	  gen ffinal[]={at_cercle,at_circonscrit,at_inscrit,at_ellipse,at_hyperbole,at_parabole,at_sphere};
+	  int mode[]={2,3,3,3,3,2,2};
+	  const char * help[]={
+			       "Center,Point",
+			       "Point1,Point2,Point3",
+			       "Point1,Point2,Point3",
+			       "Focus1,Focus2,Point_on_ellipse",
+			       "Focus1,Focus2,Point_on_hyperbola",
+			       "Focus,Point_or_line",
+			       "Center,Point",
+	  };
+	  set_mode(ftmp[choix],ffinal[choix],mode[choix],help[choix]);
+	  continue;
+	}
+	if (choix==9){ // Curves
+	  const char *
+	    tab[]={
+		   lang==1?"Fonction plot(sin(x))":"Function plot(sin(x))",
+		   lang==1?"Param. plotparam([x^2,x^3])":"Param. plotparam([x^2,x^3])",
+		   lang==1?"Polaire plotpolar(x)":"Polar plotpolar(x)",
+		   lang==1?"Implicit plot(x^2+y^4=6)":"Implicit plot(x^2+y^4=6)",
+		   lang==1?"Champ des tangentes":"Plotfield",
+		   lang==1?"Solution equa. diff.":"Diff. equa. solution",
+		   0};
+	  const int s=sizeof(tab)/sizeof(char *);
+	  int choix=select_item(tab,"Courbe",true);
+	  if (choix<0 || choix>s)
+	    continue;
+	  const char * cmd[]={"plot()","plotparam()","plotpolar()","plot()","plotfield()","plotode()"};
+	  hp->line=hp->add_entry(-1);
+	  string mycmd=autoname(contextptr)+":="+cmd[choix];
+	  autoname_plus_plus();
+	  hp->set_string_value(hp->line,mycmd);
+	  hp->pos=mycmd.size()-1;
+	  return KEY_CTRL_OK;
+	}
+	if (choix==10){
+	  gen param=0;
+	  for (char ch='a';ch<='z';++ch){
+	    gen tmp(string("")+ch,contextptr);
+	    if (tmp.type!=_IDNT) continue;
+	    param=tmp.eval(1,contextptr);
+	    if (param==tmp)
+	      break;
+	  }
+	  if (param==0){
+	    confirm(lang==1?"Plus de variables libres.":"No more free variable available",lang==1?"Essayez purge(a) ou purge(b) ou ...":"Try purge(a) or purge(b) or ...");
+	    continue;
+	  }
+	  string mycmd=inputparam(param.print()[0],0,contextptr);
+	  if (!mycmd.empty()){
+	    hp->line=hp->add_entry(-1);
+	    // string mycmd=param.print()+":=element(0..1,0.5)";
+	    // autoname_plus_plus();
+	    hp->set_string_value(hp->line,mycmd);
+	    hp->pos=mycmd.size()-1;
+	  }
+	  return KEY_CTRL_OK;	  
+	}
+	if (choix==11){ // Transforms
+	  const char *
+	    tab[]={
+		   lang==1?"symetrie":"reflexion",
+		   lang==1?"rotation":"rotation",
+		   lang==1?"translation":"translation",
+		   lang==1?"projection":"projection",
+		   lang==1?"homothetie":"homothety",
+		   lang==1?"similitude":"similarity",
+		   // lang==1?"":"",
+		   // lang==1?"":"",
+		   0};
+	  const int s=sizeof(tab)/sizeof(char *);
+	  int choix=select_item(tab,"Transform",true);
+	  if (choix<0 || choix>s)
+	    continue;
+	  gen ftmp[]={at_segment,at_polygone_ouvert,at_segment,at_segment,at_segment,at_polygone_ouvert};
+	  gen ffinal[]={at_symetrie,at_rotation,at_translation,at_projection,at_homothetie,at_similitude};
+	  int mode[]={2,3,2,2,2,3};
+	  const char * help[]={
+			       "Symmetry_center_axis,Object",
+			       "Center,Angle,Object",
+			       "Vector,Object",
+			       "Curve,Object",
+			       "Center,Ratio,Object",
+			       "Center,Ratio,Angle,Object"
+	  };
+	  set_mode(ftmp[choix],ffinal[choix],mode[choix],help[choix]);
+	  continue;
+	}
+	if (choix==12){ // Mesures
+	  const char *
+	    tab[]={
+		   lang==1?"distance":"distance",
+		   lang==1?"angle":"angle",
+		   lang==1?"aire":"area",
+		   lang==1?"perimetre":"perimeter",
+		   lang==1?"pente":"slope",
+		   lang==1?"distance seule":"distance raw",
+		   lang==1?"angle seul":"angle raw",
+		   lang==1?"aire seule":"area raw",
+		   lang==1?"perimetre seul":"perimeter raw",
+		   lang==1?"pente seule":"slope raw",
+		   0};
+	  const int s=sizeof(tab)/sizeof(char *);
+	  int choix=select_item(tab,"Mesures",true);
+	  if (choix<0 || choix>s)
+	    continue;
+	  gen ftmp[]={at_segment,at_triangle,at_areaat,at_perimeterat,at_slopeat,at_segment,at_triangle,at_areaatraw,at_perimeteratraw,at_slopeatraw};
+	  gen ffinal[]={at_distanceat,at_angleat,at_areaat,at_perimeterat,at_slopeat,at_distanceatraw,at_angleatraw,at_areaatraw,at_perimeteratraw,at_slopeatraw};
+	  int mode[]={3,4,2,2,2,3,4,2,2,2};
+	  const char * help[]={
+			       "Object1,Object2,Position",
+			       "Angle_vertex,Direction1,Direction2,Position",
+			       "Object,Position",
+			       "Object,Position",
+			       "Object,Position",
+			       "Object1,Object2,Position",
+			       "Angle_vertex,Direction1,Direction2,Position",
+			       "Object,Position",
+			       "Object,Position",
+			       "Object,Position",
+	  };
+	  set_mode(ftmp[choix],ffinal[choix],mode[choix],help[choix]);
+	  continue;
+	}
+	continue;
+      }      
+
+      if (key==KEY_CTRL_MENU || key==KEY_CTRL_F6){
+	char menu_xmin[32],menu_xmax[32],menu_ymin[32],menu_ymax[32],menu_zmin[32],menu_zmax[32],menu_depth[32];
 	for (;;){
 	  string s;
 	  s="xmin "+print_DOUBLE_(gr.window_xmin,contextptr);
@@ -8672,12 +10693,14 @@ namespace xcas {
 	  strcpy(menu_ymin,s.c_str());
 	  s="ymax "+print_DOUBLE_(gr.window_ymax,contextptr);
 	  strcpy(menu_ymax,s.c_str());
-	  s="zmin "+print_DOUBLE_(gr.window_zmin,contextptr);
+	  s="zmin 3d "+print_DOUBLE_(gr.window_zmin,contextptr);
 	  strcpy(menu_zmin,s.c_str());
-	  s="zmax "+print_DOUBLE_(gr.window_zmax,contextptr);
+	  s="zmax 3d "+print_DOUBLE_(gr.window_zmax,contextptr);
 	  strcpy(menu_zmax,s.c_str());
+	  s="depth 3d "+print_DOUBLE_(gr.current_depth,contextptr);
+	  strcpy(menu_depth,s.c_str());
 	  Menu smallmenu;
-	  smallmenu.numitems=15;
+	  smallmenu.numitems=19;
 	  MenuItem smallmenuitems[smallmenu.numitems];
 	  smallmenu.items=smallmenuitems;
 	  smallmenu.height=12;
@@ -8688,15 +10711,19 @@ namespace xcas {
 	  smallmenuitems[3].text = (char *) menu_ymax;
 	  smallmenuitems[4].text = (char *) menu_zmin;
 	  smallmenuitems[5].text = (char *) menu_zmax;
-	  smallmenuitems[6].text = (char*) "Orthonormalize /";
-	  smallmenuitems[7].text = (char*) "Autoscale *";
-	  smallmenuitems[8].text = (char *) ("Zoom in +");
-	  smallmenuitems[9].text = (char *) ("Zoom out -");
-	  smallmenuitems[10].text = (char *) ("Y-Zoom out (-)");
-	  smallmenuitems[11].text = (char *) ((lang==1)?"raccourcis clavier":"3d shortcuts");
-	  smallmenuitems[12].text = (char*) ((lang==1)?"Voir axes":"Show axes");
-	  smallmenuitems[13].text = (char*) ((lang==1)?"Cacher axes":"Hide axes");
-	  smallmenuitems[14].text = (char*)((lang==1)?"Quitter":"Quit");
+	  smallmenuitems[6].text = (char *) menu_depth;
+	  smallmenuitems[7].text = (char *) ((lang==1)?"Aide":"Help");
+	  smallmenuitems[8].text = (char*) (lang==1?"Sauvegarder figure":"Save figure");
+	  smallmenuitems[9].text = (char*) (lang==1?"Sauvegarder comme":"Save as");
+	  smallmenuitems[10].text = (char*)((lang==1)?"Quitter":"Quit");
+	  smallmenuitems[11].text = (char*) "Orthonormalize /";
+	  smallmenuitems[12].text = (char*) "Autoscale *";
+	  smallmenuitems[13].text = (char *) ("Zoom in +");
+	  smallmenuitems[14].text = (char *) ("Zoom out -");
+	  smallmenuitems[15].text = (char *) ("Y-Zoom out (-)");
+	  smallmenuitems[16].text = (char*) ((lang==1)?"Voir axes":"Show axes");
+	  smallmenuitems[17].text = (char*) ((lang==1)?"Cacher axes":"Hide axes");
+	  smallmenuitems[18].text = (char*) ((lang==1)?"Effacer trace":"Clear trace");
 	  drawRectangle(0,180,LCD_WIDTH_PX,60,_BLACK);
 	  int sres = doMenu(&smallmenu);
 	  if (sres == MENU_RETURN_EXIT)
@@ -8746,40 +10773,105 @@ namespace xcas {
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==7)
-	      gr.orthonormalize();
-	    if (smallmenu.selection==8)
-	      gr.autoscale();	
-	    if (smallmenu.selection==9)
-	      gr.zoom(0.7);	
-	    if (smallmenu.selection==10)
-	      gr.zoom(1/0.7);	
-	    if (smallmenu.selection==11)
-	      gr.zoomy(1/0.7);
-	    if (smallmenu.selection==12){
-	      xcas::textArea text;
-	      text.editable=false;
-	      text.clipline=-1;
-	      text.title = (char*)((lang==1)?"Raccourcis clavier 3d":"3d Keyboard shortcuts");
-	      text.allowF1=false;
-	      text.python=false;
-	      add(&text,lang==1?"haut/bas/droit/gauche: change point de vue\ny^x ou e^x: trace precis\nON/Back: interrompt le trace en cours\n( et ): modifie le rendu des surfaces raides\n0: surfaces cachees ON/OFF\n.: remplissage surface raide ON/OFF\n5 reset view\n7,8,9,1,2,3: deplacement":"up/down/right/left: modify viewpoint\nON/Back: interrupt\ny^x or e^x: precise\n( and ): modify stiff surfaces rendering\n0: hidden surfaces ON/OFF\n.: fill stiff surfacesON/OFF\n5 reset view\n7,8,9,1,2,3: move view");
-	      int exec=doTextArea(&text,contextptr);
+	    if (smallmenu.selection==7){
+	      d=gr.current_depth;
+	      if (inputdouble(menu_depth,d,200,contextptr)){
+		if (d<-1) d=-1;
+		if (d>1) d=1;
+		gr.current_depth=d;
+		gr.update();
+	      }
+	    }
+	    if (smallmenu.selection==8){
+	      geohelp(contextptr); continue;
 	      // gr.q=quaternion_double(0,0,0); gr.update();
 	    }
+	    if (hp && smallmenu.selection==9){
+	      // save
+	      geosave(hp,contextptr);
+	      continue;
+	    }
+	    if (smallmenu.selection==9 || smallmenu.selection==10){
+	      // save as
+	      char filename[MAX_FILENAME_SIZE+1];
+	      if (get_filename(filename,".py") && newgeo(contextptr)==0){
+		geoptr->hp->filename=filename;
+		if (geoptr!=this && !symbolic_instructions.empty()){
+		  geoptr->symbolic_instructions=symbolic_instructions;
+		  geoptr->hp->elements.clear();
+		  for (int i=0;i<symbolic_instructions.size();++i){
+		    geoptr->hp->set_string_value(i,symbolic_instructions[i].print(contextptr));
+		  }
+		  geoloop(geoptr);
+		  return 0;
+		}
+	      }
+	    }
+	    if (smallmenu.selection==11)
+	      return -4;
+	    if (smallmenu.selection==12)
+	      gr.orthonormalize();
 	    if (smallmenu.selection==13)
-	      gr.show_axes=true;	
+	      gr.autoscale();	
 	    if (smallmenu.selection==14)
-	      gr.show_axes=false;	
+	      gr.zoom(0.7);	
 	    if (smallmenu.selection==15)
-	      break;
+	      gr.zoom(1/0.7);	
+	    if (smallmenu.selection==16)
+	      gr.zoomy(1/0.7);
+	    if (smallmenu.selection==17)
+	      gr.show_axes=true;	
+	    if (smallmenu.selection==18)
+	      gr.show_axes=false;	
+	    if (smallmenu.selection==19){
+	      gr.trace_instructions.clear();
+	      update_g();
+	    }
 	  }
 	}
+	gr.draw();
+	gr.must_redraw=false;
+	continue;
       }
-#endif
+
+      if (hp && key==KEY_CTRL_OK){
+	if (mode==255)
+	  return key;
+	if (!moving){
+	  pushed=true;
+	  push_i=current_i;
+	  push_j=current_j;
+	  push_depth = current_depth;
+	  geo_handle(FL_PUSH,KEY_CTRL_OK);
+	  if (moving){
+	    update_g();
+	    continue;
+	  }
+	}
+	int res=geo_handle(FL_RELEASE,KEY_CTRL_OK);
+	pushed=false;
+	update_g();
+	continue;
+      }
+      if (hp && key==KEY_CTRL_EXIT && mode!=255){
+	if (mode==0){ // restore original value and reeval
+	  geo_handle(FL_RELEASE,KEY_CTRL_EXIT);
+	  // do_handle(symbolic(at_sto,makevecteur(drag_original_value,drag_name)));
+	  if (!pushed)
+	    set_mode(0,0,255,"");
+	}
+	else
+	  if (args_tmp.empty())
+	    set_mode(0,0,255,"");
+	pushed=false;
+	moving=moving_frame=false;
+	args_tmp.clear();
+	update_g();
+	continue;
+      }
       if (key==KEY_CTRL_EXIT || key==KEY_CTRL_OK){
 	os_hide_graph();
-	break;
+	return key;
       }
       if (key==KEY_CHAR_NORMAL || key=='>'){ // shift-+
 	if (gr.is3d && gr.precision<9)
@@ -8790,6 +10882,16 @@ namespace xcas {
 	 gr.precision--;
       }
       if (key==KEY_CTRL_UP){
+	if (hp && mode!=255){
+	  --current_j;
+	  if (current_j<0){
+	    gr.up((gr.window_ymax-gr.window_ymin)/5);
+	    current_j += LCD_HEIGHT_PX/5;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
 	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
@@ -8803,7 +10905,7 @@ namespace xcas {
 	    gr.q=rotation_2_quaternion_double(0.707,0.707,0,15)*gr.q;// quaternion_double(15,0,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
-	    redraw=gr.solid3d;
+	    gr.must_redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_UP))
 	      break;
@@ -8814,12 +10916,32 @@ namespace xcas {
 	  gr.precision=curprec;
 	  continue;
 	}
-	gr.up((gr.window_ymax-gr.window_ymin)/5);
+	gr.up((gr.window_ymax-gr.window_ymin)/16);
       }
       if (key==KEY_CTRL_PAGEUP) {
-	gr.up((gr.window_ymax-gr.window_ymin)/2);
+	if (hp && mode!=255){
+	  current_j-=LCD_HEIGHT_PX/5;;
+	  if (current_j<0){
+	    gr.up((gr.window_ymax-gr.window_ymin)/2);
+	    current_j += LCD_HEIGHT_PX/2;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
+	gr.up((gr.window_ymax-gr.window_ymin)/4);
       }
       if (key==KEY_CTRL_DOWN) {
+	if (hp && mode!=255){
+	  ++current_j;
+	  if (current_j>=LCD_HEIGHT_PX-24){
+	    gr.down((gr.window_ymax-gr.window_ymin)/5);
+	    current_j -= LCD_HEIGHT_PX/5;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
 	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
@@ -8833,7 +10955,7 @@ namespace xcas {
 	    gr.q=rotation_2_quaternion_double(0.707,0.707,0,-15)*gr.q; // quaternion_double(-15,0,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
-	    redraw=gr.solid3d;
+	    gr.must_redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_DOWN))
 	      break;
@@ -8844,12 +10966,32 @@ namespace xcas {
 	  gr.precision=curprec;
 	  continue;
 	}
-	gr.down((gr.window_ymax-gr.window_ymin)/5);
+	gr.down((gr.window_ymax-gr.window_ymin)/16);
       }
       if (key==KEY_CTRL_PAGEDOWN) {
-	gr.down((gr.window_ymax-gr.window_ymin)/2);
+	if (hp && mode!=255){
+	  current_j += LCD_HEIGHT_PX/5;
+	  if (current_j>=LCD_HEIGHT_PX-24){
+	    gr.down((gr.window_ymax-gr.window_ymin)/2);
+	    current_j -= LCD_HEIGHT_PX/2;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
+	gr.down((gr.window_ymax-gr.window_ymin)/4);
       }
       if (key==KEY_CTRL_LEFT) {
+	if (hp && mode!=255){
+	  --current_i;
+	  if (current_i<0){
+	    gr.left((gr.window_xmax-gr.window_xmin)/5);
+	    current_i += LCD_WIDTH_PX/5;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
 	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
@@ -8858,7 +11000,7 @@ namespace xcas {
 	    gr.q=quaternion_double(0,15,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
-	    redraw=gr.solid3d;
+	    gr.must_redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_LEFT))
 	      break;
@@ -8869,10 +11011,32 @@ namespace xcas {
 	  gr.precision=curprec;
 	  continue;
 	}
-	gr.left((gr.window_xmax-gr.window_xmin)/5);
+	gr.left((gr.window_xmax-gr.window_xmin)/16);
       }
-      if (key==KEY_SHIFT_LEFT) { gr.left((gr.window_xmax-gr.window_xmin)/2); }
+      if (key==KEY_SHIFT_LEFT) {
+	if (hp && mode!=255){
+	  current_i -= LCD_WIDTH_PX/5;
+	  if (current_i<0){
+	    gr.left((gr.window_xmax-gr.window_xmin)/2);
+	    current_i += LCD_WIDTH_PX/2;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
+	gr.left((gr.window_xmax-gr.window_xmin)/4);
+      }
       if (key==KEY_CTRL_RIGHT) {
+	if (hp && mode!=255){
+	  ++current_i;
+	  if (current_i>=LCD_WIDTH_PX){
+	    gr.right((gr.window_xmax-gr.window_xmin)/5);
+	    current_i -= LCD_WIDTH_PX/5;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
 	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
@@ -8881,7 +11045,7 @@ namespace xcas {
 	    gr.q=quaternion_double(0,-15,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
-	    redraw=gr.solid3d;
+	    gr.must_redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_RIGHT))
 	      break;
@@ -8892,9 +11056,21 @@ namespace xcas {
 	  gr.precision=curprec;
 	  continue;
 	}
-	gr.right((gr.window_xmax-gr.window_xmin)/5);
+	gr.right((gr.window_xmax-gr.window_xmin)/16);
       }
-      if (key==KEY_SHIFT_RIGHT) { gr.right((gr.window_xmax-gr.window_xmin)/5); }
+      if (key==KEY_SHIFT_RIGHT) {
+	if (hp && mode!=255){
+	  current_i += LCD_WIDTH_PX/5;
+	  if (current_i>=LCD_WIDTH_PX){
+	    gr.right((gr.window_xmax-gr.window_xmin)/2);
+	    current_i -= LCD_WIDTH_PX/2;
+	  }
+	  geo_handle(moving?FL_DRAG:FL_MOVE,key);
+	  update_g();
+	  continue;
+	}
+	gr.right((gr.window_xmax-gr.window_xmin)/4);
+      }
       if (key==KEY_CHAR_PLUS) {
 	gr.zoom(0.7);
       }
@@ -8919,6 +11095,14 @@ namespace xcas {
 	}
 	if (key==KEY_CHAR_ANS){
 	  gr.show_edges=!gr.show_edges;
+	}
+	if (key==KEY_CHAR_4){
+	  if (current_depth>-1)
+	    current_depth-=0.1;
+	}
+	if (key==KEY_CHAR_6){
+	  if (current_depth<1)
+	    current_depth+=0.1;
 	}
 	if (key==KEY_CHAR_5){
 	  gr.q=quaternion_double(0,0,0);
@@ -8955,8 +11139,17 @@ namespace xcas {
 	if (key==KEY_CHAR_RPAR && gr.diffusionz>2)
 	  gr.diffusionz--;
       }
-      if (key==KEY_CTRL_VARS) {
+      if (key==KEY_CHAR_SIN) {
 	gr.show_axes=!gr.show_axes;
+	gr.update();
+	gr.draw();
+	gr.must_redraw=false;
+      }
+      if (key==KEY_CTRL_VARS){
+	select_var(contextptr);
+	gr.update();
+	gr.draw();
+	gr.must_redraw=false;
       }
     }
     // aborttimer = Timer_Install(0, check_execution_abort, 100); if (aborttimer > 0) { Timer_Start(aborttimer); }
@@ -10208,7 +12401,7 @@ namespace xcas {
 	return 0;
       }
       if (ispnt(ge)){
-	if (displaygraph(ge,contextptr)==KEY_SHUTDOWN)
+	if (displaygraph(ge,g,contextptr)==KEY_SHUTDOWN)
 	  return KEY_SHUTDOWN;
 	// aborttimer = Timer_Install(0, check_execution_abort, 100); if (aborttimer > 0) { Timer_Start(aborttimer); }
 	return 0;
@@ -10306,7 +12499,7 @@ namespace xcas {
     }
   }
 
-  int check_do_graph(giac::gen & ge,int do_logo_graph_eqw,GIAC_CONTEXT) {
+  int check_do_graph(giac::gen & ge,const gen & gs,int do_logo_graph_eqw,GIAC_CONTEXT) {
     if (ge.type==giac::_SYMB || (ge.type==giac::_VECT && !ge._VECTptr->empty() && !is_numericv(*ge._VECTptr)) ){
       if (islogo(ge)){
 	if (do_logo_graph_eqw & 4){
@@ -10317,7 +12510,7 @@ namespace xcas {
       }
       if (ispnt(ge)){
 	if (do_logo_graph_eqw & 2){
-	  if (displaygraph(ge,contextptr)==KEY_SHUTDOWN)
+	  if (displaygraph(ge,gs,contextptr)==KEY_SHUTDOWN)
 	    return KEY_SHUTDOWN;
 	}
 	// aborttimer = Timer_Install(0, check_execution_abort, 100); if (aborttimer > 0) { Timer_Start(aborttimer); }
@@ -10472,12 +12665,13 @@ namespace xcas {
     }
     else {
       set_abort();
+      gen gs=g;
       g=protecteval(g,1,contextptr);
       clear_abort();
       giac::ctrl_c=false;
       kbd_interrupted=giac::interrupted=false;
       // define the function
-      if (check_do_graph(g,7,contextptr)==KEY_SHUTDOWN)
+      if (check_do_graph(g,gs,7,contextptr)==KEY_SHUTDOWN)
 	return KEY_SHUTDOWN;
       DefineStatusMessage((char *)((lang==1)?"Syntaxe correcte":"Parse OK"),1,0,0);
     }
@@ -10564,6 +12758,50 @@ namespace xcas {
       ++edptr->line;
     }
     fix_newlines(edptr);
+  }
+
+  void textArea::set_string_value(int n,const string & s){    
+    if (n==-1 || n>=elements.size()){
+      textElement t; t.s=s;
+      if (!elements.empty())
+	t.newLine=1;
+      elements.push_back(t);
+    }
+    else {
+      elements[n].s=s;
+      if (n)
+	elements[n].newLine=1;
+    }
+    changed=true;
+  }
+
+  int textArea::add_entry(int n){
+    textElement t; 
+    if (n==-1 || n>=elements.size()){
+      if (elements.empty())
+	elements.push_back(t);
+      else {
+	t.newLine=1;
+	if (!elements.back().s.empty())
+	  elements.push_back(t);
+      }
+      n=elements.size()-1;
+    }
+    else {
+      if (n) t.newLine=1;
+      elements.insert(elements.begin()+n,t);
+    }
+    return n;
+  }
+
+  void Graph2d::add_entry(int n){
+    if (!hp)
+      return;
+    if (n==-1 || n>=symbolic_instructions.size()){
+      symbolic_instructions.push_back(0);
+      n=symbolic_instructions.size();
+    }
+    hp->add_entry(n);
   }
 
   int find_indentation(const std::string & s){
@@ -11150,6 +13388,7 @@ namespace xcas {
     bool editable=text->editable;
     int showtitle = !editable && (text->title != NULL);
     std::vector<textElement> & v=text->elements;
+    if (v.empty()) v.push_back(textElement());
     //drawRectangle(text->x, text->y+24, text->width, LCD_HEIGHT_PX-24, COLOR_WHITE);
     // insure cursor is visible
     if (editable && !isFirstDraw){
@@ -11177,6 +13416,11 @@ namespace xcas {
 	else
 	  deltax=27;
       }
+    }
+    if (v.empty()){
+      textElement cur;
+      cur.s="";
+      v.push_back(cur);
     }
     int & clipline=text->clipline;
     int & clippos=text->clippos;
@@ -11484,7 +13728,10 @@ namespace xcas {
     if (editable){
       waitforvblank();
       drawRectangle(0,205,LCD_WIDTH_PX,17,44444);
-      PrintMiniMini(0,205,text->python>0?"shift-1 test|2 loop|3 undo|4 misc|5 +-|6 logo|7 lin|8 list|9arit":"shift-1 test|2 loop|3 undo|4 misc|5 +-|6 logo|7 matr|8 cplx",4,44444,giac::_BLACK);
+      if (text->gr)
+	PrintMiniMini(0,205,"shift-1 pnts|2 lines|3 undo|4 disp|5 +-|6 curves|7 triangle|8 polygon|9 solid",4,giac::_CYAN,giac::_BLACK);
+      else
+	PrintMiniMini(0,205,text->python>0?"shift-1 test|2 loop|3 undo|4 misc|5 +-|6 logo|7 lin|8 list|9arit":"shift-1 test|2 loop|3 undo|4 misc|5 +-|6 logo|7 matr|8 cplx",4,44444,giac::_BLACK);
       //draw_menu(1);
     }
 #ifdef SCROLLBAR
@@ -12059,12 +14306,16 @@ namespace xcas {
 	       (key >= KEY_CTRL_F6 && key <= KEY_CTRL_F16)
 	       ){
 	    string le_menu;
-	    if (xcas_python_eval==1)//text->python?
-	      le_menu="F1 test\nif \nelse \n<\n>\n==\n!=\n&&\n||\nF2 loop\nfor \nfor in\nrange(\nwhile \nbreak\ndef\nreturn \n#\nF4 misc\n:\n;\n_\n!\n%\nfrom  import *\nprint(\ninput(\nF6 tortue\nforward(\nbackward(\nleft(\nright(\npencolor(\ncircle(\nreset()\nfrom turtle import *\nF: plot\nplot(\ntext(\narrow(\nlinear_regression_plot(\nscatter(\naxis(\nbar(\nfrom matplotl import *\nF7 linalg\nadd(\nsub(\nmul(\ninv(\ndet(\nrref(\ntranspose(\nfrom linalg import *\nF< color\nred\nblue\ngreen\ncyan\nyellow\nmagenta\nblack\nwhite\nF; draw\nset_pixel(\ndraw_line(\ndraw_rectangle(\nfill_rect(\ndraw_polygon(\ndraw_circle(\ndraw_string(\nfrom graphic import *\nF8 numpy\narray(\nreshape(\narange(\nlinspace(\nsolve(\neig(\ninv(\nfrom numpy import *\nF9 arit\npow(\nisprime(\nnextprime(\nifactor(\ngcd(\nlcm(\niegcd(\nfrom arit import *\n";
-	    if (xcas_python_eval<=0)
-	      le_menu="F1 test\nif \nelse \n<\n>\n==\n!=\nand\nor\nF2 loop\nfor \nfor in\nrange(\nwhile \nbreak\nf(x):=\nreturn \nvar\nF4 misc\n;\n:\n_\n!\n%\n&\nprint(\ninput(\nF6 tortue\navance\nrecule\ntourne_gauche\ntourne_droite\nrond\ndisque\nrepete\nefface\nF7 lin\nmatrix(\ndet(\nmatpow(\nranm(\nrref(\ntran(\negvl(\negv(\nF9 arit\n mod \nirem(\nifactor(\ngcd(\nisprime(\nnextprime(\npowmod(\niegcd(\nF< plot\nplot(\nplotseq(\nplotlist(\nplotparam(\nplotpolar(\nplotfield(\nhistogram(\nbarplot(\nF: misc\n<\n>\n_\n!\n % \nrand(\nbinomial(\nnormald(\nF8 cplx\nabs(\narg(\nre(\nim(\nconj(\ncsolve(\ncfactor(\ncpartfrac(\n";
-	    if (xcas_python_eval>=0)
-	      le_menu += "F= list\nmakelist(\nrange(\nseq(\nlen(\nappend(\nranv(\nsort(\napply(\nF; real\nexact(\napprox(\nfloor(\nceil(\nround(\nsign(\nmax(\nmin(\nF> prog\n;\n:\n\\\n&\n?\n!\ndebug(\npython(\nF? geo\npoint(\nline(\nsegment(\ncircle(\ntriangle(\nplane(\nsphere(\nsingle_inter(\nF@ color\ncolor=\nred\ncyan\ngreen\nblue\nmagenta\nyellow\nlegend(";
+	    if (text->gr) { // geometry menu
+	      le_menu="F1 points\npoint(\nmidpoint(\ncenter(\nelement(\nsingle_inter(\ninter(\nlegende(\ntrace(\nF2 lines\nsegment(\nline(\nhalf_line(\nvector(\nparallel(\nperpendicular(\ntangent(\nplane(\ncircle(\nF4 disp\ndisplay=\nfilled\nred\nblue\ngreen\ncyan\nmagenta\nyellow\nF6 curves\ncircle(\nellipse(\nhyperbola(\nparabola(\nplot(\nplotparam(\nplotpolar(\nplotode(\nF7 triangle\ntriangle(\nequilateral_triangle(\nmedian(\nperpen_bisector(\nbisector(\nisobarycenter(\nF8 polygon\nsquare(\nrectangle(\nquadrilateral(\nhexagon(\npolygon(\nisopolygon(\nvertices(\nF9 3d\nplane(\ncube(\ntetrahedron(\nsphere(\ncone(\nhalf_cone(\ncylinder(\nplot3d(\nF: transf\nprojection(\nreflection(\ntranslation(\nrotation(\nhomothety(\nsimilarity(\nF; geodiff\ntangent(\nosculating_circle(\nevolute(\ncurvature(\nfrenet(\noctahedron(\ndodecahedron(\nicosahedron(\nF< mesures\ndistance(\ndistance2(\nradius(\naire(\nperimetre(\npente(\nangle(\nF= test\nis_collinear(\nis_concyclic(\nis_coplanar(\nis_cospherical(\nis_element(\nis_parallel(\nis_perpendicular(\nF> analyt\ncoordonnees(\nequation(\nparameq(\nabscisse(\nordonnee(\naffixe(\narg(\n";
+	    } else {
+	      if (xcas_python_eval==1)//text->python?
+		le_menu="F1 test\nif \nelse \n<\n>\n==\n!=\n&&\n||\nF2 loop\nfor \nfor in\nrange(\nwhile \nbreak\ndef\nreturn \n#\nF4 misc\n:\n;\n_\n!\n%\nfrom  import *\nprint(\ninput(\nF6 tortue\nforward(\nbackward(\nleft(\nright(\npencolor(\ncircle(\nreset()\nfrom turtle import *\nF: plot\nplot(\ntext(\narrow(\nlinear_regression_plot(\nscatter(\naxis(\nbar(\nfrom matplotl import *\nF7 linalg\nadd(\nsub(\nmul(\ninv(\ndet(\nrref(\ntranspose(\nfrom linalg import *\nF< color\nred\nblue\ngreen\ncyan\nyellow\nmagenta\nblack\nwhite\nF; draw\nset_pixel(\ndraw_line(\ndraw_rectangle(\nfill_rect(\ndraw_polygon(\ndraw_circle(\ndraw_string(\nfrom graphic import *\nF8 numpy\narray(\nreshape(\narange(\nlinspace(\nsolve(\neig(\ninv(\nfrom numpy import *\nF9 arit\npow(\nisprime(\nnextprime(\nifactor(\ngcd(\nlcm(\niegcd(\nfrom arit import *\n";
+	      if (xcas_python_eval<=0)
+		le_menu="F1 test\nif \nelse \n<\n>\n==\n!=\nand\nor\nF2 loop\nfor \nfor in\nrange(\nwhile \nbreak\nf(x):=\nreturn \nvar\nF4 misc\n;\n:\n_\n!\n%\n&\nprint(\ninput(\nF6 tortue\navance\nrecule\ntourne_gauche\ntourne_droite\nrond\ndisque\nrepete\nefface\nF7 lin\nmatrix(\ndet(\nmatpow(\nranm(\nrref(\ntran(\negvl(\negv(\nF9 arit\n mod \nirem(\nifactor(\ngcd(\nisprime(\nnextprime(\npowmod(\niegcd(\nF< plot\nplot(\nplotseq(\nplotlist(\nplotparam(\nplotpolar(\nplotfield(\nhistogram(\nbarplot(\nF: misc\n<\n>\n_\n!\n % \nrand(\nbinomial(\nnormald(\nF8 cplx\nabs(\narg(\nre(\nim(\nconj(\ncsolve(\ncfactor(\ncpartfrac(\n";
+	      if (xcas_python_eval>=0)
+		le_menu += "F= list\nmakelist(\nrange(\nseq(\nlen(\nappend(\nranv(\nsort(\napply(\nF; real\nexact(\napprox(\nfloor(\nceil(\nround(\nsign(\nmax(\nmin(\nF> prog\n;\n:\n\\\n&\n?\n!\ndebug(\npython(\nF? geo\npoint(\nline(\nsegment(\ncircle(\ntriangle(\nplane(\nsphere(\nsingle_inter(\nF@ color\ncolor=\nred\ncyan\ngreen\nblue\nmagenta\nyellow\nlegend(";
+	    } // else not geometry
 	    const char * ptr=console_menu(key,(char*)(le_menu.c_str()),2);
 	    if (!ptr){
 	      show_status(text,search,replace);
@@ -12190,7 +14441,7 @@ namespace xcas {
 	}
 	continue;
       case KEY_CTRL_OK:
-	if (text->allowEXE || !text->editable) return TEXTAREA_RETURN_EXE;
+	if (text->gr || text->allowEXE || !text->editable) return TEXTAREA_RETURN_EXE;
 	if (search.size()){
 	  for (;;){
 	    if (!move_to_word(text,search,replace,isFirstDraw,totalTextY,scroll,textY,contextptr))
@@ -13397,7 +15648,7 @@ namespace xcas {
 	vout.erase(vout.begin());
       vout.push_back(ge);
     }
-    if (check_do_graph(ge,do_logo_graph_eqw,contextptr)==KEY_SHUTDOWN)
+    if (check_do_graph(ge,g,do_logo_graph_eqw,contextptr)==KEY_SHUTDOWN)
       return KEY_SHUTDOWN;
     string s_;
     if (ge.type==giac::_STRNG)
@@ -14564,7 +16815,7 @@ namespace xcas {
       numworks_certify_internal();
       Bdisp_AllClr_VRAM();
       int x=0,y=0;
-      PrintMini(x,y,"KhiCAS 1.7 (c) 2022 B. Parisse",TEXT_MODE_NORMAL, COLOR_BLACK, COLOR_WHITE);
+      PrintMini(x,y,"KhiCAS 1.9 (c) 2022 B. Parisse",TEXT_MODE_NORMAL, COLOR_BLACK, COLOR_WHITE);
       y +=18;
       PrintMini(x,y,"et al, License GPL 2",TEXT_MODE_NORMAL,COLOR_BLACK, COLOR_WHITE);
       y += 18;
@@ -15350,80 +17601,10 @@ namespace xcas {
 	      break;
 	    }
 	    if (smallmenu.selection == 15){
-	      Menu paramenu;
-	      paramenu.numitems=6;
-	      MenuItem paramenuitems[paramenu.numitems];
-	      paramenu.items=paramenuitems;
-	      paramenu.height=12;
-	      paramenu.title = (char *)"Parameter";
-	      char menu_xcur[32],menu_xmin[32],menu_xmax[32],menu_xstep[32],menu_name[16]="name a";
 	      static char curname='a';
-	      menu_name[5]=curname;
-	      ++curname;
-	      double pcur=0,pmin=-5,pmax=5,pstep=0.1;
-	      std::string s;
-	      bool doit;
-	      for (;;){
-		s="cur "+giac::print_DOUBLE_(pcur,contextptr);
-		strcpy(menu_xcur,s.c_str());
-		s="min "+giac::print_DOUBLE_(pmin,contextptr);
-		strcpy(menu_xmin,s.c_str());
-		s="max "+giac::print_DOUBLE_(pmax,contextptr);
-		strcpy(menu_xmax,s.c_str());
-		s="step "+giac::print_DOUBLE_(pstep,contextptr);
-		strcpy(menu_xstep,s.c_str());
-		paramenuitems[0].text = (char *) "OK";
-		paramenuitems[1].text = (char *) menu_name;
-		paramenuitems[2].text = (char *) menu_xcur;
-		paramenuitems[3].text = (char *) menu_xmin;
-		paramenuitems[4].text = (char *) menu_xmax;
-		paramenuitems[5].text = (char *) menu_xstep;
-		int sres = doMenu(&paramenu);
-		doit = sres==MENU_RETURN_SELECTION  || sres==KEY_CTRL_EXE;
-		if (doit) {
-		  std::string s1; double d;
-		  if (paramenu.selection==2){
-		    handle_f5();
-		    if (inputline(menu_name,(lang==1)?"Nouvelle valeur?":"New value?",s1,false)==KEY_CTRL_EXE && s1.size()>0 && isalpha(s1[0])){
-		      if (s1.size()>10)
-			s1=s1.substr(0,10);
-		      strcpy(menu_name,("name "+s1).c_str());
-		    }
-		    continue;
-		  }	
-		  if (paramenu.selection==3){
-		    inputdouble(menu_xcur,pcur,contextptr);
-		    continue;
-		  }
-		  if (paramenu.selection==4){
-		    inputdouble(menu_xmin,pmin,contextptr);
-		    continue;
-		  }
-		  if (paramenu.selection==5){
-		    inputdouble(menu_xmax,pmax,contextptr);
-		    continue;
-		  }
-		  if (paramenu.selection==6){
-		    inputdouble(menu_xstep,pstep,contextptr);
-		    pstep=fabs(pstep);
-		    continue;
-		  }
-		  // if (paramenu.selection==6) break;
-		} // end menu
-		break;
-	      } // end for (;;)
-	      if (doit && pmin<pmax && pstep>0){
-		s="assume(";
-		s += (menu_name+5);
-		s += "=[";
-		s += (menu_xcur+4);
-		s += ',';
-		s += (menu_xmin+4);
-		s += ',';
-		s += (menu_xmax+4);
-		s += ',';
-		s += (menu_xstep+5);
-		s += "])";
+	      string s=inputparam(curname,1,contextptr);
+	      if (!s.empty()){
+		++curname;
 		return Console_Input((const char *)s.c_str());
 	      }
 	      continue;
@@ -16360,6 +18541,123 @@ namespace xcas {
   }
 #endif
 
+  Graph2d * geoptr=0;
+
+  // return true if there is a syntax error and user asked to correct
+  bool geoparse(textArea *text,GIAC_CONTEXT){
+    Graph2d * geoptr=text->gr;
+    if (!geoptr)
+      return false;
+    std::vector<textElement> & v=text->elements;
+    geoptr->symbolic_instructions.resize(v.size());
+    int pos=-1,i=0;
+    for (;i<int(v.size());++i){
+      std::string s=v[i].s; 
+      giac::python_compat(0,contextptr);
+      freeze=true;
+      giac::gen g(s,contextptr);
+      freeze=false;
+      g=equaltosto(g,contextptr);
+      int lineerr=giac::first_error_line(contextptr);
+      char status[256]={0};
+      geoptr->symbolic_instructions[i]=g;
+      if (lineerr){
+	std::string tok=giac::error_token_name(contextptr);
+	if (lineerr==1){
+	  pos=v[i].s.find(tok);
+	  const std::string & err=v[i].s;
+	  if (pos>=err.size())
+	    pos=-1;
+	}
+	else {
+	  tok=(lang==1)?"la fin":"end";
+	  pos=0;
+	}
+	if (pos>=0)
+	  sprintf(status,(lang==1)?"Erreur ligne %i a %s":"Error line %i at %s",i+1,tok.c_str());
+	else
+	  sprintf(status,(lang==1)?"Erreur ligne %i %s":"Error line %i %s",i+1,(pos==-2?((lang==1)?", : manquant ?":", missing :?"):""));
+	if (confirm(status,(lang==1)?"OK: corrige, back: continue":"OK: fix",1)==KEY_CTRL_F1){
+	  text->line=i;
+	  if (pos>=0 && pos<v[i].s.size()) text->pos=pos;
+	  return true;
+	}
+      }
+    } // loop on lines
+    return false;
+  }
+
+  int geoloop(Graph2d * geoptr){
+    if (!geoptr || !geoptr->hp) return -1;
+    const context * contextptr=geoptr->contextptr;
+    textArea * text=geoptr->hp;
+    // main loop: alternate between plot and symb view
+    // start in plot view
+    // end plot view with EXIT or OK -> symb view editor
+    // end with OK or EXIT: OK will modify, EXIT will leave geo app
+    // (press twice EXIT to leave geo app from plot view)
+    for (;;){
+      geoptr->eval();
+      geoptr->update();
+      if (geoptr->is3d)
+	geoptr->update_rotation();
+      int key=geoptr->ui();
+      if (key==KEY_SHUTDOWN){
+	geosave(text,contextptr);
+	return key;
+      }
+      // symb view editor
+      for (;;){
+	key=doTextArea(text,contextptr);
+	if (key== TEXTAREA_RETURN_EXIT || key==KEY_SHUTDOWN){
+	  geosave(text,contextptr);
+	  return key;
+	}
+	// key was OK, parse step: synchronize symbolic_instructions from text
+	bool corrige=geoparse(text,contextptr);
+	if (!corrige)
+	  break;
+      } // end edition loop
+    } // end plot/symb view infinite loop
+  }
+
+  void cleargeo(){
+    if (!geoptr)
+      return;
+    if (geoptr->hp)
+      delete geoptr->hp;
+    delete geoptr;
+    geoptr=0;
+  }
+
+  int newgeo(GIAC_CONTEXT){
+    if (!geoptr){
+      geoptr=new Graph2d(0,contextptr);
+      geoptr->window_xmin=-5;
+      geoptr->window_ymin=-5;
+      geoptr->window_zmin=-5;
+      geoptr->window_xmax=5;
+      geoptr->window_ymax=5;
+      geoptr->window_zmax=5;
+      geoptr->orthonormalize();
+    }
+    if (!geoptr)
+      return -1;
+    if (!geoptr->hp){
+      geoptr->hp=new textArea;
+      geoptr->hp->filename="figure0.py";
+      geoptr->hp->python=0;
+    }
+    if (!geoptr->hp)
+      return -2;
+    textArea * text=geoptr->hp;
+    text->editable=true;
+    text->clipline=-1;
+    text->gr=geoptr;
+    geoptr->set_mode(0,0,255,""); // start in frame mode
+    return 0;
+  }
+  
   tableur * sheetptr=0;
 
   string print_tableur(const tableur & t,GIAC_CONTEXT){
@@ -16372,6 +18670,11 @@ namespace xcas {
       vecteur & v=*g._VECTptr;
       for (int j=0;j<t.ncols;++j){
 	gen vj=v[j];
+	if (vj.type==_VECT && vj._VECTptr->size()==3){
+	  vecteur vjv=*vj._VECTptr;
+	  vjv[1]=0;
+	  vj=gen(vjv,vj.subtype);
+	}
 	printcell_current_col(contextptr)=j;
 	s += vj.print(contextptr);
 	if (j==t.ncols-1)
@@ -17001,7 +19304,7 @@ int select_item(const char ** ptr,const char * title,bool askfor1){
   Menu smallmenu;
   smallmenu.numitems=nitems; 
   smallmenu.items=smallmenuitems;
-  smallmenu.height=12;
+  smallmenu.height=nitems<12?nitems+1:12;
   smallmenu.scrollbar=1;
   smallmenu.scrollout=1;
   smallmenu.title = (char*) title;

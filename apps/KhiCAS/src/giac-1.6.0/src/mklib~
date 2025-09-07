@@ -1,3 +1,0 @@
-#! /bin/bash
-make -f Makefile.numworks.n0110 libgiac.a
-/bin/cp libgiac.a ~/Omega-External/apps/KhiCAS/src/lib/
