@@ -8,7 +8,7 @@ NES_ROM = epsilon/2048.nes
 
 CFLAGS += -I./
 
-OBJS = main.o selector.o lz4.o
+OBJS = main.o lz4.o render.o selector.o speed.o
 
 app.elf: $(OBJS)
 	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS)

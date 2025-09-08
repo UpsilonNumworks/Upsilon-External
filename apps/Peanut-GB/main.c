@@ -1,29 +1,19 @@
 #include <extapp_api.h>
 
+// #include <stdint.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-#include "selector.h"
-#include "peanut_gb.h"
+#include "main.h"
 #include "lz4.h"
+#include "render.h"
+#include "selector.h"
+#include "speed.h"
 
-#define MAX_SCRIPTSTORE_SIZE 8192
-
-#define SAVE_COOLDOWN 120
-
-#define NW_LCD_WIDTH 320
-#define NW_LCD_HEIGHT 240
-
-#define DUMMY_ROM 0
-#define DUMMY_ROM_NAME Tetris
-
-#define ENABLE_FRAME_LIMITER 1
-#define TARGET_FRAME_DURATION 16
-#define AUTOMATIC_FRAME_SKIPPING 1
-// Useful when AUTOMATIC_FRAME_SKIPPING is disabled
-#define FRAME_SKIPPING_DEFAULT_STATE false
-
+#include "peanut_gb.h"
 
 #ifndef DUMMY_ROM
 #define DUMMY_ROM 0
@@ -40,14 +30,6 @@
 
 static bool running = false;
 
-struct priv_t {
-  // Pointer to allocated memory holding GB file.
-  const uint8_t *rom;
-  // Pointer to allocated memory holding save file.
-  uint8_t *cart_ram;
-  // Line buffer
-  uint16_t line_buffer[LCD_WIDTH];
-};
 
 // Returns a byte from the ROM file at the given address.
 uint8_t gb_rom_read(struct gb_s *gb, const uint_fast32_t addr) {
@@ -92,47 +74,6 @@ const uint16_t palette_original[4] = {0x8F80, 0x24CC, 0x4402, 0x0A40};
 const uint16_t palette_gray[4] = {0xFFFF, 0xAD55, 0x52AA, 0x0000};
 const uint16_t palette_gray_negative[4] = {0x0000, 0x52AA, 0xAD55, 0xFFFF};
 const uint16_t * palette = palette_peanut_GB;
-
-inline uint16_t color_from_gb_pixel(uint8_t gb_pixel) {
-    uint8_t gb_color = gb_pixel & 0x3;
-    return palette[gb_color];
-}
-
-void lcd_draw_line_centered(struct gb_s *gb, const uint8_t pixels[LCD_WIDTH], const uint_fast8_t line) {
-  struct priv_t *priv = gb->direct.priv;
-
-  #pragma unroll 40
-  for(unsigned int x = 0; x < LCD_WIDTH; x++) {
-    priv->line_buffer[x] = color_from_gb_pixel(pixels[x]);
-  }
-
-  extapp_pushRect((NW_LCD_WIDTH - LCD_WIDTH) / 2, (NW_LCD_HEIGHT - LCD_HEIGHT) / 2 + line, LCD_WIDTH, 1, priv->line_buffer);
-}
-
-void lcd_draw_line_dummy(struct gb_s *gb, const uint8_t pixels[LCD_WIDTH], const uint_fast8_t line) {}
-
-static void lcd_draw_line_maximized_ratio(struct gb_s * gb, const uint8_t * input_pixels, const uint_fast8_t line) {
-  // Nearest neighbor scaling of a 160x144 texture to a 266x240 resolution (to keep the ratio)
-  // Horizontally, we multiply by 1.66 (160*1.66 = 266)
-  uint16_t output_pixels[266];
-
-  #pragma unroll 40
-  for (int i=0; i<LCD_WIDTH; i++) {
-    uint16_t color = color_from_gb_pixel(input_pixels[i]);
-    // We can't use floats for performance reason, so we use a fixed point
-    // representation
-    output_pixels[166*i/100] = color;
-    // This line is useless 1/3 times, but using an if is slower
-    output_pixels[166*i/100+1] = color;
-  }
-
-  // Vertically, we want to scale by a 5/3 ratio. So we need to make 5 lines out of three:  we double two lines out of three.
-  uint16_t y = (5*line)/3;
-  extapp_pushRect((NW_LCD_WIDTH - 265) / 2, y, 265, 1, output_pixels);
-  if (line%3 != 0) {
-    extapp_pushRect((NW_LCD_WIDTH - 265) / 2, y+1, 265, 1, output_pixels);
-  }
-}
 
 enum save_status_e {
   SAVE_READ_OK,
@@ -199,14 +140,21 @@ void write_save_file(const char* name, char* data, size_t size) {
 static bool wasSavePressed = false;
 static bool wasMSpFPressed = false;
 static uint8_t saveCooldown = 0;
-static bool MSpFfCounter = false;
+
+// Static allow allocating to the ITCM, where 16KB are available
+static struct gb_s gb;
 
 void extapp_main() {
-  struct gb_s gb;
+
   enum gb_init_error_e gb_ret;
   struct priv_t priv = {
     .rom = NULL,
-    .cart_ram = NULL
+    .cart_ram = NULL,
+    .MSpFfCounter = false,
+    #if ENABLE_FRAME_LIMITER
+    .timeBudget = 0,
+    .currentFrame = 0,
+    #endif
   };
   enum gb_init_error_e ret;
 
@@ -224,9 +172,10 @@ void extapp_main() {
 
   // Alloc internal RAM.
   gb.wram = malloc(WRAM_SIZE);
-  gb.vram = malloc(VRAM_SIZE);
-  gb.hram = malloc(HRAM_SIZE);
-  gb.oam = malloc(OAM_SIZE);
+  // Other buffers are allocated staticly in the gb object declaration
+  // gb.vram = malloc(VRAM_SIZE);
+  // gb.hram_io = malloc(HRAM_IO_SIZE);
+  // gb.oam = malloc(OAM_SIZE);
 
   gb_ret = gb_init(&gb, &gb_rom_read, &gb_cart_ram_read, &gb_cart_ram_write, &gb_error, &priv);
 
@@ -244,25 +193,9 @@ void extapp_main() {
   saveCooldown = SAVE_COOLDOWN;
 
   // Init LCD
-  gb_init_lcd(&gb, &lcd_draw_line_centered);
+  gb_init_lcd(&gb, &lcd_draw_line_maximized_fast);
 
   extapp_pushRectUniform(0, 0, NW_LCD_WIDTH, NW_LCD_HEIGHT, 0);
-
-  uint32_t lastMSpF = 0;
-
-  #if ENABLE_FRAME_LIMITER
-  // We use a "smart" frame limiter: for each frame, we add
-  // `frame duration - target frame time` to our budget. If the frame was faster
-  // than target, we sleep for (simplified version without taking the case where
-  // time budget > target frame time - last frame duration):
-  // target frame time - last frame duration - time budget
-  // This way, we will keep an average frame duration consistant.
-  uint32_t timeBudget = 0;
-  #endif
-
-  // Skip 1/2 frame, spare 3 ms/f on my N0110
-  bool frameSkipping = FRAME_SKIPPING_DEFAULT_STATE;
-  void * drawLineMode = lcd_draw_line_centered;
 
   running = true;
   while(running) {
@@ -292,7 +225,7 @@ void extapp_main() {
 
     if (kb & SCANCODE_Alpha) {
       if (!wasMSpFPressed) {
-        MSpFfCounter = !MSpFfCounter;
+        priv.MSpFfCounter = !priv.MSpFfCounter;
         wasMSpFPressed = true;
         extapp_pushRectUniform(0, NW_LCD_HEIGHT / 2 + LCD_HEIGHT / 2, NW_LCD_WIDTH, NW_LCD_HEIGHT - (NW_LCD_HEIGHT / 2 + LCD_HEIGHT / 2), 0);
       }
@@ -306,19 +239,25 @@ void extapp_main() {
     }
 
     if (kb & SCANCODE_Plus) {
-      gb.display.lcd_draw_line = lcd_draw_line_maximized_ratio;
-      drawLineMode = lcd_draw_line_maximized_ratio;
+      gb.display.lcd_draw_line = lcd_draw_line_maximized_fast;
+    }
+    if (kb & SCANCODE_Multiplication) {
+      gb.display.lcd_draw_line = lcd_draw_line_maximized_antialiased_light;
+    }
+    if (kb & SCANCODE_LeftParenthesis) {
+      gb.display.lcd_draw_line = lcd_draw_line_maximized_antialiased_horizontal;
+    }
+    if (kb & SCANCODE_Sqrt) {
+      gb.display.lcd_draw_line = lcd_draw_line_maximized_antialiased_full;
     }
     if (kb & SCANCODE_Minus) {
       gb.display.lcd_draw_line = lcd_draw_line_centered;
-      drawLineMode = lcd_draw_line_centered;
       extapp_pushRectUniform(0, 0, NW_LCD_WIDTH, NW_LCD_HEIGHT, 0);
     }
-    // if (kb & SCANCODE_Division) {
-    //   gb.display.lcd_draw_line = lcd_draw_line_dummy;
-    //   drawLineMode = lcd_draw_line_dummy;
-    //   extapp_pushRectUniform(0, 0, NW_LCD_WIDTH, NW_LCD_HEIGHT, 0);
-    // }
+    if (kb & SCANCODE_Division) {
+      gb.display.lcd_draw_line = NULL;
+      extapp_pushRectUniform(0, 0, NW_LCD_WIDTH, NW_LCD_HEIGHT, 0);
+    }
 
     if (kb & SCANCODE_One) {
       palette = palette_peanut_GB;
@@ -333,10 +272,7 @@ void extapp_main() {
       palette = palette_gray_negative;
     }
 
-    gb.gb_frame = 0;
-    int i = 0;
-    for(i = 0; !gb.gb_frame && i < 32000; i++)
-      __gb_step_cpu(&gb);
+    gb_run_frame(&gb);
 
     if (saveCooldown > 1) {
       saveCooldown--;
@@ -364,82 +300,15 @@ void extapp_main() {
       extapp_pushRectUniform(0, NW_LCD_HEIGHT / 2 + LCD_HEIGHT / 2, NW_LCD_WIDTH, NW_LCD_HEIGHT - (NW_LCD_HEIGHT / 2 + LCD_HEIGHT / 2), 0);
     }
     uint64_t end = extapp_millis();
-
-    if (gb.gb_frame) {
-      uint16_t MSpF = (uint16_t)(end - start);
-
-      if (MSpFfCounter) {
-        // We need to average the MSpF as skipped frames are faster
-        uint16_t MSpFAverage = (MSpF + lastMSpF) / 2;
-        char buffer[100];
-        sprintf(buffer, "%d ms/f", MSpFAverage);
-        // sprintf(buffer, "%d ms/f, %d ", MSpFAverage, timeBudget);
-        extapp_drawTextSmall(buffer, 2, NW_LCD_HEIGHT - 10, 65535, 0, false);
-      }
-
-      if (frameSkipping) {
-        if (gb.display.lcd_draw_line != lcd_draw_line_dummy) {
-          drawLineMode = gb.display.lcd_draw_line;
-          gb.display.lcd_draw_line = lcd_draw_line_dummy;
-        } else {
-          gb.display.lcd_draw_line = drawLineMode;
-        }
-      }
-
-      #if ENABLE_FRAME_LIMITER
-      uint32_t differenceToTarget = abs(TARGET_FRAME_DURATION - MSpF);
-
-      if (TARGET_FRAME_DURATION - MSpF > 0) {
-        // Frame was faster than target, so let's slow down if we have time to
-        // catch up
-
-        // If on previous frames we were
-        if (timeBudget >= differenceToTarget) {
-          // We were too slow at previous frames so we have to catch up
-          timeBudget -= differenceToTarget;
-        } else if (timeBudget > 0) {
-          // We can catch up everything on one frame, so let's sleep a bit less
-          // than what we would have done if we weren't late
-          uint32_t time_to_sleep = differenceToTarget - timeBudget;
-          extapp_msleep(time_to_sleep);
-          timeBudget = 0;
-        } else {
-          // We don't have time to catch up, so we just sleep until we get to 16ms/f
-          extapp_msleep(differenceToTarget);
-
-          #if AUTOMATIC_FRAME_SKIPPING
-          // Disable frame skipping as we are running faster than required
-          frameSkipping = false;
-          gb.display.lcd_draw_line = drawLineMode;
-          #endif
-        }
-      } else {
-        // Comparaison is technically not required, but we do this avoid the
-        // performance cost of duplicate assignation when we are at the maximum
-        // time budget, which is often the case when lagging
-        if (timeBudget < TARGET_FRAME_DURATION) {
-          // Frame was slower than target, so we need to catch up.
-          timeBudget += differenceToTarget;
-
-          if (timeBudget >= TARGET_FRAME_DURATION) {
-            timeBudget = TARGET_FRAME_DURATION;
-
-            #if AUTOMATIC_FRAME_SKIPPING
-            // Enable frame skipping in an attempt to speed up emulation
-            frameSkipping = true;
-            #endif
-          }
-        }
-      }
-      #endif
-      lastMSpF = MSpF;
-    }
+    speed_handler(&gb, end - start);
   }
 
   free(gb.wram);
-  free(gb.vram);
-  free(gb.hram);
-  free(gb.oam);
+
+  // Others buffers are allocated staticly
+  // free(gb.vram);
+  // free(gb.hram_io);
+  // free(gb.oam);
 
   write_save_file(file_name, priv.cart_ram, save_size);
   free(priv.cart_ram);
