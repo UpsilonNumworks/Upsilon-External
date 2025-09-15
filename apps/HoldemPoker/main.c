@@ -848,7 +848,7 @@ int menu(int* nbPlayers, int* startingMoney) {
         extapp_drawTextLarge(moneyStr, moneyX, 65, moneyColor, 0xFFFF, false);
 
 
-        const char* hint = "OK to start, < > to select";
+        const char* hint = "OK to start";
         int hintLen = 0; while (hint[hintLen]) hintLen++;
         int hintX = SCREEN_WIDTH / 2 - (hintLen * 10) / 2;
         extapp_drawTextLarge(hint, hintX, SCREEN_HEIGHT - 18, 0x0000, 0xFFFF, false);
