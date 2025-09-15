@@ -1,5 +1,5 @@
-#ifndef RAYCASTER_PERIPHERALS_H_
-#define RAYCASTER_PERIPHERALS_H_
+#ifndef HOLDEM_PERIPHERALS_H_
+#define HOLDEM_PERIPHERALS_H_
 
 #include <stdint.h>
 
