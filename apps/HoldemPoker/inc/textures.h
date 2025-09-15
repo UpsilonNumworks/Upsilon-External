@@ -1,5 +1,5 @@
-#ifndef RAYCASTER_TEXTURES_OBM_H_
-#define RAYCASTER_TEXTURES_OBM_H
+#ifndef HOLDEM_TEXTURES_OBM_H_
+#define HOLDEM_TEXTURES_OBM_H
 
 #include <stdint.h>
 
