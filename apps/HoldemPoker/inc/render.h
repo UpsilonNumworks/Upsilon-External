@@ -1,5 +1,5 @@
-#ifndef RAYCASTER_RENDER_H_
-#define RAYCASTER_RENDER_H_
+#ifndef HOLDEM_RENDER_H_
+#define HOLDEM_RENDER_H_
 
 #include "libraries.h"
 #include "math_functions.h"
