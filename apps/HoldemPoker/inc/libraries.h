@@ -1,5 +1,5 @@
-#ifndef RAYCASTER_LIBRARIES_H_
-#define RAYCASTER_LIBRARIES_H_
+#ifndef HOLDEM_LIBRARIES_H_
+#define HOLDEM_LIBRARIES_H_
 
 #include <stdbool.h>
 #include <stdio.h>
