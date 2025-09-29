@@ -16,5 +16,6 @@ angular.module('nwas').service('apps', function() {
     { name: "RayCaster", description: {en: "A simple raycasting project", fr: "Un simple projet de raycasting"} },
     { name: "Compressor", description: {en: "Compress your files", fr: "Compressez vos fichiers"} },
     { name: "Backup", description: {en: "Backup scripts wirelessly", fr: "Sauvegardez vos fichiers sans fil"} },
+    { name: "FlappyBird", description: {en: "A Flappy Bird clone", fr: "Un clone de Flappy Bird"} },
   ];
 });
