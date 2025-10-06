@@ -25,7 +25,7 @@ To test your app on device, you just need to flash it using the `make app-name_f
 To test your app on the simulator, it's a little bit more complicated :
 
 1. Clone the main Upsilon repository using `git clone --recurse-submodules https://github.com/UpsilonNumworks/Upsilon.git`
-2. Copy your app directory to the `Upsilon/apps/external/app/` directory
+2. Copy the content of your app directory to the `Upsilon/apps/external/app/` directory
 3. Build Upsilon using `make PLATFORM=simulator` (full guide is available in the Upsilon main repository).
 4. Run the simulator. The following command should work, but has been tested only on the Linux simulator:
 
