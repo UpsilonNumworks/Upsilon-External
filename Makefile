@@ -39,4 +39,5 @@ clean:
 	make -C apps/CHIP-8 clean
 	make -C apps/Example clean
 	make -C apps/Example-Cpp clean
+	make -C apps/HoldemPoker clean
 
