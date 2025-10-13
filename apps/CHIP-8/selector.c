@@ -28,7 +28,7 @@ static char ** remove(char ** first, char ** last) {
 }
 
 const char * select_rom() {
-  const int max_roms = 10;
+  const int max_roms = 50;
   char * filenames[max_roms];
   int selected_rom = 0;
   char name_buffer[FILENAME_LENGHT_MAX];

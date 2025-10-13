@@ -24,7 +24,7 @@ void extapp_main(void) {
 
     // Select a file (The code is in selector.c)
     // The code is a bit more complicated, but you can see how to use the file system API to read a file
-    const char * filename = Selector::select_file("", 10);
+    const char * filename = Selector::select_file("", 50);
     // Wait for the key to be released
     Peripherals::waitForKeyReleased();
 
