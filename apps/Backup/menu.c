@@ -7,11 +7,12 @@
 
 // Different transmission presets
 const struct TransmissionProfile profiles[] = {
-  {2, 25, 0, 1273, "1. 2×2 pixels, ≈5s, fastest"},
-  // {2, 25, 3, 535, "2×2 pixels, ≈11s, high error correction"},
-  {3, 15, 0, 520, "2. 3×3 pixels, ≈12s"},
-  // {3, 15, 3, 220, "3×3 pixels, ≈27s, high error correction"},
-  {4, 10, 0, 271, "3. 4×4 pixels, ≈22s, slowest"},
+  {2, 25, 0, 1273, true, "1. 2×2 pixels, ≈5s, fastest"},
+  // {2, 25, 0, 1273, false, "1. 2×2 pixels, ≈5s, mask"},
+  // {2, 25, 3, 535, true, "2×2 pixels, ≈11s, high error correction"},
+  {3, 15, 0, 520, false, "2. 3×3 pixels, ≈12s"},
+  // {3, 15, 3, 220, false, "3×3 pixels, false, ≈27s, high error correction"},
+  {4, 10, 0, 271, false, "3. 4×4 pixels, ≈22s, slowest"},
 };
 
 void open_website() {

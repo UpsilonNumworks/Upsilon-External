@@ -5,6 +5,9 @@
 #include <extapp_api.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+
+#define DEVICE
 
 void draw_qr(const char * data, struct TransmissionProfile profile) {
   // QR Code generator based on https://github.com/ricmoo/QRCode/blob/master/src/qrcode.c
@@ -12,7 +15,7 @@ void draw_qr(const char * data, struct TransmissionProfile profile) {
   uint8_t qrcodeData[qrcode_getBufferSize(profile.qrVersion)];
 
   // Generate QRCode
-  qrcode_initBytes(&qrcode, qrcodeData, profile.qrVersion, profile.qrEcc, (uint8_t*)data, profile.qrData);
+  qrcode_initBytes(&qrcode, qrcodeData, profile.qrVersion, profile.qrEcc, (uint8_t*)data, profile.qrData, profile.skipMask);
 
   // Display the QRCode
   extapp_waitForVBlank();
@@ -47,8 +50,7 @@ const uint32_t get_storage_size() {
 
 void extapp_main() {
   // Find base storage address and size.
-  // #ifndef DEVICE
-  #ifndef false
+  #ifndef DEVICE
   // On simulator, we can simply query the internal API
   // I don't want to use C++ and make symbols public, so I just use
   // mangled C++ symbols directly
@@ -134,6 +136,16 @@ void extapp_main() {
       if (timeToSleep > FRAME_DURATION) {
         timeToSleep = 0;
       }
+
+      // Display frame duration
+      char buffer[100];
+
+      // speed need to stay under 100 ms/f, otherwise we won't be transfering at
+      // optimal speed
+      sprintf(buffer, "%d ms/f", duration);
+      extapp_drawTextSmall(buffer, 270, 230, 65535, 0, false);
+
+
       extapp_msleep(timeToSleep);
     }
   }
