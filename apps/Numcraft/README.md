@@ -1,3 +1,5 @@
+Commit 7bff466ca2c10334138275c4aa02241133da121c
+
 <img src="https://github.com/user-attachments/assets/1eeccc90-342c-4f45-a444-7acc9cb9112a" width="128" alt="logo">
 
 # [WIP] Numcraft Rust
@@ -63,13 +65,13 @@ Good ideas but I will never have the time to do that :
 
 ## Setup the build environment
 
-To build this app, you will need to install an embedded ARM rust compiler, the [Arm GCC compiler](https://developer.arm.com/downloads/-/gnu-rm) as well as [Node.js](https://nodejs.org/en/). 
+To build this app, you will need to install an embedded ARM rust compiler, the [Arm GCC compiler](https://developer.arm.com/downloads/-/gnu-rm) as well as [Node.js](https://nodejs.org/en/).
 The SDK for Epsilon apps is shipped as a npm module called [nwlink](https://www.npmjs.com/package/nwlink) that will automatically be installed at compile time.
 **Make sure that `arm-none-eabi-gcc`is in your path.**
 
 For more explanations on how to install the c sdk, follow [this guide](https://www.numworks.com/engineering/software/build/).
 
-You might need to create a Python venv in the `epsilon_simulator` folder to install the pip packages on certain Linux distros. 
+You might need to create a Python venv in the `epsilon_simulator` folder to install the pip packages on certain Linux distros.
 
 Then, you can set up the dependencies as follows :
 ```shell

@@ -63,17 +63,9 @@ pub struct Point {
 
 pub mod backlight {
     pub fn set_brightness(brightness: u8) {
-        unsafe {
-            eadk_backlight_set_brightness(brightness);
-        }
     }
     pub fn brightness() -> u8 {
-        unsafe { eadk_backlight_brightness() }
-    }
-
-    unsafe extern "C" {
-        fn eadk_backlight_set_brightness(brightness: u8);
-        fn eadk_backlight_brightness() -> u8;
+        0
     }
 }
 
@@ -95,7 +87,7 @@ pub mod display {
 
     pub fn push_rect(rect: Rect, pixels: &[Color]) {
         unsafe {
-            eadk_display_push_rect(rect, pixels.as_ptr());
+            extapp_pushRect(rect.x, rect.y, rect.width, rect.height, pixels.as_ptr());
         }
     }
 
@@ -109,7 +101,7 @@ pub mod display {
         }
 
         unsafe {
-            eadk_display_pull_rect(rect, vec.as_mut_slice().as_mut_ptr());
+            extapp_pullRect(rect.x, rect.y, rect.width, rect.height, vec.as_mut_slice().as_mut_ptr());
         }
 
         vec
@@ -117,13 +109,13 @@ pub mod display {
 
     pub fn push_rect_uniform(rect: Rect, color: Color) {
         unsafe {
-            eadk_display_push_rect_uniform(rect, color);
+            extapp_pushRectUniform(rect.x, rect.y, rect.width, rect.height, color);
         }
     }
 
     pub fn wait_for_vblank() {
         unsafe {
-            eadk_display_wait_for_vblank();
+            extapp_waitForVBlank();
         }
     }
 
@@ -137,61 +129,76 @@ pub mod display {
         let c_string =
             CString::new(text).expect("Can't convert str to C_String. Maybe invalid caracter.");
         unsafe {
-            eadk_display_draw_string(
-                c_string.as_ptr(),
-                point,
-                large_font,
-                text_color,
-                background_color,
-            )
+            if large_font {
+                extapp_drawTextLarge(
+                    c_string.as_ptr(),
+                    point.x,
+                    point.y,
+                    text_color,
+                    background_color,
+                    false,
+                )
+            } else {
+                extapp_drawTextSmall(
+                    c_string.as_ptr(),
+                    point.x,
+                    point.y,
+                    text_color,
+                    background_color,
+                    false,
+                )
+            }
         }
     }
 
     unsafe extern "C" {
-        fn eadk_display_push_rect_uniform(rect: Rect, color: Color);
-        fn eadk_display_push_rect(rect: Rect, color: *const Color);
-        fn eadk_display_wait_for_vblank();
-        fn eadk_display_pull_rect(rect: Rect, color: *mut Color);
-        fn eadk_display_draw_string(
+        fn extapp_pushRectUniform(x: u16, y: u16, w: u16, h: u16, color: Color);
+        fn extapp_pushRect(x: u16, y: u16, w: u16, h: u16, color: *const Color);
+        fn extapp_waitForVBlank();
+        fn extapp_pullRect(x: u16, y: u16, w: u16, h: u16, color: *mut Color);
+        fn extapp_drawTextLarge(
             text: *const c_char,
-            point: Point,
-            large_font: bool,
+            x: u16,
+            y: u16,
             text_color: Color,
             background_color: Color,
+            fake: bool,
         );
+        fn extapp_drawTextSmall(
+            text: *const c_char,
+            x: u16,
+            y: u16,
+            text_color: Color,
+            background_color: Color,
+            fake: bool,
+        );
+
     }
 }
 
 pub mod timing {
     pub fn usleep(us: u32) {
-        unsafe {
-            eadk_timing_usleep(us);
-        }
+        msleep(us / 1000)
     }
 
     pub fn msleep(ms: u32) {
         unsafe {
-            eadk_timing_msleep(ms);
+            extapp_msleep(ms);
         }
     }
 
     pub fn millis() -> u64 {
-        unsafe { eadk_timing_millis() }
+        unsafe { extapp_millis() }
     }
 
     unsafe extern "C" {
-        fn eadk_timing_usleep(us: u32);
-        fn eadk_timing_msleep(us: u32);
-        fn eadk_timing_millis() -> u64;
+        fn extapp_msleep(us: u32);
+        fn extapp_millis() -> u64;
     }
 }
 
 pub fn random() -> u32 {
-    unsafe { eadk_random() }
-}
-
-unsafe extern "C" {
-    fn eadk_random() -> u32;
+    millis() as u32
 }
 
 pub mod input {
@@ -252,7 +259,7 @@ pub mod input {
     }
 
     unsafe extern "C" {
-        fn eadk_keyboard_scan() -> EadkKeyboardState;
+        fn extapp_scanKeyboard() -> EadkKeyboardState;
     }
 
     #[derive(Clone, Copy)]
@@ -266,7 +273,7 @@ pub mod input {
 
     impl KeyboardState {
         pub fn scan() -> Self {
-            Self::from_raw(unsafe { eadk_keyboard_scan() })
+            Self::from_raw(unsafe { extapp_scanKeyboard() })
         }
 
         pub fn new() -> Self {
@@ -469,6 +476,8 @@ use core::panic::PanicInfo;
 #[cfg(target_os = "none")]
 use alloc::string::String;
 
+use crate::eadk::timing::millis;
+
 #[cfg(target_os = "none")]
 fn write_wrapped(text: &str, limit: usize) {
     let mut line_count = 0;
@@ -528,13 +537,26 @@ pub fn debug_info(text: &str, wait: usize) {
 }
 
 unsafe extern "C" {
-    pub static mut _heap_start: u8;
-    pub static mut _heap_end: u8;
+    pub static mut _heap_base: u8;
+    pub static mut _heap_size: u32;
 }
 
-pub static mut HEAP_START: *mut u8 = core::ptr::addr_of_mut!(_heap_start);
-pub static mut HEAP_END: *mut u8 = core::ptr::addr_of_mut!(_heap_end);
+pub static mut HEAP_START: *mut u8 = core::ptr::addr_of_mut!(_heap_base);
 
 pub fn heap_size() -> usize {
-    (unsafe { HEAP_END.offset_from(HEAP_START) }) as usize
+    (unsafe { _heap_size }) as usize
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn setjmp(_: u32) -> u32 {
+    return 0;
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn longjmp(_: u32, _: u32) {
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn extapp_main() {
+    crate::main();
 }
