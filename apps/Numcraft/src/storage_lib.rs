@@ -7,7 +7,7 @@ use alloc::{ffi, string::String, vec::Vec};
 #[cfg(target_os = "none")]
 pub fn storage_file_write(filename: &str, content: &[u8]) -> bool {
     let c_string = ffi::CString::new(filename).unwrap();
-    unsafe { extapp_fileWrite(c_string.as_ptr(), content.as_ptr(), content.len()) }
+    unsafe { extapp_fileWrite(c_string.as_ptr(), content.as_ptr(), content.len(), 0) }
 }
 
 #[cfg(not(target_os = "none"))]
@@ -18,7 +18,7 @@ pub fn storage_file_write(_filename: &str, _content: &[u8]) -> bool {
 #[cfg(target_os = "none")]
 pub fn storage_extapp_file_exists(filename: &str) -> bool {
     let c_string = ffi::CString::new(filename).unwrap();
-    unsafe { extapp_fileExists(c_string.as_ptr()) }
+    unsafe { extapp_fileExists(c_string.as_ptr(), 0) }
 }
 
 #[cfg(not(target_os = "none"))]
@@ -30,7 +30,7 @@ pub fn storage_extapp_file_exists(_filename: &str) -> bool {
 pub fn storage_extapp_file_read(filename: &str) -> Option<Vec<u8>> {
     let c_string = ffi::CString::new(filename).unwrap();
     let mut lenght: usize = 0;
-    let array_pointer = unsafe { extapp_fileRead(c_string.as_ptr(), &mut lenght as *mut usize) };
+    let array_pointer = unsafe { extapp_fileRead(c_string.as_ptr(), &mut lenght as *mut usize, 0) };
 
     if array_pointer.is_null() {
         return None;
@@ -48,7 +48,7 @@ pub fn storage_extapp_file_read(_filename: &str) -> Option<Vec<u8>> {
 pub fn storage_extapp_file_read_header(filename: &str, header_len: usize) -> Option<Vec<u8>> {
     let c_string = ffi::CString::new(filename).unwrap();
     let mut _lenght: usize = 0;
-    let array_pointer = unsafe { extapp_fileRead(c_string.as_ptr(), &mut _lenght as *mut usize) };
+    let array_pointer = unsafe { extapp_fileRead(c_string.as_ptr(), &mut _lenght as *mut usize, 0) };
 
     if array_pointer.is_null() {
         return None;
@@ -65,7 +65,7 @@ pub fn storage_extapp_file_read_header(_filename: &str, _header_len: usize) -> O
 #[cfg(target_os = "none")]
 pub fn storage_extapp_file_erase(filename: &str) -> bool {
     let c_string = ffi::CString::new(filename).unwrap();
-    unsafe { extapp_fileErase(c_string.as_ptr()) }
+    unsafe { extapp_fileErase(c_string.as_ptr(), 0) }
 }
 
 #[cfg(not(target_os = "none"))]
@@ -83,6 +83,7 @@ pub fn storage_extapp_file_list_with_extension(max_records: usize, extension: &s
             filenames.as_mut_slice().as_mut_ptr(),
             max_records as isize,
             c_string.as_ptr(),
+            0
         );
         filenames.set_len(final_len as usize);
 
@@ -108,14 +109,15 @@ pub fn storage_extapp_file_list_with_extension(
 
 #[cfg(target_os = "none")]
 unsafe extern "C" {
-    fn extapp_fileWrite(filename: *const u8, content: *const u8, len: usize) -> bool;
-    fn extapp_fileExists(filename: *const u8) -> bool;
-    fn extapp_fileRead(filename: *const u8, len: *mut usize) -> *const u8;
-    fn extapp_fileErase(filename: *const u8) -> bool;
+    fn extapp_fileWrite(filename: *const u8, content: *const u8, len: usize, storage: isize) -> bool;
+    fn extapp_fileExists(filename: *const u8, storage: isize) -> bool;
+    fn extapp_fileRead(filename: *const u8, len: *mut usize, storage: isize) -> *const u8;
+    fn extapp_fileErase(filename: *const u8, storage: isize) -> bool;
     fn extapp_fileListWithExtension(
         filename: *mut *mut u8,
         maxrecord: isize,
         extension: *const u8,
+        storage: isize
     ) -> isize;
 
 }

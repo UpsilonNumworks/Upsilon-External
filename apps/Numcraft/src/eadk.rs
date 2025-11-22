@@ -154,7 +154,7 @@ pub mod display {
     unsafe extern "C" {
         fn extapp_pushRectUniform(x: u16, y: u16, w: u16, h: u16, color: Color);
         fn extapp_pushRect(x: u16, y: u16, w: u16, h: u16, color: *const Color);
-        fn extapp_waitForVBlank();
+        fn extapp_waitForVBlank() -> bool;
         fn extapp_pullRect(x: u16, y: u16, w: u16, h: u16, color: *mut Color);
         fn extapp_drawTextLarge(
             text: *const c_char,

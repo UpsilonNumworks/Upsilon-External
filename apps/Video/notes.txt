@@ -1,0 +1,5 @@
+Building libjpeg-turbo: 0b742742c873025e2a127918d4969238ace7ae5b
+cmake -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake .
+make
+
+Ignore make errors, only presence of libjpeg.a is useful

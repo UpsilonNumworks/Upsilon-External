@@ -1,0 +1,71 @@
+[
+ {
+  "directory": "/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video",
+  "arguments": [
+   "arm-none-eabi-gcc",
+   "-DNDEBUG",
+   "-ggdb3",
+   "-I../../api",
+   "-I./libjpeg-turbo/src",
+   "-I.",
+   "-Os",
+   "-mcpu=cortex-m7",
+   "-mthumb",
+   "-mfpu=fpv5-sp-d16",
+   "-mfloat-abi=hard",
+   "-fno-common",
+   "-fdata-sections",
+   "-ffunction-sections",
+   "-fno-exceptions",
+   "-c",
+   "main.c"
+  ],
+  "file": "main.c"
+ },
+ {
+  "directory": "/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video",
+  "arguments": [
+   "arm-none-eabi-gcc",
+   "-DNDEBUG",
+   "-ggdb3",
+   "-I../../api",
+   "-I./libjpeg-turbo/src",
+   "-I.",
+   "-Os",
+   "-mcpu=cortex-m7",
+   "-mthumb",
+   "-mfpu=fpv5-sp-d16",
+   "-mfloat-abi=hard",
+   "-fno-common",
+   "-fdata-sections",
+   "-ffunction-sections",
+   "-fno-exceptions",
+   "-c",
+   "peripherals.c"
+  ],
+  "file": "peripherals.c"
+ },
+ {
+  "directory": "/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video",
+  "arguments": [
+   "arm-none-eabi-gcc",
+   "-DNDEBUG",
+   "-ggdb3",
+   "-I../../api",
+   "-I./libjpeg-turbo/src",
+   "-I.",
+   "-Os",
+   "-mcpu=cortex-m7",
+   "-mthumb",
+   "-mfpu=fpv5-sp-d16",
+   "-mfloat-abi=hard",
+   "-fno-common",
+   "-fdata-sections",
+   "-ffunction-sections",
+   "-fno-exceptions",
+   "-c",
+   "selector.c"
+  ],
+  "file": "selector.c"
+ }
+]

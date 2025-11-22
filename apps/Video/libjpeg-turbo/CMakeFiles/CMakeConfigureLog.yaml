@@ -1,0 +1,1333 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+      - "/bin/"
+    searched_directories:
+      - "/home/neo/Documents/Code/Programes/uname"
+      - "/home/neo/bin/uname"
+      - "/home/neo/.local/bin/uname"
+      - "/home/neo/Programes/uname"
+      - "/home/neo/Documents/Python/uname"
+      - "/usr/local/bin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      The system is: Linux - 6.17.7-zen1-1-zen - x86_64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeUnixFindMake.cmake:5 (find_program)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_MAKE_PROGRAM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gmake"
+      - "make"
+      - "smake"
+    candidate_directories:
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/home/neo/Documents/Code/Programes/gmake"
+      - "/home/neo/bin/gmake"
+      - "/home/neo/.local/bin/gmake"
+      - "/home/neo/Programes/gmake"
+      - "/home/neo/Documents/Python/gmake"
+      - "/usr/local/bin/gmake"
+      - "/usr/bin/gmake"
+      - "/usr/local/sbin/gmake"
+      - "/var/lib/flatpak/exports/bin/gmake"
+      - "/usr/lib/jvm/default/bin/gmake"
+      - "/usr/bin/site_perl/gmake"
+      - "/usr/bin/vendor_perl/gmake"
+      - "/usr/bin/core_perl/gmake"
+      - "/usr/lib/rustup/bin/gmake"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/gmake"
+      - "/home/neo/Documents/Code/Programes/make"
+      - "/home/neo/bin/make"
+      - "/home/neo/.local/bin/make"
+      - "/home/neo/Programes/make"
+      - "/home/neo/Documents/Python/make"
+      - "/usr/local/bin/make"
+    found: "/usr/bin/make"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:64 (_cmake_find_compiler)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER"
+    description: "C compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "/usr/bin/arm-none-eabi-gcc"
+    candidate_directories:
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-gcc"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCCompilerId.c.in"
+    candidate_directories:
+      - "/usr/share/cmake/Modules/"
+    found: "/usr/share/cmake/Modules/CMakeCCompilerId.c.in"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+      Compiler: /usr/bin/arm-none-eabi-gcc 
+      Build flags: -O3;-mcpu=cortex-m7;-mthumb;-mfpu=fpv5-sp-d16;-mfloat-abi=hard;-fno-common;-fdata-sections;-ffunction-sections;-fno-exceptions
+      Id flags:  
+      
+      The output was:
+      1
+      /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-exit.o): in function `exit':
+      /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/stdlib/exit.c:65:(.text.exit+0x14): undefined reference to `_exit'
+      /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-closer.o): in function `_close_r':
+      /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/closer.c:47:(.text._close_r+0xc): undefined reference to `_close'
+      /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-lseekr.o): in function `_lseek_r':
+      /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/lseekr.c:49:(.text._lseek_r+0x14): undefined reference to `_lseek'
+      /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-readr.o): in function `_read_r':
+      /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/readr.c:49:(.text._read_r+0x14): undefined reference to `_read'
+      /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-writer.o): in function `_write_r':
+      /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/writer.c:49:(.text._write_r+0x14): undefined reference to `_write'
+      /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-sbrkr.o): in function `_sbrk_r':
+      /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/sbrkr.c:51:(.text._sbrk_r+0xc): undefined reference to `_sbrk'
+      collect2: error: ld returned 1 exit status
+      
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCCompilerId.c.in"
+    candidate_directories:
+      - "/usr/share/cmake/Modules/"
+    found: "/usr/share/cmake/Modules/CMakeCCompilerId.c.in"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/arm-none-eabi-gcc 
+      Build flags: -O3;-mcpu=cortex-m7;-mthumb;-mfpu=fpv5-sp-d16;-mfloat-abi=hard;-fno-common;-fdata-sections;-ffunction-sections;-fno-exceptions
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is GNU, found in:
+        /home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/4.1.2/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-ar"
+      - "ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-ar"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_RANLIB"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-ranlib"
+      - "ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-ranlib"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_STRIP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-strip"
+      - "strip"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-strip"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-ld"
+      - "ld"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-ld"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_NM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-nm"
+      - "nm"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-nm"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJDUMP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-objdump"
+      - "objdump"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-objdump"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJCOPY"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-objcopy"
+      - "objcopy"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-objcopy"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_READELF"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-readelf"
+      - "readelf"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-readelf"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_DLLTOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-dlltool"
+      - "dlltool"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/arm-none-eabi-dlltool"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-dlltool"
+      - "/home/neo/bin/arm-none-eabi-dlltool"
+      - "/home/neo/.local/bin/arm-none-eabi-dlltool"
+      - "/home/neo/Programes/arm-none-eabi-dlltool"
+      - "/home/neo/Documents/Python/arm-none-eabi-dlltool"
+      - "/usr/local/bin/arm-none-eabi-dlltool"
+      - "/usr/local/sbin/arm-none-eabi-dlltool"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-dlltool"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-dlltool"
+      - "/usr/bin/site_perl/arm-none-eabi-dlltool"
+      - "/usr/bin/vendor_perl/arm-none-eabi-dlltool"
+      - "/usr/bin/core_perl/arm-none-eabi-dlltool"
+      - "/usr/lib/rustup/bin/arm-none-eabi-dlltool"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-dlltool"
+      - "/usr/bin/dlltool"
+      - "/home/neo/Documents/Code/Programes/dlltool"
+      - "/home/neo/bin/dlltool"
+      - "/home/neo/.local/bin/dlltool"
+      - "/home/neo/Programes/dlltool"
+      - "/home/neo/Documents/Python/dlltool"
+      - "/usr/local/bin/dlltool"
+      - "/usr/local/sbin/dlltool"
+      - "/var/lib/flatpak/exports/bin/dlltool"
+      - "/usr/lib/jvm/default/bin/dlltool"
+      - "/usr/bin/site_perl/dlltool"
+      - "/usr/bin/vendor_perl/dlltool"
+      - "/usr/bin/core_perl/dlltool"
+      - "/usr/lib/rustup/bin/dlltool"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/dlltool"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_ADDR2LINE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-addr2line"
+      - "addr2line"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    found: "/usr/bin/arm-none-eabi-addr2line"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_TAPI"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-tapi"
+      - "tapi"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/arm-none-eabi-tapi"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-tapi"
+      - "/home/neo/bin/arm-none-eabi-tapi"
+      - "/home/neo/.local/bin/arm-none-eabi-tapi"
+      - "/home/neo/Programes/arm-none-eabi-tapi"
+      - "/home/neo/Documents/Python/arm-none-eabi-tapi"
+      - "/usr/local/bin/arm-none-eabi-tapi"
+      - "/usr/local/sbin/arm-none-eabi-tapi"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-tapi"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-tapi"
+      - "/usr/bin/site_perl/arm-none-eabi-tapi"
+      - "/usr/bin/vendor_perl/arm-none-eabi-tapi"
+      - "/usr/bin/core_perl/arm-none-eabi-tapi"
+      - "/usr/lib/rustup/bin/arm-none-eabi-tapi"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-tapi"
+      - "/usr/bin/tapi"
+      - "/home/neo/Documents/Code/Programes/tapi"
+      - "/home/neo/bin/tapi"
+      - "/home/neo/.local/bin/tapi"
+      - "/home/neo/Programes/tapi"
+      - "/home/neo/Documents/Python/tapi"
+      - "/usr/local/bin/tapi"
+      - "/usr/local/sbin/tapi"
+      - "/var/lib/flatpak/exports/bin/tapi"
+      - "/usr/lib/jvm/default/bin/tapi"
+      - "/usr/bin/site_perl/tapi"
+      - "/usr/bin/vendor_perl/tapi"
+      - "/usr/bin/core_perl/tapi"
+      - "/usr/lib/rustup/bin/tapi"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/tapi"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER_AR"
+    description: "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-gcc-ar-14.2"
+      - "arm-none-eabi-gcc-ar-14"
+      - "arm-none-eabi-gcc-ar14"
+      - "arm-none-eabi-gcc-ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/arm-none-eabi-gcc-ar-14.2"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-gcc-ar-14.2"
+      - "/home/neo/bin/arm-none-eabi-gcc-ar-14.2"
+      - "/home/neo/.local/bin/arm-none-eabi-gcc-ar-14.2"
+      - "/home/neo/Programes/arm-none-eabi-gcc-ar-14.2"
+      - "/home/neo/Documents/Python/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/local/bin/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/local/sbin/arm-none-eabi-gcc-ar-14.2"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/bin/site_perl/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/bin/vendor_perl/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/bin/core_perl/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/lib/rustup/bin/arm-none-eabi-gcc-ar-14.2"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-gcc-ar-14.2"
+      - "/usr/bin/arm-none-eabi-gcc-ar-14"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-gcc-ar-14"
+      - "/home/neo/bin/arm-none-eabi-gcc-ar-14"
+      - "/home/neo/.local/bin/arm-none-eabi-gcc-ar-14"
+      - "/home/neo/Programes/arm-none-eabi-gcc-ar-14"
+      - "/home/neo/Documents/Python/arm-none-eabi-gcc-ar-14"
+      - "/usr/local/bin/arm-none-eabi-gcc-ar-14"
+      - "/usr/local/sbin/arm-none-eabi-gcc-ar-14"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-gcc-ar-14"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-gcc-ar-14"
+      - "/usr/bin/site_perl/arm-none-eabi-gcc-ar-14"
+      - "/usr/bin/vendor_perl/arm-none-eabi-gcc-ar-14"
+      - "/usr/bin/core_perl/arm-none-eabi-gcc-ar-14"
+      - "/usr/lib/rustup/bin/arm-none-eabi-gcc-ar-14"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-gcc-ar-14"
+      - "/usr/bin/arm-none-eabi-gcc-ar14"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-gcc-ar14"
+      - "/home/neo/bin/arm-none-eabi-gcc-ar14"
+      - "/home/neo/.local/bin/arm-none-eabi-gcc-ar14"
+      - "/home/neo/Programes/arm-none-eabi-gcc-ar14"
+      - "/home/neo/Documents/Python/arm-none-eabi-gcc-ar14"
+      - "/usr/local/bin/arm-none-eabi-gcc-ar14"
+      - "/usr/local/sbin/arm-none-eabi-gcc-ar14"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-gcc-ar14"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-gcc-ar14"
+      - "/usr/bin/site_perl/arm-none-eabi-gcc-ar14"
+      - "/usr/bin/vendor_perl/arm-none-eabi-gcc-ar14"
+      - "/usr/bin/core_perl/arm-none-eabi-gcc-ar14"
+      - "/usr/lib/rustup/bin/arm-none-eabi-gcc-ar14"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-gcc-ar14"
+    found: "/usr/bin/arm-none-eabi-gcc-ar"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER_RANLIB"
+    description: "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "arm-none-eabi-gcc-ranlib-14.2"
+      - "arm-none-eabi-gcc-ranlib-14"
+      - "arm-none-eabi-gcc-ranlib14"
+      - "arm-none-eabi-gcc-ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/neo/Documents/Code/Programes/"
+      - "/home/neo/bin/"
+      - "/home/neo/.local/bin/"
+      - "/home/neo/Programes/"
+      - "/home/neo/Documents/Python/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/"
+    searched_directories:
+      - "/usr/bin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-gcc-ranlib-14.2"
+      - "/home/neo/bin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/home/neo/.local/bin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/home/neo/Programes/arm-none-eabi-gcc-ranlib-14.2"
+      - "/home/neo/Documents/Python/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/local/bin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/local/sbin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/bin/site_perl/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/bin/vendor_perl/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/bin/core_perl/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/lib/rustup/bin/arm-none-eabi-gcc-ranlib-14.2"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-gcc-ranlib-14.2"
+      - "/usr/bin/arm-none-eabi-gcc-ranlib-14"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-gcc-ranlib-14"
+      - "/home/neo/bin/arm-none-eabi-gcc-ranlib-14"
+      - "/home/neo/.local/bin/arm-none-eabi-gcc-ranlib-14"
+      - "/home/neo/Programes/arm-none-eabi-gcc-ranlib-14"
+      - "/home/neo/Documents/Python/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/local/bin/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/local/sbin/arm-none-eabi-gcc-ranlib-14"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/bin/site_perl/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/bin/vendor_perl/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/bin/core_perl/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/lib/rustup/bin/arm-none-eabi-gcc-ranlib-14"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-gcc-ranlib-14"
+      - "/usr/bin/arm-none-eabi-gcc-ranlib14"
+      - "/home/neo/Documents/Code/Programes/arm-none-eabi-gcc-ranlib14"
+      - "/home/neo/bin/arm-none-eabi-gcc-ranlib14"
+      - "/home/neo/.local/bin/arm-none-eabi-gcc-ranlib14"
+      - "/home/neo/Programes/arm-none-eabi-gcc-ranlib14"
+      - "/home/neo/Documents/Python/arm-none-eabi-gcc-ranlib14"
+      - "/usr/local/bin/arm-none-eabi-gcc-ranlib14"
+      - "/usr/local/sbin/arm-none-eabi-gcc-ranlib14"
+      - "/var/lib/flatpak/exports/bin/arm-none-eabi-gcc-ranlib14"
+      - "/usr/lib/jvm/default/bin/arm-none-eabi-gcc-ranlib14"
+      - "/usr/bin/site_perl/arm-none-eabi-gcc-ranlib14"
+      - "/usr/bin/vendor_perl/arm-none-eabi-gcc-ranlib14"
+      - "/usr/bin/core_perl/arm-none-eabi-gcc-ranlib14"
+      - "/usr/lib/rustup/bin/arm-none-eabi-gcc-ranlib14"
+      - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts/arm-none-eabi-gcc-ranlib14"
+    found: "/usr/bin/arm-none-eabi-gcc-ranlib"
+    search_context:
+      ENV{PATH}:
+        - "/home/neo/Documents/Code/Programes"
+        - "/home/neo/bin"
+        - "/home/neo/.local/bin"
+        - "/home/neo/Programes"
+        - "/home/neo/Documents/Python"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/usr/local/sbin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+        - "/home/neo/.vscode-oss/extensions/ms-python.debugpy-2025.14.1-linux-x64/bundled/scripts/noConfigScripts"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:16 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-nqKlJv"
+      binary: "/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-nqKlJv"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-O3 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-nqKlJv'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_aa588/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_aa588.dir/build.make CMakeFiles/cmTC_aa588.dir/build
+        make[1]: Entering directory '/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-nqKlJv'
+        Building C object CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o
+        /usr/bin/arm-none-eabi-gcc   -O3 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions    -v -o CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/arm-none-eabi-gcc
+        Target: arm-none-eabi
+        Configured with: /build/arm-none-eabi-gcc/src/gcc-14.2.0/configure --target=arm-none-eabi --prefix=/usr --with-sysroot=/usr/arm-none-eabi --with-native-system-header-dir=/include --libexecdir=/usr/lib --enable-languages=c,c++ --enable-plugins --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-system-zlib --with-newlib --with-headers=/usr/arm-none-eabi/include --with-python-dir=share/gcc-arm-none-eabi --with-gmp --with-mpfr --with-mpc --with-isl --with-libelf --enable-gnu-indirect-function --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='Arch Repository' --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/arm-none-eabi-gcc/-/issues --with-multilib-list=rmprofile
+        Thread model: single
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 14.2.0 (Arch Repository) 
+        COLLECT_GCC_OPTIONS='-O3' '-mcpu=cortex-m7' '-mthumb' '-mfpu=fpv5-sp-d16' '-mfloat-abi=hard' '-fno-common' '-fdata-sections' '-ffunction-sections' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o' '-c' '-mlibarch=armv7e-m+fpv5' '-march=armv7e-m+fpv5' '-dumpdir' 'CMakeFiles/cmTC_aa588.dir/'
+         /usr/lib/gcc/arm-none-eabi/14.2.0/cc1 -quiet -v -imultilib thumb/v7e-m+fp/hard -D__USES_INITFINI__ /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_aa588.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mlibarch=armv7e-m+fpv5 -march=armv7e-m+fpv5 -O3 -version -fno-common -fdata-sections -ffunction-sections -fno-exceptions -o /tmp/ccj51Ivm.s
+        GNU C17 (Arch Repository) version 14.2.0 (arm-none-eabi)
+        	compiled by GNU C version 14.2.1 20240910, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.27-GMP
+        
+        warning: MPFR header version 4.2.1 differs from library version 4.2.2.
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/arm-none-eabi/usr/local/include"
+        ignoring duplicate directory "/usr/arm-none-eabi/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/arm-none-eabi/14.2.0/include
+         /usr/lib/gcc/arm-none-eabi/14.2.0/include-fixed
+         /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/include
+        End of search list.
+        Compiler executable checksum: 27ee4863632474af78fa6d6c36d3934a
+        COLLECT_GCC_OPTIONS='-O3' '-mcpu=cortex-m7' '-mthumb' '-mfpu=fpv5-sp-d16' '-mfloat-abi=hard' '-fno-common' '-fdata-sections' '-ffunction-sections' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o' '-c' '-mlibarch=armv7e-m+fpv5' '-march=armv7e-m+fpv5' '-dumpdir' 'CMakeFiles/cmTC_aa588.dir/'
+         /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/as -v -march=armv7e-m+fpv5 -mfloat-abi=hard -mfpu=fpv5-sp-d16 -meabi=5 -o CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o /tmp/ccj51Ivm.s
+        GNU assembler version 2.43 (arm-none-eabi) using BFD version (GNU Binutils) 2.43
+        COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/
+        LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/
+        COLLECT_GCC_OPTIONS='-O3' '-mcpu=cortex-m7' '-mthumb' '-mfpu=fpv5-sp-d16' '-mfloat-abi=hard' '-fno-common' '-fdata-sections' '-ffunction-sections' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o' '-c' '-mlibarch=armv7e-m+fpv5' '-march=armv7e-m+fpv5' '-dumpdir' 'CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_aa588
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aa588.dir/link.txt --verbose=1
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/arm-none-eabi-gcc
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/arm-none-eabi/14.2.0/lto-wrapper
+        Target: arm-none-eabi
+        Configured with: /build/arm-none-eabi-gcc/src/gcc-14.2.0/configure --target=arm-none-eabi --prefix=/usr --with-sysroot=/usr/arm-none-eabi --with-native-system-header-dir=/include --libexecdir=/usr/lib --enable-languages=c,c++ --enable-plugins --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-system-zlib --with-newlib --with-headers=/usr/arm-none-eabi/include --with-python-dir=share/gcc-arm-none-eabi --with-gmp --with-mpfr --with-mpc --with-isl --with-libelf --enable-gnu-indirect-function --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='Arch Repository' --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/arm-none-eabi-gcc/-/issues --with-multilib-list=rmprofile
+        Thread model: single
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 14.2.0 (Arch Repository) 
+        COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/
+        LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/14.2.0/:/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/
+        COLLECT_GCC_OPTIONS='-O3' '-mcpu=cortex-m7' '-mthumb' '-mfpu=fpv5-sp-d16' '-mfloat-abi=hard' '-fno-common' '-fdata-sections' '-ffunction-sections' '-fno-exceptions' '-v' '-o' 'cmTC_aa588' '-mlibarch=armv7e-m+fpv5' '-march=armv7e-m+fpv5' '-dumpdir' 'cmTC_aa588.'
+         /usr/lib/gcc/arm-none-eabi/14.2.0/collect2 -plugin /usr/lib/gcc/arm-none-eabi/14.2.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/14.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/cc2plshn.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc --sysroot=/usr/arm-none-eabi -X -o cmTC_aa588 /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/14.2.0 -L/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -v CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o --start-group -lgcc -lc --end-group /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crtn.o
+        collect2 version 14.2.0
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld -plugin /usr/lib/gcc/arm-none-eabi/14.2.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/14.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/cc2plshn.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc --sysroot=/usr/arm-none-eabi -X -o cmTC_aa588 /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/14.2.0 -L/usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -v CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o --start-group -lgcc -lc --end-group /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/14.2.0/thumb/v7e-m+fp/hard/crtn.o
+        GNU ld (GNU Binutils) 2.43
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-exit.o): in function `exit':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/stdlib/exit.c:65:(.text.exit+0x14): undefined reference to `_exit'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-closer.o): in function `_close_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/closer.c:47:(.text._close_r+0xc): undefined reference to `_close'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-lseekr.o): in function `_lseek_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/lseekr.c:49:(.text._lseek_r+0x14): undefined reference to `_lseek'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-readr.o): in function `_read_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/readr.c:49:(.text._read_r+0x14): undefined reference to `_read'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-writer.o): in function `_write_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/writer.c:49:(.text._write_r+0x14): undefined reference to `_write'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-sbrkr.o): in function `_sbrk_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/sbrkr.c:51:(.text._sbrk_r+0xc): undefined reference to `_sbrk'
+        collect2: error: ld returned 1 exit status
+        /usr/bin/arm-none-eabi-gcc -O3 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions   -v -Wl,-v CMakeFiles/cmTC_aa588.dir/CMakeCCompilerABI.c.o -o cmTC_aa588
+        make[1]: *** [CMakeFiles/cmTC_aa588.dir/build.make:102: cmTC_aa588] Error 1
+        make[1]: Leaving directory '/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-nqKlJv'
+        make: *** [Makefile:134: cmTC_aa588/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:56 (try_compile)"
+      - "CMakeLists.txt:16 (project)"
+    checks:
+      - "Check for working C compiler: /usr/bin/arm-none-eabi-gcc"
+    directories:
+      source: "/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-YHFfYL"
+      binary: "/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-YHFfYL"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-O3 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_WORKS"
+      cached: true
+      stdout: |
+        Change Dir: '/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-YHFfYL'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_26f33/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_26f33.dir/build.make CMakeFiles/cmTC_26f33.dir/build
+        make[1]: Entering directory '/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-YHFfYL'
+        Building C object CMakeFiles/cmTC_26f33.dir/testCCompiler.c.o
+        /usr/bin/arm-none-eabi-gcc   -O3 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions  -o CMakeFiles/cmTC_26f33.dir/testCCompiler.c.o -c /home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-YHFfYL/testCCompiler.c
+        Linking C executable cmTC_26f33
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_26f33.dir/link.txt --verbose=1
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-exit.o): in function `exit':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/stdlib/exit.c:65:(.text.exit+0x14): undefined reference to `_exit'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-closer.o): in function `_close_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/closer.c:47:(.text._close_r+0xc): undefined reference to `_close'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-lseekr.o): in function `_lseek_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/lseekr.c:49:(.text._lseek_r+0x14): undefined reference to `_lseek'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-readr.o): in function `_read_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/readr.c:49:(.text._read_r+0x14): undefined reference to `_read'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-writer.o): in function `_write_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/writer.c:49:(.text._write_r+0x14): undefined reference to `_write'
+        /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc.a(libc_a-sbrkr.o): in function `_sbrk_r':
+        /build/arm-none-eabi-newlib/src/build-newlib/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib-4.5.0.20241231/newlib/libc/reent/sbrkr.c:51:(.text._sbrk_r+0xc): undefined reference to `_sbrk'
+        collect2: error: ld returned 1 exit status
+        /usr/bin/arm-none-eabi-gcc -O3 -mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard -fno-common -fdata-sections -ffunction-sections -fno-exceptions  CMakeFiles/cmTC_26f33.dir/testCCompiler.c.o -o cmTC_26f33
+        make[1]: *** [CMakeFiles/cmTC_26f33.dir/build.make:102: cmTC_26f33] Error 1
+        make[1]: Leaving directory '/home/neo/Documents/Code/NumWorks/Upsilon-External/apps/Video/libjpeg-turbo/CMakeFiles/CMakeScratch/TryCompile-YHFfYL'
+        make: *** [Makefile:134: cmTC_26f33/fast] Error 2
+        
+      exitCode: 2
+...
