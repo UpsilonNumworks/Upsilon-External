@@ -2,7 +2,7 @@
 %_flash: %_rebuild
 	./tool/archive apps.tar $@
 	@echo "Waiting for the calculator to be connected, use the bootloader to flash on Upsilon if your app is bigger than 2MB"
-	@until dfu-util -l | grep -E "0483:a291|0483:df11" > /dev/null 2>&1; do sleep 2;done
+	@until dfu-util -l | grep -E "0483:a291|0483:df11" > /dev/null 2>&1; do sleep .5;done
 	dfu-util -i 0 -a 0 -s 0x90200000 -D apps.tar
 
 .PHONY: %_rebuild
