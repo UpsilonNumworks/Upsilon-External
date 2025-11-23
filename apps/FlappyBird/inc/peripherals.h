@@ -1,5 +1,5 @@
 #ifndef FLAPPY_PERIPHERALS_H_
-#define RAYCASTER_PERIPHERALS_H_
+#define FLAPPY_PERIPHERALS_H_
 
 #include <stdint.h>
 
