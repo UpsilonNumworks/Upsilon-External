@@ -27,6 +27,11 @@
 #define PIECE_SCALE 0.7
 #define INFO_PANEL_X (8 * SQUARE_SIZE)
 #define INFO_PANEL_WIDTH (LCD_WIDTH - INFO_PANEL_X)
+#define SCORE_BAR_X LCD_WIDTH - 13
+#define SCORE_BAR_Y LCD_HEIGHT / 2  - 3
+#define SCORE_BAR_W 10
+#define SCORE_BAR_H (LCD_HEIGHT / 2)
+#define SCORE_BAR_BORDER_W 2
 
 // Colors
 #define COLOR_MENU_BG 0xFFDF // #FFFAFF
@@ -38,6 +43,10 @@
 #define COLOR_SELECTION_OVERLAY 0xFFE0 // #FFFF00
 #define COLOR_MASK_LSB 0xF7DE
 #define COLOR_CHECK 0xEB0A // #EB6150
+#define SCORE_BAR_BORDER_COLOR 0x7BEF // #7C7D7C mid gray
+#define SCORE_BAR_WHITE 0xAD55 // #ADAAAD
+#define SCORE_BAR_BLACK 0x2945 // #292829
+
 
 // Menu layout
 #define MENU_MARGIN_TOP 38
@@ -45,6 +54,31 @@
 #define MENU_OPTION_WIDTH (LCD_WIDTH - 2 * MENU_MARGIN_SIDE)
 #define MENU_OPTION_HEIGHT 34
 
+
+
+void showScoreBar(int white_advantage, int black_advantage) {
+    int max_delta = 100;
+    int score = white_advantage - black_advantage;
+    if (score <= 0) score = -score;
+    if (score >= max_delta) score = max_delta;
+
+    int white_percent = 50 + (score * 50) / max_delta;
+
+    // Top Left Corner Border
+    extapp_pushRectUniform(SCORE_BAR_X, SCORE_BAR_Y, SCORE_BAR_BORDER_W, SCORE_BAR_H, SCORE_BAR_BORDER_COLOR);
+    extapp_pushRectUniform(SCORE_BAR_X, SCORE_BAR_Y, SCORE_BAR_W, SCORE_BAR_BORDER_W, SCORE_BAR_BORDER_COLOR);
+
+    // Down Right Corner Border
+    extapp_pushRectUniform(SCORE_BAR_X + SCORE_BAR_W - SCORE_BAR_BORDER_W, SCORE_BAR_Y, SCORE_BAR_BORDER_W, SCORE_BAR_H, SCORE_BAR_BORDER_COLOR);
+    extapp_pushRectUniform(SCORE_BAR_X, SCORE_BAR_Y + SCORE_BAR_H - SCORE_BAR_BORDER_W, SCORE_BAR_W, SCORE_BAR_BORDER_W, SCORE_BAR_BORDER_COLOR);
+
+    // // Bar 
+    // // Black Color (on top)
+    extapp_pushRectUniform(SCORE_BAR_X + SCORE_BAR_BORDER_W, SCORE_BAR_Y + SCORE_BAR_BORDER_W, SCORE_BAR_W - 2 * SCORE_BAR_BORDER_W, ((SCORE_BAR_H - 2 * SCORE_BAR_BORDER_W) * (100 - white_percent)) / 100, SCORE_BAR_BLACK);
+    // White Color (on bottom)
+    extapp_pushRectUniform(SCORE_BAR_X + SCORE_BAR_BORDER_W, SCORE_BAR_Y + SCORE_BAR_BORDER_W + ((SCORE_BAR_H - 2 * SCORE_BAR_BORDER_W) * (100 - white_percent)) / 100, SCORE_BAR_W - 2 * SCORE_BAR_BORDER_W, SCORE_BAR_H - 2 * SCORE_BAR_BORDER_W - ((SCORE_BAR_H - 2 * SCORE_BAR_BORDER_W) * (100 - white_percent)) / 100, SCORE_BAR_WHITE);
+    
+}
 void draw_piece_to_buffer(uint16_t* buffer, int buffer_width, int buffer_height, char piece)
 {
     const uint16_t* piece_data = NULL;

@@ -8,7 +8,7 @@ typedef struct {
     const char* text;
     const char* sub_text;
 } MenuItem;
-
+void showScoreBar(int white_advantage, int black_advantage);
 void draw_board(char board[BOARD_SIZE][BOARD_SIZE], int sel_row, int sel_col, bool show_moves, Move* possible_moves, int check_row, int check_col);
 void draw_square(char board[BOARD_SIZE][BOARD_SIZE], int row, int col, bool selected, bool is_possible_move, bool is_check);
 void draw_cursor_move(char board[BOARD_SIZE][BOARD_SIZE], int old_row, int old_col, int new_row, int new_col, Move* possible_moves, int check_row, int check_col);
