@@ -17,5 +17,6 @@ angular.module('nwas').service('apps', function() {
     { name: "Compressor", description: {en: "Compress your files", fr: "Compressez vos fichiers"} },
     { name: "Backup", description: {en: "Backup scripts wirelessly", fr: "Sauvegardez vos fichiers sans fil"} },
     { name: "HoldemPoker", description: {en: "A Texas Hold'em Poker Game", fr: "Un jeu de Texas Hold'em"} },
+    { name: "Chess", description: {en: "Chess Game", fr: "Jeu d'échecs"} },
   ];
 });
