@@ -62,7 +62,7 @@ void showScoreBar(int white_advantage, int black_advantage) {
     if (score <= 0) score = -score;
     if (score >= max_delta) score = max_delta;
 
-    int white_percent = 50 + (score * 50) / max_delta;
+    int white_percent = 50 - (score * 50) / max_delta;
 
     // Top Left Corner Border
     extapp_pushRectUniform(SCORE_BAR_X, SCORE_BAR_Y, SCORE_BAR_BORDER_W, SCORE_BAR_H, SCORE_BAR_BORDER_COLOR);
