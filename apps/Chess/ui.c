@@ -20,31 +20,6 @@
 #include "assets/rook.h"
 #include "assets/rook1.h"
 
-// Board dimensions
-#define BOARD_X 0
-#define BOARD_Y 0
-#define SQUARE_SIZE (LCD_HEIGHT / 8)
-#define PIECE_SCALE 0.7
-#define INFO_PANEL_X (8 * SQUARE_SIZE)
-#define INFO_PANEL_WIDTH (LCD_WIDTH - INFO_PANEL_X)
-
-// Colors
-#define COLOR_MENU_BG 0xFFDF // #FFFAFF
-#define COLOR_OPTION_BG 0xFFFF // #FFFEFF
-#define COLOR_OPTION_ACTIVE_BG 0xE71C // #E6E2E6
-#define COLOR_TRIANGLE 0xFD70 // #FFAD83
-#define COLOR_BORDER 0xEF7D // #EEEEEE
-#define COLOR_SUBTEXT 0x6B6D // #6A6D6A
-#define COLOR_SELECTION_OVERLAY 0xFFE0 // #FFFF00
-#define COLOR_MASK_LSB 0xF7DE
-#define COLOR_CHECK 0xEB0A // #EB6150
-
-// Menu layout
-#define MENU_MARGIN_TOP 38
-#define MENU_MARGIN_SIDE 15
-#define MENU_OPTION_WIDTH (LCD_WIDTH - 2 * MENU_MARGIN_SIDE)
-#define MENU_OPTION_HEIGHT 34
-
 void draw_piece_to_buffer(uint16_t* buffer, int buffer_width, int buffer_height, char piece)
 {
     const uint16_t* piece_data = NULL;
