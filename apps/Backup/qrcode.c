@@ -776,7 +776,7 @@ uint16_t qrcode_getBufferSize(uint8_t version) {
 }
 
 // @TODO: Return error if data is too big.
-int8_t qrcode_initBytes(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8_t ecc, uint8_t *data, uint16_t length) {
+int8_t qrcode_initBytes(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8_t ecc, uint8_t *data, uint16_t length, bool skipMask) {
     uint8_t size = version * 4 + 17;
     qrcode->version = version;
     qrcode->size = size;
@@ -829,16 +829,18 @@ int8_t qrcode_initBytes(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8
 
     // Find the best (lowest penalty) mask
     uint8_t mask = 0;
-    int32_t minPenalty = INT32_MAX;
-    for (uint8_t i = 0; i < 8; i++) {
-        drawFormatBits(&modulesGrid, &isFunctionGrid, eccFormatBits, i);
-        applyMask(&modulesGrid, &isFunctionGrid, i);
-        int penalty = getPenaltyScore(&modulesGrid);
-        if (penalty < minPenalty) {
-            mask = i;
-            minPenalty = penalty;
+    if (!skipMask) {
+        int32_t minPenalty = INT32_MAX;
+        for (uint8_t i = 0; i < 8; i++) {
+            drawFormatBits(&modulesGrid, &isFunctionGrid, eccFormatBits, i);
+            applyMask(&modulesGrid, &isFunctionGrid, i);
+            int penalty = getPenaltyScore(&modulesGrid);
+            if (penalty < minPenalty) {
+                mask = i;
+                minPenalty = penalty;
+            }
+            applyMask(&modulesGrid, &isFunctionGrid, i);  // Undoes the mask due to XOR
         }
-        applyMask(&modulesGrid, &isFunctionGrid, i);  // Undoes the mask due to XOR
     }
 
     qrcode->mask = mask;
@@ -852,8 +854,8 @@ int8_t qrcode_initBytes(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8
     return 0;
 }
 
-int8_t qrcode_initText(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8_t ecc, const char *data) {
-    return qrcode_initBytes(qrcode, modules, version, ecc, (uint8_t*)data, strlen(data));
+int8_t qrcode_initText(QRCode *qrcode, uint8_t *modules, uint8_t version, uint8_t ecc, const char *data, bool skipMask) {
+    return qrcode_initBytes(qrcode, modules, version, ecc, (uint8_t*)data, strlen(data), skipMask);
 }
 
 bool qrcode_getModule(QRCode *qrcode, uint8_t x, uint8_t y) {

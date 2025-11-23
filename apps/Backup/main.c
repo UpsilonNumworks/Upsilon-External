@@ -5,6 +5,9 @@
 #include <extapp_api.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+
+#define DEVICE
 
 void draw_qr(const char * data, struct TransmissionProfile profile) {
   // QR Code generator based on https://github.com/ricmoo/QRCode/blob/master/src/qrcode.c
@@ -12,7 +15,7 @@ void draw_qr(const char * data, struct TransmissionProfile profile) {
   uint8_t qrcodeData[qrcode_getBufferSize(profile.qrVersion)];
 
   // Generate QRCode
-  qrcode_initBytes(&qrcode, qrcodeData, profile.qrVersion, profile.qrEcc, (uint8_t*)data, profile.qrData);
+  qrcode_initBytes(&qrcode, qrcodeData, profile.qrVersion, profile.qrEcc, (uint8_t*)data, profile.qrData, profile.skipMask);
 
   // Display the QRCode
   extapp_waitForVBlank();
@@ -37,18 +40,38 @@ const uint32_t * userlandAddress() {
 }
 
 uint32_t get_storage_address() {
-  return *(uint32_t *)((*userlandAddress()) + 0xC);
+  // On Upsilon, slotInfo is uninitialized until the calculator is plugged by
+  // USB, so we cant use it to determine currently running slot.
+  // Instead, we try to read first the slot A address and validate weather the
+  // storage is initialized there, then we try slot B if it isn't
+
+  // No model detection on Upsilon, so we directly use 0x90010000 (on N0120, we
+  // would need to try with 0x90020000).
+  uint32_t potentialStorageAddress = *(uint32_t *)0x9001000C;
+
+  if ((0x20000000 <= potentialStorageAddress) && (potentialStorageAddress <= 0x20040000) && (*(uint32_t *)potentialStorageAddress == 0xEE0BDDBA)) {
+    return potentialStorageAddress;
+  } else {
+    // We return slot B address, as we don't handle errors
+    return *(uint32_t *)(0x9041000C);
+  }
 }
 
 const uint32_t get_storage_size() {
-  return *(uint32_t *)((*userlandAddress()) + 0x10);
-}
+  // Storage size is stored right after storage address, so we can just reuse
+  // the same code
+  uint32_t potentialStorageAddress = *(uint32_t *)0x9001000C;
+  if ((0x20000000 <= potentialStorageAddress) && (potentialStorageAddress <= 0x20040000) && (*(uint32_t *)potentialStorageAddress == 0xEE0BDDBA)) {
+    return *(uint32_t *)(0x90010010);
+  } else {
+    // We return slot B address, as we don't handle errors
+    return *(uint32_t *)(0x90410010);
+  }}
 
 
 void extapp_main() {
   // Find base storage address and size.
-  // #ifndef DEVICE
-  #ifndef false
+  #ifndef DEVICE
   // On simulator, we can simply query the internal API
   // I don't want to use C++ and make symbols public, so I just use
   // mangled C++ symbols directly
@@ -134,6 +157,16 @@ void extapp_main() {
       if (timeToSleep > FRAME_DURATION) {
         timeToSleep = 0;
       }
+
+      // Display frame duration
+      char buffer[100];
+
+      // speed need to stay under 100 ms/f, otherwise we won't be transfering at
+      // optimal speed
+      sprintf(buffer, "%d ms/f", duration);
+      extapp_drawTextSmall(buffer, 270, 230, 65535, 0, false);
+
+
       extapp_msleep(timeToSleep);
     }
   }

@@ -1,6 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 // 0x7D19 for Upsilon, 0xFDA6 for Epsilon
@@ -29,6 +30,10 @@ struct TransmissionProfile {
   // Implementations are found here: https://gitlab.com/Nayuki/QR-Code-generator/-/blob/master/rust/src/lib.rs?ref_type=heads (with multiple languages)
   // We aren't using this library for this app.
   uint16_t qrData;
+
+  // Computing the best mask for the QR Code isn't always useful, but reduce
+  // performance a lot. Skipping it allows higher framerate
+  bool skipMask;
 
   // Name of the profile displayed in the UI
   char * profileName;

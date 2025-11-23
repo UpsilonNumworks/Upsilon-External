@@ -31,6 +31,7 @@ apps/KhiCAS/src/gmp*/gmp.h
 apps/KhiCAS/src/gmp*/mp_bases.h
 apps/KhiCAS/src/gmp*/stamp-h1
 apps/KhiCAS/src/gmp*/trialdivtab.h
+apps/Video/libjpeg-turbo/build
 *.tmp
 *.log
 *.P
