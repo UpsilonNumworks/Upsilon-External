@@ -347,11 +347,6 @@ void draw_info_panel(char board[BOARD_SIZE][BOARD_SIZE], int cursor_row, int cur
         extapp_drawTextSmall("Black", x + 5, offset_y, COLOR_BLACK, COLOR_WHITE, false);
     }
 
-    if (is_check) {
-        offset_y += 20;
-        extapp_drawTextSmall("CHECK!", x + 5, offset_y, 0xF800, COLOR_WHITE, false); // Red color
-    }
-
     offset_y += 20;
     extapp_drawTextSmall("Position:", x + 5, offset_y, COLOR_BLACK, COLOR_WHITE, false);
     offset_y += 12;
