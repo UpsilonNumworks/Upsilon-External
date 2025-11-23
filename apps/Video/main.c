@@ -24,6 +24,11 @@ struct state_t {
     const char * index;
     const char * end_of_file;
     size_t file_len;
+
+    int frame_count;
+    uint64_t start;
+
+    bool running;
 };
 
 static struct state_t state = {
@@ -32,6 +37,11 @@ static struct state_t state = {
     .index = 0,
     .end_of_file = 0,
     .file_len = 0,
+
+    .start = 0,
+    .frame_count = 0,
+
+    .running = true,
 };
 
 
@@ -57,6 +67,13 @@ uint32_t * find_next_frame(uint32_t * current_frame, uint32_t * end_of_file) {
         address = (void *)address + 1;
     }
     return 0;
+}
+
+void handle_keyboard() {
+    uint64_t scancode = extapp_scanKeyboard();
+    if (scancode & (SCANCODE_Home | SCANCODE_OnOff | SCANCODE_Back)) {
+        state.running = false;
+    }
 }
 
 bool show_frame(struct jpeg_decompress_struct * info, const char * file, uint32_t file_size) {
@@ -132,7 +149,7 @@ bool read_file() {
         return false;
     }
 
-    uint64_t start = extapp_millis();
+    state.start = extapp_millis();
 
     // Tutorial at https://www.tspi.at/2020/03/20/libjpegexample.html#gsc.tab=0
     struct jpeg_decompress_struct info;
@@ -141,12 +158,13 @@ bool read_file() {
     info.err = jpeg_std_error(&err);
     jpeg_create_decompress(&info);
 
-    int frame_count = 0;
-    while (state.index < state.end_of_file) {
+    state.frame_count = 0;
+    state.running = true;
+    while ((state.index < state.end_of_file) && state.running) {
         if (!show_frame(&info,  state.index, state.end_of_file - state.index)) {
             return false;
         }
-        frame_count += 1;
+        state.frame_count += 1;
 
         // libjpeg already gives us the end of file, so we don't need to scan
         // the file. We still keep the scanning code commented in case it cause
@@ -163,14 +181,15 @@ bool read_file() {
         if (state.index == 0) {
             break;
         }
+
+        handle_keyboard();
     }
     jpeg_destroy_decompress(&info);
 
-    uint64_t end = extapp_millis();
+    uint32_t duration = extapp_millis()-state.start;
 
-    uint32_t duration = end-start;
     char buffer[100];
-    sprintf(buffer, "%d ms, %d frames", duration, frame_count);
+    sprintf(buffer, "%d ms, %d frames", duration, state.frame_count);
     extapp_drawTextSmall(buffer, 2, 240 - 10, 65535, 0, false);
 
     return true;
@@ -192,7 +211,9 @@ void extapp_main(void) {
 
     read_file();
 
-    waitForKeyPressed();
-    waitForKeyReleased();
+    if (state.running) {
+        waitForKeyPressed();
+        waitForKeyReleased();
+    }
 }
 void _fini (void) {};
