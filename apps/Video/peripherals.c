@@ -9,7 +9,7 @@
 void init_display() {
   // Draw a rectangle to fill all the screen
   extapp_waitForVBlank();
-  extapp_pushRectUniform(0, 0, 320, 240, 0xFFFF);
+  extapp_pushRectUniform(0, 0, 320, 240, 0x0000);
 }
 
 /**

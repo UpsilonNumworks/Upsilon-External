@@ -14,6 +14,8 @@
 #include "inc/selector.h"
 
 #define MAX_IMAGE_WIDTH 1920
+#define MOVING_OFFSET 10
+#define DEBUG 0
 
 static unsigned char decompress_buffer[MAX_IMAGE_WIDTH * 2];
 
@@ -29,6 +31,13 @@ struct state_t {
     uint64_t start;
 
     bool running;
+
+    uint64_t last_scancode;
+
+    int16_t y_offset;
+    int16_t x_offset;
+    unsigned int imgHeight;
+    unsigned int imgWidth;
 };
 
 static struct state_t state = {
@@ -42,6 +51,12 @@ static struct state_t state = {
     .frame_count = 0,
 
     .running = true,
+    .last_scancode = 0,
+
+    .y_offset = 0,
+    .x_offset = 0,
+    .imgHeight = 0,
+    .imgWidth = 0,
 };
 
 
@@ -71,9 +86,44 @@ uint32_t * find_next_frame(uint32_t * current_frame, uint32_t * end_of_file) {
 
 void handle_keyboard() {
     uint64_t scancode = extapp_scanKeyboard();
+    uint64_t filtered_scancode = scancode & (~state.last_scancode);
     if (scancode & (SCANCODE_Home | SCANCODE_OnOff | SCANCODE_Back)) {
         state.running = false;
     }
+
+    if (scancode & (SCANCODE_Left)) {
+        int16_t wipe_origin = state.x_offset + state.imgWidth - MOVING_OFFSET;
+        if ((wipe_origin > 0) || (wipe_origin < LCD_WIDTH)) {
+            extapp_pushRectUniform(wipe_origin, 0, MOVING_OFFSET, 240, 0x0000);
+        }
+        state.x_offset -= MOVING_OFFSET;
+    }
+
+    if (scancode & (SCANCODE_Right)) {
+        int16_t wipe_origin = state.x_offset;
+        if ((wipe_origin > 0) || (wipe_origin < LCD_WIDTH)) {
+            extapp_pushRectUniform(wipe_origin, 0, MOVING_OFFSET, 240, 0x0000);
+        }
+        state.x_offset += MOVING_OFFSET;
+    }
+
+    if (scancode & (SCANCODE_Up)) {
+        int16_t wipe_origin = state.y_offset + state.imgHeight - MOVING_OFFSET;
+        if ((wipe_origin > 0) || (wipe_origin < LCD_WIDTH)) {
+            extapp_pushRectUniform(0, wipe_origin, 320, MOVING_OFFSET, 0x0000);
+        }
+        state.y_offset -= MOVING_OFFSET;
+    }
+
+    if (scancode & (SCANCODE_Down)) {
+        int16_t wipe_origin = state.y_offset;
+        if ((wipe_origin > 0) || (wipe_origin < LCD_WIDTH)) {
+            extapp_pushRectUniform(0, wipe_origin, 320, MOVING_OFFSET, 0x0000);
+        }
+        state.y_offset += MOVING_OFFSET;
+    }
+
+    state.last_scancode = scancode;
 }
 
 bool show_frame(struct jpeg_decompress_struct * info, const char * file, uint32_t file_size) {
@@ -82,8 +132,8 @@ bool show_frame(struct jpeg_decompress_struct * info, const char * file, uint32_
 
     if (jpeg_read_header(info, true) != JPEG_HEADER_OK) {
         init_display();
-        extapp_drawTextLarge("Invalid file!", 0, 20 * 1, 0x0000, 0xFFFF, false);
-        extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0x0000, 0xFFFF, false);
+        extapp_drawTextLarge("Invalid file!", 0, 20 * 1, 0xFFFF, 0x0000, false);
+        extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0xFFFF, 0x0000, false);
         return false;
     }
 
@@ -91,25 +141,25 @@ bool show_frame(struct jpeg_decompress_struct * info, const char * file, uint32_
 
     jpeg_start_decompress(info);
 
-    unsigned int imgWidth = info->output_width;
-    unsigned int imgHeight = info->output_height;
+    state.imgWidth = info->output_width;
+    state.imgHeight = info->output_height;
     int numComponents = info->num_components;
 
     unsigned char *buffer_array[1] = {decompress_buffer};
     bool heap_allocated = false;
-    if (imgWidth > MAX_IMAGE_WIDTH) {
+    if (state.imgWidth > MAX_IMAGE_WIDTH) {
         // If image is too big, fallback to heap allocation (using static memory
         // is "free" on Upsilon as it's a separate region)
         // Libjpeg already allocate some memory on the heap, so we should try to
         // avoid allocating on the heap (using static allocation, or stack
         // allocation for most use cases).
-        buffer_array[0] = malloc(imgWidth * 2);
+        buffer_array[0] = malloc(state.imgWidth * 2);
         heap_allocated = true;
 
         if (buffer_array[0] == 0) {
             init_display();
-            extapp_drawTextLarge("Memory full", 0, 20 * 1, 0x0000, 0xFFFF, false);
-            extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0x0000, 0xFFFF, false);
+            extapp_drawTextLarge("Memory full", 0, 20 * 1, 0xFFFF, 0x0000, false);
+            extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0xFFFF, 0x0000, false);
             return false;
         }
     }
@@ -118,12 +168,37 @@ bool show_frame(struct jpeg_decompress_struct * info, const char * file, uint32_
     while(info->output_scanline < info->output_height) {
         uint32_t read_lines = jpeg_read_scanlines(info, buffer_array, 1);
 
+        uint16_t normalized_time_width = state.imgWidth > LCD_WIDTH ? LCD_WIDTH : state.imgWidth;
+
+        int16_t x = state.x_offset;
+        uint16_t width = normalized_time_width - state.x_offset;
+
+        uint32_t array_offset = 0;
+        if (state.x_offset < 0) {
+            if (-state.x_offset > state.imgWidth) {
+                continue;
+            }
+            x = 0;
+            array_offset = -state.x_offset;
+            width = state.imgWidth + state.x_offset;
+            if (width > LCD_WIDTH) {
+                width = LCD_WIDTH;
+            }
+        }
+
+        int16_t y = info->output_scanline - 1 + state.y_offset;
+
         // We skip displaying images out of screen, but need to fully parse them
         // to prevent jpeg_finish_decompress from crashing. If we display out of
         // screen, the screen will wrap.
-        if (info->output_scanline <= LCD_HEIGHT) {
-            extapp_pushRect(0, info->output_scanline - 1, imgWidth > LCD_WIDTH ? LCD_WIDTH : imgWidth, read_lines, (const uint16_t *)buffer_array[0]);
+        if (y > LCD_HEIGHT || x > LCD_WIDTH || y < 0) {
+            continue;
         }
+
+        // uint16_t height = read_lines;
+        uint16_t height = 1;
+        extapp_pushRect(x, y, width, height, (const uint16_t *)buffer_array[0] + array_offset);
+        // }
     }
 
     jpeg_finish_decompress(info);
@@ -143,8 +218,8 @@ bool read_file() {
     // Check if magic value is present at beginning of JPEG files.
     // This check is necessary to prevent freezing on invalid files
     if (*(uint32_t *)state.index != 0xE0FFD8FF) {
-        extapp_drawTextLarge("Invalid file!", 0, 20 * 1, 0x0000, 0xFFFF, false);
-        extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0x0000, 0xFFFF, false);
+        extapp_drawTextLarge("Invalid file!", 0, 20 * 1, 0xFFFF, 0x0000, false);
+        extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0xFFFF, 0x0000, false);
 
         return false;
     }
@@ -178,19 +253,27 @@ bool read_file() {
             state.index = (char *)find_next_frame((uint32_t *)state.index, (uint32_t *)(state.end_of_file));
         }
 
+        if ((state.index == 0) || (state.index >= state.end_of_file)) {
+            state.index = state.filecontent;
+        }
+
+
         if (state.index == 0) {
             break;
         }
 
         handle_keyboard();
+
     }
     jpeg_destroy_decompress(&info);
 
     uint32_t duration = extapp_millis()-state.start;
 
+    #if DEBUG
     char buffer[100];
     sprintf(buffer, "%d ms, %d frames", duration, state.frame_count);
-    extapp_drawTextSmall(buffer, 2, 240 - 10, 65535, 0, false);
+    extapp_drawTextSmall(buffer, 2, 240 - 10, 0xFFFF, 0x0000, false);
+    #endif
 
     return true;
 }
@@ -200,7 +283,7 @@ void extapp_main(void) {
     init_display();
 
     state.filename = select_file("", 10);
-    waitForKeyReleased();
+    state.last_scancode = extapp_scanKeyboard();
 
     init_display();
 
@@ -211,9 +294,13 @@ void extapp_main(void) {
 
     read_file();
 
+    #if !DEBUG
     if (state.running) {
+    #endif
         waitForKeyPressed();
         waitForKeyReleased();
+    #if !DEBUG
     }
+    #endif
 }
 void _fini (void) {};
