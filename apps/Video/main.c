@@ -31,6 +31,8 @@ struct state_t {
     uint64_t start;
 
     bool running;
+    bool paused;
+    bool loop;
 
     uint64_t last_scancode;
 
@@ -51,6 +53,9 @@ static struct state_t state = {
     .frame_count = 0,
 
     .running = true,
+    .paused = false,
+    .loop = false,
+
     .last_scancode = 0,
 
     .y_offset = 0,
@@ -87,8 +92,23 @@ uint32_t * find_next_frame(uint32_t * current_frame, uint32_t * end_of_file) {
 void handle_keyboard() {
     uint64_t scancode = extapp_scanKeyboard();
     uint64_t filtered_scancode = scancode & (~state.last_scancode);
-    if (scancode & (SCANCODE_Home | SCANCODE_OnOff | SCANCODE_Back)) {
+    if (filtered_scancode & (SCANCODE_Home | SCANCODE_OnOff | SCANCODE_Back)) {
         state.running = false;
+    }
+
+    if (filtered_scancode & (SCANCODE_OK | SCANCODE_EXE)) {
+        state.paused = !state.paused;
+    }
+
+    if (scancode & (SCANCODE_Toolbox)) {
+        if (filtered_scancode & (SCANCODE_Toolbox)) {
+            state.loop = !state.loop;
+        }
+        if (state.loop) {
+            extapp_drawTextSmall("Loop mode enabled", 2, 240 - 10, 0xFFFF, 0x0000, false);
+        } else {
+            extapp_drawTextSmall("Loop mode disabled", 2, 240 - 10, 0xFFFF, 0x0000, false);
+        }
     }
 
     if (scancode & (SCANCODE_Left)) {
@@ -198,7 +218,6 @@ bool show_frame(struct jpeg_decompress_struct * info, const char * file, uint32_
         // uint16_t height = read_lines;
         uint16_t height = 1;
         extapp_pushRect(x, y, width, height, (const uint16_t *)buffer_array[0] + array_offset);
-        // }
     }
 
     jpeg_finish_decompress(info);
@@ -239,27 +258,30 @@ bool read_file() {
         if (!show_frame(&info,  state.index, state.end_of_file - state.index)) {
             return false;
         }
-        state.frame_count += 1;
 
-        // libjpeg already gives us the end of file, so we don't need to scan
-        // the file. We still keep the scanning code commented in case it cause
-        // problems, so it can be reverted (FFMpeg use scanning, so it's
-        // probably useful in some cases)
-        state.index = info.src->next_input_byte;
+        if (!state.paused) {
+            state.frame_count += 1;
 
-        // If index is invalid, use find_next_frame (can be invalid for example
-        // when reading image is aborted, due to it being out of screen)
-        if (*(uint32_t *)state.index != 0xE0FFD8FF) {
-            state.index = (char *)find_next_frame((uint32_t *)state.index, (uint32_t *)(state.end_of_file));
-        }
+            // libjpeg already gives us the end of file, so we don't need to scan
+            // the file. We still keep the scanning code commented in case it cause
+            // problems, so it can be reverted (FFMpeg use scanning, so it's
+            // probably useful in some cases)
+            state.index = info.src->next_input_byte;
 
-        if ((state.index == 0) || (state.index >= state.end_of_file)) {
-            state.index = state.filecontent;
-        }
+            // If index is invalid, use find_next_frame (can be invalid for example
+            // when reading image is aborted, due to it being out of screen)
+            if (*(uint32_t *)state.index != 0xE0FFD8FF) {
+                state.index = (char *)find_next_frame((uint32_t *)state.index, (uint32_t *)(state.end_of_file));
+            }
+
+            if (state.loop && (state.index == 0) || (state.index >= state.end_of_file)) {
+                state.index = state.filecontent;
+            }
 
 
-        if (state.index == 0) {
-            break;
+            if (state.index == 0) {
+                break;
+            }
         }
 
         handle_keyboard();
