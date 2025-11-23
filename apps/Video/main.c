@@ -17,6 +17,24 @@
 
 static unsigned char decompress_buffer[MAX_IMAGE_WIDTH * 2];
 
+struct state_t {
+    const char * filename;
+
+    const char * filecontent;
+    const char * index;
+    const char * end_of_file;
+    size_t file_len;
+};
+
+static struct state_t state = {
+    .filename = 0,
+    .filecontent = 0,
+    .index = 0,
+    .end_of_file = 0,
+    .file_len = 0,
+};
+
+
 uint32_t * find_next_frame(uint32_t * current_frame, uint32_t * end_of_file) {
     uint32_t * address = current_frame + 1;
     #pragma unroll 100
@@ -100,13 +118,14 @@ bool show_frame(struct jpeg_decompress_struct * info, const char * file, uint32_
     return true;
 }
 
-bool read_file(const char * filename) {
-    size_t file_len = 0;
-    const char * filecontent = extapp_fileRead(filename, &file_len, EXTAPP_FLASH_FILE_SYSTEM);
+bool read_file() {
+    state.filecontent = extapp_fileRead(state.filename, &state.file_len, EXTAPP_FLASH_FILE_SYSTEM);
+    state.end_of_file = state.filecontent + state.file_len;
+    state.index = state.filecontent;
 
     // Check if magic value is present at beginning of JPEG files.
     // This check is necessary to prevent freezing on invalid files
-    if (*(uint32_t *)filecontent != 0xE0FFD8FF) {
+    if (*(uint32_t *)state.index != 0xE0FFD8FF) {
         extapp_drawTextLarge("Invalid file!", 0, 20 * 1, 0x0000, 0xFFFF, false);
         extapp_drawTextLarge("Press any key to exit", 0, 20 * 2, 0x0000, 0xFFFF, false);
 
@@ -123,9 +142,8 @@ bool read_file(const char * filename) {
     jpeg_create_decompress(&info);
 
     int frame_count = 0;
-    char * index = filecontent;
-    while (index < (filecontent + file_len)) {
-        if (!show_frame(&info, index, file_len + filecontent - index)) {
+    while (state.index < state.end_of_file) {
+        if (!show_frame(&info,  state.index, state.end_of_file - state.index)) {
             return false;
         }
         frame_count += 1;
@@ -134,15 +152,15 @@ bool read_file(const char * filename) {
         // the file. We still keep the scanning code commented in case it cause
         // problems, so it can be reverted (FFMpeg use scanning, so it's
         // probably useful in some cases)
-        index = info.src->next_input_byte;
+        state.index = info.src->next_input_byte;
 
         // If index is invalid, use find_next_frame (can be invalid for example
         // when reading image is aborted, due to it being out of screen)
-        if (*(uint32_t *)index != 0xE0FFD8FF) {
-            index = (char *)find_next_frame((uint32_t *)index, (uint32_t *)(filecontent + file_len));
+        if (*(uint32_t *)state.index != 0xE0FFD8FF) {
+            state.index = (char *)find_next_frame((uint32_t *)state.index, (uint32_t *)(state.end_of_file));
         }
 
-        if (index == 0) {
+        if (state.index == 0) {
             break;
         }
     }
@@ -162,16 +180,17 @@ void extapp_main(void) {
     waitForKeyReleased();
     init_display();
 
-    const char * filename = select_file("", 10);
+    state.filename = select_file("", 10);
     waitForKeyReleased();
 
     init_display();
 
-    if (filename == NULL) {
+    if (state.filename == NULL) {
         return;
     }
 
-    read_file(filename);
+
+    read_file();
 
     waitForKeyPressed();
     waitForKeyReleased();
