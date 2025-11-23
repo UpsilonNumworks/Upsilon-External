@@ -1,5 +1,5 @@
-#ifndef RAYCASTER_MATH_FUNC_H_
-#define RAYCASTER_MATH_FUNC_H_
+#ifndef FLAPPY_MATH_FUNC_H_
+#define FLAPPY_MATH_FUNC_H_
 
 #include "libraries.h"
 
