@@ -92,7 +92,7 @@ uint32_t * find_next_frame(uint32_t * current_frame, uint32_t * end_of_file) {
 void handle_keyboard() {
     uint64_t scancode = extapp_scanKeyboard();
     uint64_t filtered_scancode = scancode & (~state.last_scancode);
-    if (filtered_scancode & (SCANCODE_Home | SCANCODE_OnOff | SCANCODE_Back)) {
+    if (filtered_scancode & (SCANCODE_Home | SCANCODE_OnOff | SCANCODE_Back | SCANCODE_Zero)) {
         state.running = false;
     }
 
@@ -117,6 +117,7 @@ void handle_keyboard() {
             extapp_pushRectUniform(wipe_origin, 0, MOVING_OFFSET, 240, 0x0000);
         }
         state.x_offset -= MOVING_OFFSET;
+        if (-state.x_offset >= (int16_t)state.imgWidth) { state.x_offset = -(state.imgWidth - MOVING_OFFSET); }
     }
 
     if (scancode & (SCANCODE_Right)) {
@@ -125,6 +126,7 @@ void handle_keyboard() {
             extapp_pushRectUniform(wipe_origin, 0, MOVING_OFFSET, 240, 0x0000);
         }
         state.x_offset += MOVING_OFFSET;
+        if (state.x_offset >= (int16_t)state.imgWidth) { state.x_offset = (state.imgWidth - MOVING_OFFSET); }
     }
 
     if (scancode & (SCANCODE_Up)) {
@@ -133,6 +135,7 @@ void handle_keyboard() {
             extapp_pushRectUniform(0, wipe_origin, 320, MOVING_OFFSET, 0x0000);
         }
         state.y_offset -= MOVING_OFFSET;
+        if (-state.y_offset >= (int16_t)state.imgHeight) { state.y_offset = -(state.imgHeight - MOVING_OFFSET); }
     }
 
     if (scancode & (SCANCODE_Down)) {
@@ -141,6 +144,7 @@ void handle_keyboard() {
             extapp_pushRectUniform(0, wipe_origin, 320, MOVING_OFFSET, 0x0000);
         }
         state.y_offset += MOVING_OFFSET;
+        if (state.y_offset >= (int16_t)state.imgHeight) { state.y_offset = (state.imgHeight - MOVING_OFFSET); }
     }
 
     state.last_scancode = scancode;
@@ -284,6 +288,8 @@ bool read_file() {
             }
         }
 
+        // The handle_keyboard function should only be called after reading a
+        // frame header as it rely on image metadata, such as size
         handle_keyboard();
 
     }
