@@ -46,3 +46,10 @@ An application that allows you to view PNG files https://github.com/Oiha-dev/Png
 - Each application is totally independent (and needs to bring its own libc, ...). data and bss sections are allocated in ITCM RAM, and the heap is pre-allocated from epsilon. The state of the application is totally reset upon entry.
 - To build a usable tar archive, relocation needs to be done to account the real adresses in flash of the binaries. There is a script called "archive" in this repository, which calls the linker on partially linked elf, to build final correctly relocated elf files (then added to the tar archive).
 - The file in the tar must be marked as executable to be executable.
+
+## License
+
+This work is licensed as under the MIT License terms.
+
+Individual apps (contained in subfolders of `apps/`) are licensed under their
+own conditions and may not be MIT-compatible.
