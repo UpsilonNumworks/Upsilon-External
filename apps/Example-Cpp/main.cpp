@@ -14,18 +14,15 @@ void extapp_main(void) {
     Peripherals::waitForKeyReleased();
     // Draw a white background
     Peripherals::init_display();
-    // Draw hello world message
+
     extapp_drawTextLarge("Hello World !", 0, 20 * 1, 0x0000, 0xFFFF, false);
     extapp_drawTextLarge("Press any key to continue", 0, 20 * 2, 0x0000, 0xFFFF, false);
 
-    // Just wait for a key to be pressed (defined in peripherals.c)
     Peripherals::waitForKeyPressed();
     Peripherals::waitForKeyReleased();
 
     // Select a file (The code is in selector.c)
-    // The code is a bit more complicated, but you can see how to use the file system API to read a file
     const char * filename = Selector::select_file("", 10);
-    // Wait for the key to be released
     Peripherals::waitForKeyReleased();
 
     // Clear the screen
@@ -81,7 +78,7 @@ void extapp_main(void) {
 
     // Initialize the filename to write to the ram filesystem
     const char * filename_to_write = "hello_world.py";
-    // Initialize the file content to write to the ram filesystem, add three spaces at the beginning
+    // Initialize the file content to write to the ram filesystem, add 1 spaces at the beginning
     // because the Python app use the first character to store the auto importation status
     const char * filecontent_to_write = " hello world";
 
@@ -89,9 +86,8 @@ void extapp_main(void) {
     extapp_fileWrite(filename_to_write, filecontent_to_write, strlen(filecontent_to_write) + 1, EXTAPP_RAM_FILE_SYSTEM);
     extapp_drawTextLarge("File written to ram filesystem", 0, 20 * 2, 0x0000, 0xFFFF, false);
     extapp_drawTextLarge("Press any key to exit", 0, 20 * 3, 0x0000, 0xFFFF, false);
+
     // Wait for a key to be pressed before exiting the application
     Peripherals::waitForKeyPressed();
     Peripherals::waitForKeyReleased();
-
-    return;
 }
