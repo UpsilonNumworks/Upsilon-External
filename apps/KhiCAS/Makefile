@@ -76,6 +76,9 @@ src/lib/libmpfr.a src/include/mpfr.h: src/lib/libgmp.a src/include/gmp.h libDire
 	cp src/mpfr.h ../include/mpfr.h
 src/lib/libmicropy.a: libDirectory
 	cd src/micropython-1.12/numworks
+
+# Due to the update of compiler, we must ignore the error
+	sed -i 's/\$$(CC) \$$(CFLAGS)/\$$(CC) \$$(CFLAGS) -Wno-error/g' ../py/mkrules.mk || true
 # We need to use a script to build MicroPython, because the make command crashes in MicroPython because it tries to link without the required libraries
 	./mklib
 
