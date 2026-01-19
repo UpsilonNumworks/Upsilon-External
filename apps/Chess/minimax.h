@@ -7,6 +7,7 @@
 
 #define valBest 700
 
+void colorAdvantage(char board[BOARD_SIZE][BOARD_SIZE], int* whiteAdvantage, int* blackAdvantage);
 Move* minimaxManager(char board[BOARD_SIZE][BOARD_SIZE], Move* moves, int color, unsigned int depth, char score);
 
 #endif

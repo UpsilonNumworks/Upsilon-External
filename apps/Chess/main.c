@@ -13,7 +13,6 @@ typedef enum {
     MODE_PVP,
     MODE_PVAI
 } GameMode;
-
 GameMode game_mode = MODE_PVP;
 int ai_difficulty = 1; // 0=Easy, 1=Normal, 2=Hard
 char board[BOARD_SIZE][BOARD_SIZE];
@@ -114,8 +113,13 @@ void extapp_main()
 
         bool back_to_menu = false;
         uint64_t last_cursor_move_time = 0;
-
+        int white_advantage = 0;
+        int black_advantage = 0;
         while (true) {
+            
+            colorAdvantage(board, &white_advantage, &black_advantage);
+            showScoreBar(white_advantage, black_advantage);
+            
             // AI Turn
             if (game_mode == MODE_PVAI && !white_turn) {
                 extapp_msleep(100); // Small delay
@@ -135,7 +139,7 @@ void extapp_main()
 
                 // Run Minimax avec difficulté variable
                 // 0=Easy (depth 1), 1=Normal (depth 2), 2=Hard (depth 3)
-                int depth = ai_difficulty + 1;
+                int depth =  ai_difficulty + 1;
                 Move* best_move = minimaxManager(board, ai_moves, BLACK, depth, '\0');
 
                 if (best_move != NULL) {

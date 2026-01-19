@@ -26,7 +26,7 @@ clean:
 
 else
 # Linux Version
-app.elf: main.o
+app.elf: main.o board.o moves.o minimax.o ui.o
 	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS)
 
 clean:

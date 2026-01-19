@@ -1,7 +1,7 @@
 #include "minimax.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "extapp_api.h"
 #define INF 100000
 #define VAL_P 10
 #define VAL_N 30
@@ -100,23 +100,200 @@ int get_piece_value(char piece, int x, int y)
     return base + pos_val;
 }
 
-int scoring(int color, char board[BOARD_SIZE][BOARD_SIZE])
+
+
+void colorAdvantage(char board[BOARD_SIZE][BOARD_SIZE], int* whiteAdvantage, int* blackAdvantage)
 {
-    int score_w = 0;
-    int score_b = 0;
+    // Prototypes (defined elsewhere in file)
+    extern Move* getMoves(char board[BOARD_SIZE][BOARD_SIZE], int c);
+    extern void freeMoves(Move* m);
+    extern Move* cloneMove(Move* m); // already used elsewhere
+    extern int countMoves(Move* moves);
+
+    // Weights (tune as needed)
+    const int W_MATERIAL      = 100;
+    const int W_PST           = 1;
+    const int W_MOBILITY      = 2;
+    const int W_DOUBLED_PAWN  = -6;
+    const int W_ISOLATED_PAWN = -8;
+    const int W_PASSED_PAWN   = 12;
+    const int W_KING_PAWN_SHELL = 3;
+    const int W_OPEN_KING_FILE = -10;
+    const int W_ENDGAME_KING_CENTRAL = 3;
+
+    int material_w = 0, material_b = 0;
+    int pst_w = 0, pst_b = 0;
+
+    int pawnFileCountWhite[8] = {0};
+    int pawnFileCountBlack[8] = {0};
+
+    int king_wx = -1, king_wy = -1;
+    int king_bx = -1, king_by = -1;
+
+    int nonKingMaterial = 0;
+
+    // Accumulate material + piece-square + pawn file counts
     for (int x = 0; x < BOARD_SIZE; x++) {
         for (int y = 0; y < BOARD_SIZE; y++) {
             char p = board[x][y];
-            if (p == EMPTY)
-                continue;
-            if (p >= 'a' && p <= 'z') { // White
-                score_w += get_piece_value(p, x, y);
-            } else { // Black
-                score_b += get_piece_value(p, x, y);
+            if (p == EMPTY) continue;
+            int val = 0;
+            switch (p) {
+                case 'p': val = VAL_P; break;
+                case 'n': val = VAL_N; break;
+                case 'b': val = VAL_B; break;
+                case 'r': val = VAL_R; break;
+                case 'q': val = VAL_Q; break;
+                case 'k': val = VAL_K; break;
+                case 'P': val = VAL_P; break;
+                case 'N': val = VAL_N; break;
+                case 'B': val = VAL_B; break;
+                case 'R': val = VAL_R; break;
+                case 'Q': val = VAL_Q; break;
+                case 'K': val = VAL_K; break;
+                default:  val = 0; break;
+            }
+            int gp = get_piece_value(p, x, y); // includes PST part
+            if (p >= 'a' && p <= 'z') { // white
+                material_w += val;
+                pst_w += (gp - val) * W_PST;
+                if (p == 'p') pawnFileCountWhite[x]++;
+                if (p == 'k') { king_wx = x; king_wy = y; }
+            } else { // black
+                material_b += val;
+                pst_b += (gp - val) * W_PST;
+                if (p == 'P') pawnFileCountBlack[x]++;
+                if (p == 'K') { king_bx = x; king_by = y; }
+            }
+            if (p != 'k' && p != 'K') nonKingMaterial += val;
+        }
+    }
+
+    // Pawn structure: doubled + isolated + passed
+    int pawnStruct_w = 0, pawnStruct_b = 0;
+    for (int file = 0; file < 8; file++) {
+        if (pawnFileCountWhite[file] > 1)
+            pawnStruct_w += W_DOUBLED_PAWN * (pawnFileCountWhite[file] - 1);
+        if (pawnFileCountBlack[file] > 1)
+            pawnStruct_b += W_DOUBLED_PAWN * (pawnFileCountBlack[file] - 1);
+    }
+
+    // Helpers for isolated / passed
+    for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y++) {
+            char p = board[x][y];
+            if (p == 'p') {
+                // Isolated
+                int hasNeighbor =
+                    (x > 0 && pawnFileCountWhite[x-1] > 0) ||
+                    (x < 7 && pawnFileCountWhite[x+1] > 0);
+                if (!hasNeighbor) pawnStruct_w += W_ISOLATED_PAWN;
+
+                // Passed: no black pawn ahead on same/adjacent files
+                int passed = 1;
+                for (int fx = (x>0?x-1:x); fx <= (x<7?x+1:x); fx++) {
+                    for (int ry = y+1; ry < 8; ry++) {
+                        if (board[fx][ry] == 'P') { passed = 0; break; }
+                    }
+                    if (!passed) break;
+                }
+                if (passed) pawnStruct_w += W_PASSED_PAWN * y;
+            } else if (p == 'P') {
+                int hasNeighbor =
+                    (x > 0 && pawnFileCountBlack[x-1] > 0) ||
+                    (x < 7 && pawnFileCountBlack[x+1] > 0);
+                if (!hasNeighbor) pawnStruct_b += W_ISOLATED_PAWN;
+
+                int passed = 1;
+                for (int fx = (x>0?x-1:x); fx <= (x<7?x+1:x); fx++) {
+                    for (int ry = y-1; ry >= 0; ry--) {
+                        if (board[fx][ry] == 'p') { passed = 0; break; }
+                    }
+                    if (!passed) break;
+                }
+                if (passed) pawnStruct_b += W_PASSED_PAWN * (7 - y);
             }
         }
     }
-    return (color == WHITE) ? (score_w - score_b) : (score_b - score_w);
+
+    // Mobility
+    int mobility_w = 0, mobility_b = 0;
+    {
+        Move* mw = getMoves(board, WHITE);
+        Move* mb = getMoves(board, BLACK);
+        if (mw && mw->type != 'l' && mw->type != 't')
+            mobility_w = countMoves(mw) * W_MOBILITY;
+        if (mb && mb->type != 'l' && mb->type != 't')
+            mobility_b = countMoves(mb) * W_MOBILITY;
+        freeMoves(mw);
+        freeMoves(mb);
+    }
+
+    // King safety (basic pawn shield + open file penalty)
+    int kingSafety_w = 0, kingSafety_b = 0;
+    if (king_wx != -1) {
+        // Pawns in front (higher y)
+        for (int dx = -1; dx <= 1; dx++) {
+            int fx = king_wx + dx;
+            int fy = king_wy + 1;
+            if (fx >= 0 && fx < 8 && fy < 8 && board[fx][fy] == 'p')
+                kingSafety_w += W_KING_PAWN_SHELL;
+        }
+        // Open file penalty: if no pawn on king file
+        int hasPawn = 0;
+        for (int ry = 0; ry < 8; ry++)
+            if (board[king_wx][ry] == 'p') { hasPawn = 1; break; }
+        if (!hasPawn) kingSafety_w += W_OPEN_KING_FILE;
+    }
+    if (king_bx != -1) {
+        for (int dx = -1; dx <= 1; dx++) {
+            int fx = king_bx + dx;
+            int fy = king_by - 1;
+            if (fx >= 0 && fx < 8 && fy >= 0 && board[fx][fy] == 'P')
+                kingSafety_b += W_KING_PAWN_SHELL;
+        }
+        int hasPawn = 0;
+        for (int ry = 0; ry < 8; ry++)
+            if (board[king_bx][ry] == 'P') { hasPawn = 1; break; }
+        if (!hasPawn) kingSafety_b += W_OPEN_KING_FILE;
+    }
+
+    // Endgame king centralization
+    int endgame = (nonKingMaterial <= (VAL_R + VAL_B + VAL_N)); // simple threshold
+    int endgame_w = 0, endgame_b = 0;
+    if (endgame) {
+        if (king_wx != -1)
+            endgame_w += W_ENDGAME_KING_CENTRAL * (7 - (abs(king_wx - 3) + abs(king_wy - 3)));
+        if (king_bx != -1)
+            endgame_b += W_ENDGAME_KING_CENTRAL * (7 - (abs(king_bx - 3) + abs(king_by - 3)));
+    }
+
+    int total_w =
+        material_w * W_MATERIAL +
+        pst_w +
+        mobility_w +
+        pawnStruct_w +
+        kingSafety_w +
+        endgame_w;
+
+    int total_b =
+        material_b * W_MATERIAL +
+        pst_b +
+        mobility_b +
+        pawnStruct_b +
+        kingSafety_b +
+        endgame_b;
+    
+    *whiteAdvantage = total_w;
+    *blackAdvantage = total_b;
+}
+
+int scoring(int color, char board[BOARD_SIZE][BOARD_SIZE]) {
+    int whiteAdvantage = 0;
+    int blackAdvantage = 0;
+    colorAdvantage(board, &whiteAdvantage, &blackAdvantage);
+    int score = whiteAdvantage - blackAdvantage;
+    return (color == WHITE) ? score : -score;
 }
 
 int countMoves(Move* moves)
