@@ -18,6 +18,7 @@ angular.module('nwas').service('apps', function() {
     { name: "Backup", description: {en: "Backup scripts wirelessly", fr: "Sauvegardez vos fichiers sans fil"} },
     { name: "FlappyBird", description: {en: "A Flappy Bird clone", fr: "Un clone de Flappy Bird"} },
     { name: "HoldemPoker", description: {en: "A Texas Hold'em Poker Game", fr: "Un jeu de Texas Hold'em"} },
+    { name: "Chess", description: {en: "Chess Game", fr: "Jeu d'échecs"} },
     { name: "Video", description: {en: "Play mjpeg videos", fr: "Lisez des vidéos mjpeg"} },
   ];
 });
