@@ -206,4 +206,9 @@ bool inexammode(){
   return extapp_inexammode();
 }
 
+//dummy function to avoid link error
+int __ssputws_r(void * _reent, const wchar_t * wstr, void * file) {
+    return 0; 
+} 
+
 } // end extern "C"
